@@ -29,6 +29,9 @@ export default class Main {
     }
 
     private static onReady() {
+        // Get dimensions of screen
+        const { width, height } = Electron.screen.getPrimaryDisplay().workAreaSize;
+
         // development
         if (isDev) {
             const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
@@ -39,8 +42,8 @@ export default class Main {
         }
 
         Main.mainWindow = new Main.BrowserWindow({
-            width: 800,
-            height: 600,
+            width,
+            height,
             webPreferences: {
                 nodeIntegration: false,
                 contextIsolation: true,
