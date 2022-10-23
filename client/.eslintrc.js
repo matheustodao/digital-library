@@ -4,7 +4,6 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'prettier',
     'plugin:react/recommended',
     'standard-with-typescript'
   ],
