@@ -29,7 +29,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "p": "yarn prettier --write .",
-    "p:c": "yarn prettier --check ."
+    "p:c": "yarn prettier --check .",
+    "optimize:svg": "yarn svgo src/assets/images"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,6 +58,7 @@
     "eslint-plugin-react": "^7.31.10",
     "prettier": "2.7.1",
     "react-app-rewire-alias": "^1.1.7",
-    "react-app-rewired": "^2.2.1"
+    "react-app-rewired": "^2.2.1",
+    "svgo": "^2.8.0"
   }
 }
