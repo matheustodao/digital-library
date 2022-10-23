@@ -23,6 +23,7 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
     '@typescript-eslint/explicit-function-return-type': 'Off',
     '@typescript-eslint/space-before-function-paren': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'off'
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'error'
   }
 }
