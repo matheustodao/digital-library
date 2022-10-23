@@ -11,7 +11,13 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 
-export default function BookCard() {
+import { BookParams } from '@type/digitalLibrary/book'
+
+interface BookCardProps {
+  book: BookParams
+}
+
+export default function BookCard({ book }: BookCardProps) {
   const { colorMode } = useColorMode()
   return (
     <LinkBox
@@ -28,32 +34,35 @@ export default function BookCard() {
         maxH="250px"
         h="250px"
         objectFit="cover"
-        src=""
+        src={book.bookCover}
         fallbackSrc="https://via.placeholder.com/250"
-        alt="Do mil ao milhão"
+        alt={book.title}
         borderTopRadius="md"
       />
       <Stack direction="column" my="3.5" mx="4">
         <Stack direction="row">
-          <Tag
-            colorScheme="red"
-            p={1.5}
-            borderRadius={5}
-            fontSize="2xs"
-          >
-            <TagLabel>Thiago Nigro</TagLabel>
-          </Tag>
+          {book.authors.slice(0, 3).map((author) => (
+            <Tag
+              key={author}
+              colorScheme="red"
+              p={1.5}
+              borderRadius={5}
+              fontSize="2xs"
+            >
+              <TagLabel>{author}</TagLabel>
+            </Tag>
+          ))}
         </Stack>
 
         <Box pt="2">
           <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'}>
-            <LinkOverlay href="#">
-              Do mil ao milhão sem contar o cafezinho
+            <LinkOverlay href={`/books/${book.id}`}>
+              {book.title}
             </LinkOverlay>
           </Heading>
 
           <Text fontSize="xs" color="GrayText">
-            3 Exemplares
+            {book.quantity} Exemplares
           </Text>
         </Box>
       </Stack>
