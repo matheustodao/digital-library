@@ -5,6 +5,21 @@ interface RouteProps {
   active?: 'true' | 'false'
 }
 
+export const Wrapper = styled.div`
+  .menu {
+    @media (max-width: 680px) {
+      display: none;
+    }
+  }
+
+  .hamburger {
+    display: none;
+    @media (max-width: 680px) {
+      display: flex;
+    }
+  }
+`
+
 export const Route = styled(BreadcrumbLink)<RouteProps>`
   font-weight: 400;
   padding: 6px;
@@ -24,4 +39,24 @@ export const Route = styled(BreadcrumbLink)<RouteProps>`
       background: ${theme.colors.orange[500]};
     }
   `)}
+`
+
+export const Routes = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+  gap: 24px;
+  li {
+    width: 100%;
+    list-style: none;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      width: 100%;
+    }
+  }
 `
