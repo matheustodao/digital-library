@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "BROWSER=none react-app-rewired start",
-    "build": "react-app-rewired build",
+    "react-build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "yarn eslint --fix .",
