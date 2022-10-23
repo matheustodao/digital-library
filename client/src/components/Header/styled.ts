@@ -2,7 +2,7 @@ import { BreadcrumbLink } from '@chakra-ui/react'
 import styled, { css } from 'styled-components'
 
 interface RouteProps {
-  active?: boolean
+  active?: 'true' | 'false'
 }
 
 export const Route = styled(BreadcrumbLink)<RouteProps>`
@@ -15,7 +15,7 @@ export const Route = styled(BreadcrumbLink)<RouteProps>`
     background: ${({ theme }) => theme.colors.whiteAlpha[100]};
   }
 
-  ${({ active, theme }) => (!!active && css`
+  ${({ active, theme }) => (active === 'true' && css`
     color: ${theme.colors.white};
     background: ${theme.colors.orange[500]};
     font-weight: 500;

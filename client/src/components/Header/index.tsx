@@ -33,7 +33,7 @@ export default function Header() {
     <Box
       as="header"
       boxShadow="md"
-      py="10"
+      py="6"
       px="10"
     >
       <Flex alignItems="center" justifyContent="space-between">
@@ -43,7 +43,11 @@ export default function Header() {
           <Breadcrumb variant="soft-rounded" separator=" ">
             {routes.map((route) => (
               <BreadcrumbItem key={route.link}>
-                <Route as={Link} to={route.link} active={router.pathname === route.link}>
+                <Route
+                  as={Link}
+                  to={route.link}
+                  active={(router.pathname === route.link) ? 'true' : 'false'}
+                >
                   {route.label}
                 </Route>
               </BreadcrumbItem>
