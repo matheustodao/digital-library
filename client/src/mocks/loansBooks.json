@@ -2,11 +2,15 @@
   "results": [
     {
       "id": "122",
-      "bookId": "12313",
+      "book": {
+        "id": "12313",
+        "title": "Do mil ao milhão sem contar o cafezinho",
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+      },
       "exitDate": "2022-06-22T00:00:00.000Z",
       "deliveryDate": "2022-07-02T00:00:00.000Z",
       "personName": "Matheus Todao",
-      "status": "on_time",
+      "status": "no_warning",
       "class": null,
       "teacherName": null,
       "email": null,
