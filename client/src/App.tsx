@@ -4,6 +4,7 @@ import { ChakraProvider, theme } from '@chakra-ui/react'
 import Header from '@components/Header'
 
 import Router from './routes'
+import LoggedLayout from './components/Layouts/logged'
 
 export default function App() {
   return (
@@ -11,7 +12,9 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <ChakraProvider theme={theme}>
           <Header />
-          <Router />
+          <LoggedLayout>
+            <Router />
+          </LoggedLayout>
         </ChakraProvider>
       </ThemeProvider>
     </BrowserRouter>
