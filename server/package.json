@@ -1,12 +1,12 @@
 {
-  "name": "react-express-electron-boilerplate",
+  "name": "digital-library",
   "version": "1.0.0",
-  "description": "A boilerplate to generate an Electron app with a React Front end and an Express BackEnd embedded. (Server side)",
+  "description": "A software to management library on demand.",
   "main": "./dist/electron/ElectronStarter.js",
   "build": {
-    "appId": "com.example-full.app",
-    "productName": "Example Full App",
-    "copyright": "Copyright © 2020 Pablo Martinez",
+    "appId": "com.digital-library.app",
+    "productName": "Digital Library",
+    "copyright": "Copyright © 2022 Smooth Tech",
     "extends": null,
     "files": [
       "dist/**/*"
@@ -45,7 +45,7 @@
     "test": "mocha",
     "test-coverage": "nyc yarn run test"
   },
-  "author": "Pablo Martinez",
+  "author": "Matheus Todao | Nathan Cotrim | Caio Scheer",
   "license": "ISC",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
