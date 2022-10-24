@@ -13,6 +13,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "cross-env": "^7.0.3",
     "eslint-config-prettier": "^8.5.0",
     "framer-motion": "^6.2.9",
     "phosphor-react": "^1.4.1",
@@ -26,13 +27,16 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "BROWSER=none react-app-rewired start",
-    "react-build": "react-app-rewired build",
+    "react-start": "BROWSER=none react-app-rewired start",
+    "move-client": "mv build ../server/dist/client || move build ../server/dist/client",
+    "react-build": "react-app-rewired build && yarn run move-client",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "yarn eslint --fix .",
-    "optimize:svg": "yarn svgo src/assets/images"
+    "optimize:svg": "yarn svgo src/assets/images",
+    "start": "cross-env BROWSER=none yarn run react-start"
   },
+  "homepage": "./",
   "eslintConfig": {
     "extends": "react-app"
   },
