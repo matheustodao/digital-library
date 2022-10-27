@@ -55,7 +55,7 @@ export default function BookCard({ book }: BookCardProps) {
         </Stack>
 
         <Box pt="2">
-          <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'}>
+          <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'} noOfLines={2}>
             <LinkOverlay href={`/books/${book.id}`}>
               {book.title}
             </LinkOverlay>

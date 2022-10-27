@@ -105,13 +105,13 @@ export default function LoanBookCard({ loan }: LoanBookCardProps) {
         </Stack>
 
         <Box pt="2">
-          <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'}>
+          <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'} noOfLines={1}>
             <LinkOverlay href={`/books/${loan.id}`}>
               {loan.personName}
             </LinkOverlay>
           </Heading>
 
-          <Text fontSize="xs" color="GrayText">
+          <Text fontSize="xs" color="GrayText" noOfLines={2}>
             {loan.book.title}
           </Text>
         </Box>
