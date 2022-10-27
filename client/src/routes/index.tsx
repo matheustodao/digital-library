@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 
 import HomePage from '@pages/Home'
-import BooksPage from 'src/pages/Books'
-import LoansBooksPage from 'src/pages/LoansBooks'
+import BooksPage from 'src/pages/Books/home'
+import LoansBooksPage from 'src/pages/LoansBooks/home'
 
 export default function Router() {
   return (
