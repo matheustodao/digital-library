@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
 import LoanBookCard from 'src/components/LoanBook/Card'
 
 import loansBooks from '@mocks/loansBooks.json'
@@ -26,9 +26,11 @@ export default function LoansBooksPage() {
           }}
         />
       </Box>
-      {loansBooks.results.map((loan) => (
-        <LoanBookCard loan={loan} key={loan.id} />
-      ))}
+      <SimpleGrid minChildWidth={249} spacingX="24px" spacingY="32px">
+        {loansBooks.results.map((loan) => (
+          <LoanBookCard loan={loan} key={loan.id} />
+        ))}
+      </SimpleGrid>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import BookCard from 'src/components/Book/Card'
 
 import books from '@mocks/books.json'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
 import HeaderPage from 'src/components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
 import Title from 'src/components/pages/Title'
@@ -26,9 +26,11 @@ export default function BooksPage() {
           }}
         />
       </Box>
-      {books.results.map((book) => (
-        <BookCard book={book} key={book.id} />
-      ))}
+      <SimpleGrid minChildWidth={249} spacingX="24px" spacingY="32px">
+        {books.results.map((book) => (
+          <BookCard book={book} key={book.id} />
+        ))}
+      </SimpleGrid>
     </>
   )
 }
