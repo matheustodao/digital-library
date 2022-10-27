@@ -24,6 +24,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'Off',
     '@typescript-eslint/space-before-function-paren': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
-    '@typescript-eslint/restrict-template-expressions': 'error'
+    '@typescript-eslint/restrict-template-expressions': 'error',
+    'react/no-children-prop': 'off',
+    'react/display-name': 'off'
   }
 }
