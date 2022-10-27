@@ -23,12 +23,8 @@ export default function HeaderPage({ button, search }: IProps) {
     >
       <Box
         maxW="548px"
-        width={[
-          '100%', // base
-          '55%', // 480px
-          '65%', // 768px
-          '100%' // 992px
-        ]}
+        width="100%"
+        flex={isSmallThan586 ? '1' : '0.9'}
       >
         <SearchBar {...search} />
       </Box>
