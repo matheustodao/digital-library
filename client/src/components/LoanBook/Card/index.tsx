@@ -31,17 +31,25 @@ export default function LoanBookCard({ loan }: LoanBookCardProps) {
     const currentDate = new Date()
     // @ts-expect-error
     const diffInMS = deliveryDate - currentDate
-    const diffInDays = Math.abs(Math.floor(diffInMS / (1000 * 60 * 60 * 24)))
-    const diffInMonth = Math.abs(Math.floor(diffInDays / 30.417))
-    const diffInYears = Math.abs(Math.floor(diffInMonth / 12))
+    const diffInDays = Math.floor(diffInMS / (1000 * 60 * 60 * 24))
+    const diffInMonth = Math.floor(diffInDays / 30.417)
+    const diffInYears = Math.floor(diffInMonth / 12)
 
-    if (diffInMS !== 0) {
-      if (diffInDays >= 1 && diffInDays < 31) {
-        return `${diffInDays} ${diffInDays === 1 ? 'dia atrasado' : 'dias atrasados'}`
-      } else if (diffInMonth >= 1 && diffInMonth < 12) {
-        return `${diffInMonth} ${diffInMonth === 1 ? 'mês atrasado' : 'meses atrasados'}`
-      } else if (diffInYears >= 1) {
-        return `${diffInYears} ${diffInYears === 1 ? 'ano atrasado' : 'anos atrasados'}`
+    if (diffInDays <= 0) {
+      if (diffInDays === 0) {
+        return 'Entrega Hoje'
+      }
+
+      const positiveDays = Math.abs(diffInDays)
+      const positiveMonth = Math.abs(diffInMonth)
+      const positiveYears = Math.abs(diffInYears)
+
+      if (positiveDays >= 1 && positiveDays < 32) {
+        return `${positiveDays} ${positiveDays === 1 ? 'dia atrasado' : 'dias atrasados'}`
+      } else if (positiveMonth >= 1 && positiveMonth < 12) {
+        return `${positiveMonth} ${positiveMonth === 1 ? 'mês atrasado' : 'meses atrasados'}`
+      } else if (positiveYears >= 1) {
+        return `${positiveYears} ${positiveYears === 1 ? 'ano atrasado' : 'anos atrasados'}`
       }
     }
 
