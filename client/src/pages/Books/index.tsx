@@ -1,0 +1,34 @@
+import BookCard from 'src/components/Book/Card'
+
+import books from '@mocks/books.json'
+import { Box, Flex } from '@chakra-ui/react'
+import HeaderPage from 'src/components/pages/HeaderPage'
+import { Plus } from 'phosphor-react'
+import Title from 'src/components/pages/Title'
+
+export default function BooksPage() {
+  return (
+    <>
+      <Title>Livros</Title>
+
+      <Box pb="8">
+        <HeaderPage
+          button={{
+            label: (
+              <Flex align="center" gap="2">
+                <Plus weight="bold" />
+                Novo livro
+              </Flex>
+            )
+          }}
+          search={{
+            placeholder: 'Pesquise por autor, titulo do livro, sinopse...'
+          }}
+        />
+      </Box>
+      {books.results.map((book) => (
+        <BookCard book={book} key={book.id} />
+      ))}
+    </>
+  )
+}
