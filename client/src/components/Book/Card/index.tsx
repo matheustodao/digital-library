@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   Box,
   Heading,
@@ -60,7 +61,7 @@ export default function BookCard({ book }: BookCardProps) {
 
         <Box pt="2">
           <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'} noOfLines={2}>
-            <LinkOverlay href={`/books/${book.id}`}>
+            <LinkOverlay as={Link} to={`/books/${book.id}`}>
               {book.title}
             </LinkOverlay>
           </Heading>

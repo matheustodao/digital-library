@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Box,
   Heading,
@@ -10,7 +12,6 @@ import {
   Text,
   useColorMode
 } from '@chakra-ui/react'
-import { useMemo } from 'react'
 
 import { LoanBookParams } from 'src/types/digitalLibrary/loanBook'
 
@@ -110,7 +111,7 @@ export default function LoanBookCard({ loan }: LoanBookCardProps) {
 
         <Box pt="2">
           <Heading as="h2" size="s" mb="2" color={colorMode === 'dark' ? 'white' : 'orange.500'} noOfLines={1}>
-            <LinkOverlay href={`/books/${loan.id}`}>
+            <LinkOverlay to={`/loans/${loan.id}`} as={Link}>
               {loan.personName}
             </LinkOverlay>
           </Heading>
