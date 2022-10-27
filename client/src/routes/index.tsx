@@ -1,16 +1,17 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import HomePage from '@pages/Home'
 import BooksPage from 'src/pages/Books/home'
 import LoansBooksPage from 'src/pages/LoansBooks/home'
+import AboutBook from 'src/pages/Books/about'
 
 export default function Router() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />}>
-        <Route path="/home" element={<HomePage />} />
-      </Route>
+      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/home" element={<HomePage />} />
       <Route path="/books" element={<BooksPage />} />
+      <Route path="/books/:id" element={<AboutBook />} />
       <Route path="/loans" element={<LoansBooksPage/>} />
     </Routes>
   )
