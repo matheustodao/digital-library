@@ -28,9 +28,9 @@ export default function BookCard({ book }: BookCardProps) {
       borderRadius="md"
       boxShadow="md"
       borderWidth="1px"
+      transition="all .302s ease"
       _hover={{
-        transform: 'scale(1.05)',
-        transition: 'all .302s ease-in-out'
+        transform: 'scale(1.05)'
       }}
     >
       <Image
