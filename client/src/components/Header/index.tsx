@@ -23,7 +23,7 @@ import { useRef } from 'react'
 const routes = [
   {
     label: 'Home',
-    link: '/'
+    link: '/home'
   },
 
   {
@@ -65,7 +65,7 @@ export default function Header() {
                   <Route
                     as={Link}
                     to={route.link}
-                    active={(router.pathname === route.link) ? 'true' : 'false'}
+                    active={(router.pathname.startsWith(route.link)) ? 'true' : 'false'}
                   >
                     {route.label}
                   </Route>
