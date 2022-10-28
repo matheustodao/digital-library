@@ -1,16 +1,16 @@
 import { Flex, Box, Image, SimpleGrid, Tag, Button, useMediaQuery } from '@chakra-ui/react'
 
-import books from '@mocks/books.json'
 import { CaretRight } from 'phosphor-react'
 import { ReactNode } from 'react'
+import { BookParams } from 'src/types/digitalLibrary/book'
 import { BookViewContent } from './components/BookContent'
 
 interface IProps {
   children?: ReactNode
+  book: BookParams
 }
 
-export default function BookView({ children }: IProps) {
-  const book = books.results[0]
+export default function BookView({ children, book }: IProps) {
   const [isSmallThan900] = useMediaQuery('(max-width: 900px)')
   const [isSmallThan395] = useMediaQuery('(max-width: 395px)')
   return (
