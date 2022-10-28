@@ -1,6 +1,6 @@
-import { Flex, Box, Image, SimpleGrid, Tag, Button, useMediaQuery } from '@chakra-ui/react'
+import { Flex, Box, Image, SimpleGrid, Tag, Button, useMediaQuery, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, List, ListItem, ListIcon } from '@chakra-ui/react'
 
-import { CaretRight } from 'phosphor-react'
+import { CaretRight, User, Asterisk } from 'phosphor-react'
 import { ReactNode } from 'react'
 import { BookParams } from 'src/types/digitalLibrary/book'
 import { BookViewContent } from './components/BookContent'
@@ -13,6 +13,18 @@ interface IProps {
 export default function BookView({ children, book }: IProps) {
   const [isSmallThan900] = useMediaQuery('(max-width: 900px)')
   const [isSmallThan395] = useMediaQuery('(max-width: 395px)')
+  const {
+    isOpen: isOpenAuthorModal,
+    onOpen: onOpenAuthorModal,
+    onClose: onCloseAuthorModal
+  } = useDisclosure()
+
+  const {
+    isOpen: isOpenCategoryModal,
+    onOpen: onOpenCategoryModal,
+    onClose: onCloseCategoryModal
+  } = useDisclosure()
+
   return (
     <Box>
       <Flex
@@ -42,7 +54,23 @@ export default function BookView({ children, book }: IProps) {
           </BookViewContent.Container>
 
           <BookViewContent.Container>
-            <BookViewContent.Title>Categorias</BookViewContent.Title>
+            {book.categories.length > 5 && (
+              <Button variant="unstyled" h="min-content" onClick={onOpenCategoryModal}>
+                <BookViewContent.Title>
+                  <Flex alignItems="center">
+                    Categorias
+                    <CaretRight />
+                  </Flex>
+                </BookViewContent.Title>
+              </Button>
+            )}
+
+            {book.categories.length <= 5 && (
+              <BookViewContent.Title>
+                {book.categories.length === 1 ? 'categoria' : 'categorias'}
+              </BookViewContent.Title>
+            )}
+
             <Flex gap="8px" flexWrap="wrap">
               {book.categories.slice(0, 5).map((category) => (
                 <Tag colorScheme="gray" key={category}>{category}</Tag>
@@ -53,7 +81,7 @@ export default function BookView({ children, book }: IProps) {
           <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="100%" columnGap={{ sm: '40', md: '50%' }}>
             <BookViewContent.Container>
               {book.authors.length > 1 && (
-                <Button variant="unstyled" h="min-content">
+                <Button variant="unstyled" h="min-content" onClick={onOpenAuthorModal}>
                   <BookViewContent.Title>
                     <Flex alignItems="center">
                       Autores
@@ -96,6 +124,54 @@ export default function BookView({ children, book }: IProps) {
           {children}
         </Flex>
       </Flex>
+
+      <Modal isOpen={isOpenAuthorModal} onClose={onCloseAuthorModal} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color="orange.500" fontSize="3xl">Autores</ModalHeader>
+          <ModalCloseButton color="orange.500" size="lg" />
+          <ModalBody>
+            <List spacing={3}>
+              {book.authors.map((author) => (
+                <ListItem key={author}>
+                  <ListIcon as={User} color="green.600" />
+                  {author}
+                </ListItem>
+              ))}
+            </List>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='gray' mr={3} onClick={onCloseAuthorModal}>
+              Fechar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenCategoryModal} onClose={onCloseCategoryModal} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color="orange.500" fontSize="3xl">Categorias</ModalHeader>
+          <ModalCloseButton color="orange.500" size="lg" />
+          <ModalBody>
+            <List spacing={3}>
+              {book.categories.map((category) => (
+                <ListItem key={category}>
+                  <ListIcon as={Asterisk} color="green.600" />
+                  {category}
+                </ListItem>
+              ))}
+            </List>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='gray' mr={3} onClick={onCloseCategoryModal}>
+              Fechar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   )
 }
