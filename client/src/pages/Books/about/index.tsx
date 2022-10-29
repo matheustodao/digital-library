@@ -44,7 +44,7 @@ export default function AboutBook() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blackAlpha' mr={3} onClick={onClose}>
+            <Button colorScheme='gray' mr={3} onClick={onClose}>
               Fechar
             </Button>
           </ModalFooter>
