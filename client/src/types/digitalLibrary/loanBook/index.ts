@@ -4,6 +4,9 @@ export interface LoanBookParams {
     id: string
     title: string
     cover: string
+    authors: string[]
+    publishingCompany: string
+    tumble: string
   }
   exitDate: string
   deliveryDate: string
