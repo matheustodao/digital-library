@@ -1,4 +1,4 @@
-import Title from 'src/components/pages/Title'
+import Title from '@components/pages/Title'
 
 export default function ImportSubPage() {
   return (

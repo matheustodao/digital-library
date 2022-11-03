@@ -1,9 +1,9 @@
-import BookCard from 'src/components/Book/Card'
-import BookLoanCard from 'src/components/BookLoan/Card'
+import BookLoanCard from '@components/BookLoan/Card'
+import BookCard from '@components/Book/Card'
 
 import books from '@mocks/books.json'
 import loansBooks from '@mocks/loansBooks.json'
-import Title from 'src/components/pages/Title'
+import Title from '@components/pages/Title'
 
 export default function HomePage() {
   return (

@@ -1,10 +1,10 @@
 import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
-import BookLoanCard from 'src/components/BookLoan/Card'
+import BookLoanCard from '@components/BookLoan/Card'
 
 import loansBooks from '@mocks/loansBooks.json'
-import HeaderPage from 'src/components/pages/HeaderPage'
+import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
-import Title from 'src/components/pages/Title'
+import Title from '@components/pages/Title'
 
 export default function LoansBooksPage() {
   return (

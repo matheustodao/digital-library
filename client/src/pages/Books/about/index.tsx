@@ -1,9 +1,9 @@
 import { Flex, Button, Stack, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalHeader, ModalBody, ModalFooter, useDisclosure, Text } from '@chakra-ui/react'
 import { CaretRight } from 'phosphor-react'
 
-import BookView from 'src/components/Book/View'
-import { BookViewContent } from 'src/components/Book/View/components/BookContent'
-import HeaderNavigationAbout from 'src/components/pages/About/HeaderAboutNavigation'
+import BookView from '@components/Book/View'
+import { BookViewContent } from '@components/Book/View/components/BookContent'
+import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
 import books from '@mocks/books.json'
 import { useRef } from 'react'

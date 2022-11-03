@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { Grid, GridItem } from '@chakra-ui/react'
-import SettingNavigation from 'src/components/Settings/Nav'
+import SettingNavigation from '@components/Settings/Nav'
 
 export default function SettingsPage() {
   return (

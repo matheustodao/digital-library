@@ -1,15 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import HomePage from '@pages/Home'
-import BooksPage from 'src/pages/Books/home'
-import BookLoanPage from 'src/pages/BookLoan/home'
-import AboutBook from 'src/pages/Books/about'
-import AboutLoanedBook from 'src/pages/BookLoan/about'
-import SettingsPage from 'src/pages/Settings'
-import AccountSubPage from 'src/pages/Settings/subpages/Account'
-import BackupSubPage from 'src/pages/Settings/subpages/Backup'
-import ExportSubPage from 'src/pages/Settings/subpages/Import'
-import ImportSubPage from 'src/pages/Settings/subpages/Export'
+import BooksPage from '@pages/Books/home'
+import BookLoanPage from '@pages/BookLoan/home'
+import AboutBook from '@pages/Books/about'
+import AboutLoanedBook from '@pages/BookLoan/about'
+import SettingsPage from '@pages/Settings'
+import AccountSubPage from '@pages/Settings/subpages/Account'
+import BackupSubPage from '@pages/Settings/subpages/Backup'
+import ExportSubPage from '@pages/Settings/subpages/Import'
+import ImportSubPage from '@pages/Settings/subpages/Export'
 
 export default function Router() {
   return (

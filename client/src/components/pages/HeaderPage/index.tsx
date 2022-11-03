@@ -1,6 +1,6 @@
 import { Box, Button, ButtonProps, Flex, InputProps, useMediaQuery } from '@chakra-ui/react'
 import { ReactNode } from 'react'
-import SearchBar from 'src/components/SearchBar'
+import SearchBar from '@components/SearchBar'
 
 interface IProps {
   button: ButtonProps & {

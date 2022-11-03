@@ -13,7 +13,7 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 
-import { BookLoanParams } from 'src/types/digitalLibrary/bookLoan'
+import { BookLoanParams } from '@type/digitalLibrary/bookLoan'
 
 interface BookLoanCardProps {
   loan: BookLoanParams

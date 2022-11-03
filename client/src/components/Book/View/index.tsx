@@ -2,7 +2,7 @@ import { Flex, Box, Image, SimpleGrid, Tag, Button, useMediaQuery, useDisclosure
 
 import { CaretRight, User, Asterisk } from 'phosphor-react'
 import { ReactNode } from 'react'
-import { BookParams } from 'src/types/digitalLibrary/book'
+import { BookParams } from '@type/digitalLibrary/book'
 import { BookViewContent } from './components/BookContent'
 
 interface IProps {

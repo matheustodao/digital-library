@@ -18,8 +18,8 @@ import {
   useMediaQuery
 } from '@chakra-ui/react'
 import { CaretRight, Circle, List, User } from 'phosphor-react'
-import { BookViewContent } from 'src/components/Book/View/components/BookContent'
-import HeaderNavigationAbout from 'src/components/pages/About/HeaderAboutNavigation'
+import { BookViewContent } from '@components/Book/View/components/BookContent'
+import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
 import loans from '@mocks/loansBooks.json'
 import { loanStatus } from 'src/locales/statusLoan'
