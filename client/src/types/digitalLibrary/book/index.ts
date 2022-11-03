@@ -7,6 +7,6 @@ export interface BookParams {
   isbn: string
   publishingCompany: string
   description: string
-  bookCover: string
+  cover: string
   quantity: number
 }

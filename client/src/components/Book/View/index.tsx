@@ -39,7 +39,7 @@ export default function BookView({ children, book }: IProps) {
             maxH="525px"
             h="525px"
             w="345px"
-            src={book.bookCover}
+            src={book.cover}
             objectFit="cover"
             fallbackSrc="https://via.placeholder.com/525"
             alt={book.title}
