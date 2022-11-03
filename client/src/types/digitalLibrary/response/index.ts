@@ -1,4 +1,4 @@
-import { LoanBookParams } from './../loanBook/index'
+import { BookLoanParams } from './../bookLoan/index'
 import { BookParams } from '../book'
 
 export interface ResponsePatternApi<DataType = any> {
@@ -8,4 +8,4 @@ export interface ResponsePatternApi<DataType = any> {
 }
 
 export interface BookResponseParams extends ResponsePatternApi<BookParams> { }
-export interface LoanBookResponseParams extends ResponsePatternApi<LoanBookParams> { }
+export interface BookLoanResponseParams extends ResponsePatternApi<BookLoanParams> { }

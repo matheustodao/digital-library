@@ -5,13 +5,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2022-10-28T00:00:00.000Z",
       "deliveryDate": "2022-11-08T00:00:00.000Z",
       "personName": "Matheus Todao",
       "status": "no_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -22,13 +25,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2022-10-08T00:00:00.000Z",
       "deliveryDate": "2022-10-28T00:00:00.000Z",
       "personName": "Amanda Rodrigues Lima Teste Teste Tetste Testes das",
       "status": "first_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -39,13 +45,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2022-10-23T00:00:00.000Z",
       "deliveryDate": "2022-07-06T00:00:00.000Z",
       "personName": "Nathan Cotrim",
       "status": "second_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -56,13 +65,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2022-10-23T00:00:00.000Z",
       "deliveryDate": "2021-07-06T00:00:00.000Z",
       "personName": "Caio Scheer",
       "status": "third_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -73,13 +85,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2020-10-23T00:00:00.000Z",
       "deliveryDate": "2020-07-06T00:00:00.000Z",
       "personName": "Paulo Henrique",
       "status": "third_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -90,13 +105,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2020-10-23T00:00:00.000Z",
       "deliveryDate": "2020-07-06T00:00:00.000Z",
       "personName": "Ana Caroline",
       "status": "third_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null
@@ -107,13 +125,16 @@
       "book": {
         "id": "12313",
         "title": "Do mil ao milhão sem contar o cafezinho",
-        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png"
+        "cover": "https://www.booquiz.com/storage/books_covers/qURljO9zqIyic2PhPH1pRCfdwITOcjWYQWXsKWFJ.png",
+        "authors": ["Thiago Nigro"],
+        "tumble": "MM05",
+        "publishingCompany": "Harper Colins"
       },
       "exitDate": "2020-10-23T00:00:00.000Z",
       "deliveryDate": "2020-07-06T00:00:00.000Z",
       "personName": "Heloisa Araujo",
       "status": "third_warning",
-      "class": null,
+      "class": "7ºB",
       "teacherName": null,
       "email": null,
       "phone": null

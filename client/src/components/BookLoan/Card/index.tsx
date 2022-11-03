@@ -13,13 +13,13 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 
-import { LoanBookParams } from 'src/types/digitalLibrary/loanBook'
+import { BookLoanParams } from 'src/types/digitalLibrary/bookLoan'
 
-interface LoanBookCardProps {
-  loan: LoanBookParams
+interface BookLoanCardProps {
+  loan: BookLoanParams
 }
 
-export default function LoanBookCard({ loan }: LoanBookCardProps) {
+export default function BookLoanCard({ loan }: BookLoanCardProps) {
   const { colorMode } = useColorMode()
   const deadline = useMemo(() => {
     const options: Intl.DateTimeFormatOptions = {

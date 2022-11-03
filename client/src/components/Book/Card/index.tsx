@@ -39,7 +39,7 @@ export default function BookCard({ book }: BookCardProps) {
         maxH="250px"
         h="250px"
         objectFit="cover"
-        src={book.bookCover}
+        src={book.cover}
         fallbackSrc="https://via.placeholder.com/250"
         alt={book.title}
         borderTopRadius="md"
