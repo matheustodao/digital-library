@@ -10,6 +10,7 @@ import AccountSubPage from '@pages/Settings/subpages/Account'
 import BackupSubPage from '@pages/Settings/subpages/Backup'
 import ExportSubPage from '@pages/Settings/subpages/Import'
 import ImportSubPage from '@pages/Settings/subpages/Export'
+import NewBookLoanPage from '@pages/BookLoan/new'
 
 export default function Router() {
   return (
@@ -18,8 +19,11 @@ export default function Router() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/books" element={<BooksPage />} />
       <Route path="/books/:id" element={<AboutBook />} />
+
       <Route path="/loans" element={<BookLoanPage/>} />
+      <Route path="/loans/new" element={<NewBookLoanPage />} />
       <Route path="/loans/:id" element={<AboutLoanedBook />} />
+
       <Route path="/settings" element={<SettingsPage />}>
         <Route index element={<AccountSubPage />} />
         <Route path="backup" element={<BackupSubPage />} />
