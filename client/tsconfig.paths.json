@@ -4,6 +4,8 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
+      "@validations/*": ["src/validations/*"],
+      "@locales/*": ["src/locales/*"],
       "@pages/*": ["src/pages/*"],
       "@mocks/*": ["src/mocks/*"],
       "@type/*": ["src/types/*"],
