@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data/database.db"
+}
+
+model Config {
+  id String @id @default(uuid())
+
+  password String
+  name     String
+
+  backupEmail String?
+  email       String
+
+  @@map("config")
+}
+
+model Book {
+  id String @id @default(uuid())
+
+  cover String?
+  title String
+
+  publishingCompany String
+  description       String
+  categories        String
+  authors           String
+
+  tumble String
+  isbn   String
+
+  quantity Int @default(1)
+
+  bookLoan BookLoan[]
+
+  @@map("books")
+}
+
+model BookLoan {
+  id String @id @default(uuid())
+
+  deliveryDate DateTime
+  exitDate     DateTime @default(now())
+
+  teacherName String
+  personName  String
+  phone       String
+  class       String
+  email       String
+
+  status String
+
+  bookId String
+
+  book Book @relation(references: [id], fields: [bookId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("bookLoans")
+}
