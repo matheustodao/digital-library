@@ -5,8 +5,10 @@ import loansBooks from '@mocks/loansBooks.json'
 import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
 import Title from '@components/pages/Title'
+import { useNavigate } from 'react-router-dom'
 
 export default function LoansBooksPage() {
+  const navigation = useNavigate()
   return (
     <>
       <Title>Livros Alugados</Title>
@@ -19,7 +21,8 @@ export default function LoansBooksPage() {
                 <Plus weight="bold" />
                 Novo Empréstimo
               </Flex>
-            )
+            ),
+            onClick: () => navigation('new')
           }}
           search={{
             placeholder: 'Pesquise por nome da pessoa ou autor, titulo do livro...'
