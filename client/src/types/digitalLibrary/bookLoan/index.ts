@@ -1,4 +1,4 @@
-export interface LoanBookParams {
+export interface BookLoanParams {
   id: string
   book: {
     id: string
