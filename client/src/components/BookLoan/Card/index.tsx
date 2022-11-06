@@ -42,15 +42,24 @@ export default function BookLoanCard({ loan }: BookLoanCardProps) {
       }
 
       const positiveDays = Math.abs(diffInDays)
-      const positiveMonth = Math.abs(diffInMonth)
-      const positiveYears = Math.abs(diffInYears)
+      const itsWithinMonth = positiveDays >= 1 && positiveDays < 32
 
-      if (positiveDays >= 1 && positiveDays < 32) {
+      const positiveMonth = Math.abs(diffInMonth)
+      const itsWithinYear = positiveMonth >= 1 && positiveMonth < 12
+
+      const positiveYear = Math.abs(diffInYears)
+      const itsBeenYear = positiveYear >= 1
+
+      if (itsWithinMonth) {
         return `${positiveDays} ${positiveDays === 1 ? 'dia atrasado' : 'dias atrasados'}`
-      } else if (positiveMonth >= 1 && positiveMonth < 12) {
+      }
+
+      if (itsWithinYear) {
         return `${positiveMonth} ${positiveMonth === 1 ? 'mês atrasado' : 'meses atrasados'}`
-      } else if (positiveYears >= 1) {
-        return `${positiveYears} ${positiveYears === 1 ? 'ano atrasado' : 'anos atrasados'}`
+      }
+
+      if (itsBeenYear) {
+        return `${positiveYear} ${positiveYear === 1 ? 'ano atrasado' : 'anos atrasados'}`
       }
     }
 
