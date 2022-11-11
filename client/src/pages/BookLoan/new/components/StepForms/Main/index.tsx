@@ -5,6 +5,7 @@ import { Flex, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import { BookParams } from '@type/digitalLibrary/book'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
+import { Controller, useFormContext } from 'react-hook-form'
 
 const days = [
   'D', 'S', 'T', 'Q', 'Q', 'S', 'S'
@@ -28,31 +29,39 @@ interface IProps {
 export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps) {
   const [exitDate, setExitDate] = useState<Date>(new Date())
   const [deliveryDate, setDeliveryDate] = useState<Date>(new Date())
+  const { control } = useFormContext()
 
   return (
     <Stack spacing={20}>
-      <FormControl>
-        <FormLabel>
-          Titulo do Livro
-          <RequiredAsterisk />
-        </FormLabel>
-        <Select
-          options={optionsSelect}
-          placeholder="Escolhe um livro"
-          focusBorderColor="orange.500"
-          errorBorderColor="red"
-        />
-      </FormControl>
+      <Controller
+        control={control}
+        name="bookId"
+        render={({ field }) => (
+          <FormControl>
+            <FormLabel>
+              Titulo do Livro
+              <RequiredAsterisk />
+            </FormLabel>
+            <Select
+              options={optionsSelect}
+              placeholder="Escolhe um livro"
+              focusBorderColor="orange.500"
+              errorBorderColor="red"
+              {...field}
+            />
+          </FormControl>
+        )}
+      />
 
       <Flex gap={8}>
         <FormControl>
           <FormLabel>Autor</FormLabel>
-          <Input disabled value={bookBeingLoaned?.authors.join(', ')} />
+          <Input disabled value={bookBeingLoaned?.authors.join(', ') ?? ''} />
         </FormControl>
 
         <FormControl>
           <FormLabel>Editora</FormLabel>
-          <Input disabled value={bookBeingLoaned?.publishingCompany} />
+          <Input disabled value={bookBeingLoaned?.publishingCompany ?? ''} />
         </FormControl>
       </Flex>
 

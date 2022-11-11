@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
-
 import { Button, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft, Circle } from 'phosphor-react'
+import { createBookLoanValidationSchema } from '@validations/zod/digitalLibrary/bookLoan'
+
 import Title from '@components/pages/Title'
 
 import booksMock from '@mocks/books.json'
@@ -13,6 +16,13 @@ import StepMainForm from './components/StepForms/Main'
 export default function NewBookLoanPage() {
   const navigation = useNavigate()
   const iconColor = useColorModeValue('gray.500', 'gray.300')
+  const methods = useForm({
+    resolver: zodResolver(createBookLoanValidationSchema),
+    mode: 'onBlur'
+  })
+
+  const bookId = methods.watch('bookId')?.value
+
   const [stepForm, setStepForm] = useState(1)
   const [books] = useState(booksMock as BookResponseParams)
   const [bookBeingLoaned, setBookBeingLoaned] = useState<BookParams | undefined>()
@@ -21,10 +31,11 @@ export default function NewBookLoanPage() {
     value: currentBook.id
   })), [])
 
-  const handleGetBookInformation = useCallback((_id: string) => {
-    const bookSelected = books.results.find((currentBook) => currentBook.id === _id)
+  const handleGetBookInformation = useCallback(() => {
+    const bookSelected = books.results.find((currentBook) => currentBook.id === bookId)
     setBookBeingLoaned(bookSelected)
-  }, [])
+    console.log({ bookSelected, bookId })
+  }, [bookId])
 
   function handleChangeStepForm(action: 'next' | 'prev' | 'custom', step?: number) {
     if (action === 'custom' && step) {
@@ -41,7 +52,7 @@ export default function NewBookLoanPage() {
   }
 
   useEffect(() => {
-    handleGetBookInformation('123')
+    handleGetBookInformation()
   }, [handleGetBookInformation])
 
   return (
@@ -63,6 +74,7 @@ export default function NewBookLoanPage() {
       </Button>
       <Stack spacing={12}>
 
+      <FormProvider {...methods}>
         <StepMainForm bookBeingLoaned={bookBeingLoaned} optionsSelect={optionsSelect} />
 
         <Flex justifyContent="space-between" alignContent="center">
@@ -119,6 +131,8 @@ export default function NewBookLoanPage() {
             </Button>
           )}
         </Flex>
+      </FormProvider>
+
       </Stack>
     </Stack>
   )
