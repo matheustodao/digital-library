@@ -5,10 +5,12 @@ interface IReactSelectOption {
   value: string
 }
 
+const commonMessageErrors = { required_error: 'Campo obrigatório' }
+
 export const createBookLoanValidationSchema = zod.object({
   isStudent: zod.enum(['true', 'false']).default('true'),
 
-  personName: zod.string({ required_error: 'Campo obrigatório' }),
+  personName: zod.string(commonMessageErrors),
   bookId: zod.any({ required_error: 'Livro é obrigatório' })
     .transform<IReactSelectOption>((option) => option.value),
 
@@ -18,8 +20,9 @@ export const createBookLoanValidationSchema = zod.object({
   email: zod.string().optional(),
   phone: zod.string().optional(),
 
-  deliveryDate: zod.date(),
-  exitDate: zod.date()
+  deliveryDate: zod.date(commonMessageErrors).transform((date: Date) => date.toISOString()),
+
+  exitDate: zod.date().transform((date: Date | undefined) => date?.toISOString())
 
 }).superRefine((data, ctx) => {
   if (data.isStudent) {

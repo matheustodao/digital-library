@@ -29,7 +29,17 @@ interface IProps {
 export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps) {
   const [exitDate, setExitDate] = useState<Date>(new Date())
   const [deliveryDate, setDeliveryDate] = useState<Date>(new Date())
-  const { control } = useFormContext()
+  const { control, setValue } = useFormContext()
+
+  function handleChangeExitDate(date: Date) {
+    setExitDate(date)
+    setValue('exitDate', date)
+  }
+
+  function handleChangeDeliveryDate(date: Date) {
+    setDeliveryDate(date)
+    setValue('deliveryDate', date)
+  }
 
   return (
     <Stack spacing={20}>
@@ -66,40 +76,53 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
       </Flex>
 
       <Flex gap={8}>
-        <FormControl>
-          <FormLabel>
-            Data de Retirada
-            <RequiredAsterisk />
-          </FormLabel>
-          <SingleDatepicker
-            date={exitDate}
-            onDateChange={setExitDate}
-            configs={configDatePicker}
-            minDate={new Date()}
-            propsConfigs={{
-              inputProps: {
-                focusBorderColor: 'orange.500'
-              }
-            }}
-          />
-        </FormControl>
+        <Controller
+          control={control}
+          name="exitDate"
+          render={() => (
+            <FormControl>
+              <FormLabel>
+                Data de Retirada
+                <RequiredAsterisk />
+              </FormLabel>
+              <SingleDatepicker
+                date={exitDate}
+                onDateChange={handleChangeExitDate}
+                configs={configDatePicker}
+                minDate={new Date()}
+                propsConfigs={{
+                  inputProps: {
+                    focusBorderColor: 'orange.500'
+                  }
+                }}
+              />
+            </FormControl>
+          )}
+        />
 
-        <FormControl>
-          <FormLabel>
-            Data de Devolução
-            <RequiredAsterisk />
-          </FormLabel>
-          <SingleDatepicker
-            date={deliveryDate}
-            onDateChange={setDeliveryDate}
-            configs={configDatePicker}
-            propsConfigs={{
-              inputProps: {
-                focusBorderColor: 'orange.500'
-              }
-            }}
-          />
-        </FormControl>
+        <Controller
+          control={control}
+          name="deliveryDate"
+          render={() => (
+            <FormControl>
+              <FormLabel>
+                Data de Devolução
+                <RequiredAsterisk />
+              </FormLabel>
+              <SingleDatepicker
+                date={deliveryDate}
+                onDateChange={handleChangeDeliveryDate}
+                configs={configDatePicker}
+                minDate={new Date()}
+                propsConfigs={{
+                  inputProps: {
+                    focusBorderColor: 'orange.500'
+                  }
+                }}
+              />
+            </FormControl>
+          )}
+        />
       </Flex>
     </Stack>
   )
