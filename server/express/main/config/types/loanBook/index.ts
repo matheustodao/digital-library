@@ -4,19 +4,23 @@ type status =
 	| 'second_warning'
 	| 'third_warning';
 
-export interface LoanBookParams {
+type BookLoan = {
 	id: string;
-	book: {
+	book?: {
 		id: string;
 		title: string;
 		cover: string;
 	};
-	exitDate: string;
-	deliveryDate: string;
+	exitDate: Date;
+	deliveryDate: Date;
 	personName: string;
 	status: status;
 	class: string | null;
 	teacherName: string | null;
 	email: string | null;
 	phone: string | null;
-}
+};
+
+type BookLoanParams = Omit<BookLoan, 'id'>;
+
+export { BookLoan, BookLoanParams };
