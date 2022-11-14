@@ -109,6 +109,40 @@ class BookController {
 			return serverError(res, error as Error);
 		}
 	}
+
+	async find(req: Request, res: Response) {
+		try {
+			const filters = req.query as { text: string; orderBy: 'asc' | 'desc' };
+
+			const { text, orderBy } = filters;
+
+			const books = await prisma.book.findMany({
+				where: {
+					OR: [
+						{
+							title: { contains: text }
+						},
+						{
+							publishingCompany: { contains: text }
+						},
+						{
+							description: { contains: text }
+						},
+						{
+							authors: { contains: text }
+						}
+					]
+				},
+				orderBy: {
+					title: orderBy
+				}
+			});
+
+			return ok(res, books);
+		} catch (error) {
+			return serverError(res, error as Error);
+		}
+	}
 }
 
 export { BookController };
