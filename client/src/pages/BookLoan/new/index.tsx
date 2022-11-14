@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
-import { Button, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Button, Checkbox, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft, Circle } from 'phosphor-react'
 import { createBookLoanValidationSchema } from '@validations/zod/digitalLibrary/bookLoan'
 
@@ -12,13 +12,14 @@ import booksMock from '@mocks/books.json'
 import { BookParams } from '@type/digitalLibrary/book'
 import { BookResponseParams } from '@type/digitalLibrary/response'
 import StepMainForm from './components/StepForms/Main'
+import StudentForm from './components/StepForms/StudentForm'
 
 export default function NewBookLoanPage() {
   const navigation = useNavigate()
   const iconColor = useColorModeValue('gray.500', 'gray.300')
   const methods = useForm({
     resolver: zodResolver(createBookLoanValidationSchema),
-    mode: 'onBlur'
+    mode: 'all'
   })
 
   const bookId = methods.watch('bookId')?.value
@@ -34,7 +35,6 @@ export default function NewBookLoanPage() {
   const handleGetBookInformation = useCallback(() => {
     const bookSelected = books.results.find((currentBook) => currentBook.id === bookId)
     setBookBeingLoaned(bookSelected)
-    console.log({ bookSelected, bookId })
   }, [bookId])
 
   function handleChangeStepForm(action: 'next' | 'prev' | 'custom', step?: number) {
@@ -56,7 +56,7 @@ export default function NewBookLoanPage() {
   }, [handleGetBookInformation])
 
   return (
-    <Stack margin="auto" maxW="866px" width="100%" spacing={20} mt={32}>
+    <Stack margin="auto" maxW="866px" width="100%" spacing={12} mt={32}>
       <Button
         onClick={() => navigation(-1)}
         display="flex"
@@ -75,7 +75,24 @@ export default function NewBookLoanPage() {
       <Stack spacing={12}>
 
       <FormProvider {...methods}>
-        <StepMainForm bookBeingLoaned={bookBeingLoaned} optionsSelect={optionsSelect} />
+        {stepForm === 1 && <StepMainForm bookBeingLoaned={bookBeingLoaned} optionsSelect={optionsSelect} />}
+
+        {(stepForm === 2 || stepForm === 3) && (
+          <>
+            <Controller
+              name="isStudent"
+              control={methods.control}
+              defaultValue={true}
+              render={({ field }) => (
+                <Checkbox defaultChecked={field.value} {...field}>
+                  Alugar para Aluno
+                </Checkbox>
+              )}
+            />
+
+            <StudentForm />
+          </>
+        )}
 
         <Flex justifyContent="space-between" alignContent="center">
 

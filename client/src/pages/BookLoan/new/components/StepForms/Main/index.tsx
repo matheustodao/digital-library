@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Select } from 'chakra-react-select'
 
-import { Flex, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
+import { Flex, FormControl, FormLabel, Input, Stack, useMediaQuery } from '@chakra-ui/react'
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import { BookParams } from '@type/digitalLibrary/book'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
@@ -30,6 +30,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
   const [exitDate, setExitDate] = useState<Date>(new Date())
   const [deliveryDate, setDeliveryDate] = useState<Date>(new Date())
   const { control, setValue } = useFormContext()
+  const [isSmallThan500px] = useMediaQuery('(max-width: 500px)')
 
   function handleChangeExitDate(date: Date) {
     setExitDate(date)
@@ -63,7 +64,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
         )}
       />
 
-      <Flex gap={8}>
+      <Flex gap={8} direction={isSmallThan500px ? 'column' : 'row'}>
         <FormControl>
           <FormLabel>Autor</FormLabel>
           <Input disabled value={bookBeingLoaned?.authors.join(', ') ?? ''} />
@@ -75,7 +76,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
         </FormControl>
       </Flex>
 
-      <Flex gap={8}>
+      <Flex gap={8} direction={isSmallThan500px ? 'column' : 'row'}>
         <Controller
           control={control}
           name="exitDate"
