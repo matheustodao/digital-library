@@ -1,7 +1,8 @@
-import { Book, BookParams } from '../config/types/book';
 import { serverError, ok, noContent } from '../helpers/http';
-import { Response, Request } from 'express';
+import { Book, BookCategories, BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
+
+import { Response, Request } from 'express';
 
 class BookController {
 	async create(req: Request, res: Response) {
@@ -117,24 +118,26 @@ class BookController {
 			const { text, orderBy } = filters;
 
 			const books = await prisma.book.findMany({
-				where: {
-					OR: [
-						{
-							title: { contains: text }
-						},
-						{
-							publishingCompany: { contains: text }
-						},
-						{
-							description: { contains: text }
-						},
-						{
-							authors: { contains: text }
-						}
-					]
-				},
+				where: text
+					? {
+							OR: [
+								{
+									title: { contains: text }
+								},
+								{
+									publishingCompany: { contains: text }
+								},
+								{
+									description: { contains: text }
+								},
+								{
+									authors: { contains: text }
+								}
+							]
+					  }
+					: {},
 				orderBy: {
-					title: orderBy
+					title: orderBy || 'asc'
 				}
 			});
 
@@ -146,15 +149,50 @@ class BookController {
 
 	async getMostCommonCategories(req: Request, res: Response) {
 		try {
-			const categories = await prisma.book.aggregate({
-				_count: {
-					categories: true
-				}
+			const book = await prisma.book.findMany({
+				select: { categories: true }
 			});
 
-			console.log(categories);
+			const categories = book
+				.reduce((acc, { categories }) => {
+					const allCategories = categories.split(',');
 
-			return ok(res, categories);
+					allCategories.forEach((category) => {
+						const categoryIndex = acc.findIndex(
+							(currentCategory) => currentCategory.name === category
+						);
+
+						if (categoryIndex >= 0) {
+							acc[categoryIndex].amount++;
+						} else {
+							acc.push({ name: category, amount: 1 });
+						}
+					});
+
+					return acc;
+				}, [] as BookCategories)
+				.sort((a, b) => b.amount - a.amount);
+
+			const topFourMostCommomCategories = categories.slice(0, 4);
+
+			const categoriesReport = categories.reduce(
+				(acc, currentCategory, index) => {
+					if (index > 3) {
+						const otherIndex = acc.findIndex(({ name }) => name === 'outros');
+
+						if (otherIndex !== -1) {
+							acc[otherIndex].amount += currentCategory.amount;
+						} else {
+							acc.push({ name: 'outros', amount: currentCategory.amount });
+						}
+					}
+
+					return acc;
+				},
+				topFourMostCommomCategories
+			);
+
+			return ok(res, categoriesReport);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}

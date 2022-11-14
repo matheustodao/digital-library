@@ -13,13 +13,6 @@ type Book = {
 
 type BookParams = Omit<Book, 'id'>;
 
-type BookFilters = {
-	title: string;
-	publishingCompany: string;
-	description: string;
-	author: string;
-	quantity: string;
-	orderBy: 'asc' | 'desc';
-};
+type BookCategories = { name: string; amount: number }[];
 
-export { Book, BookParams, BookFilters };
+export { Book, BookParams, BookCategories };
