@@ -9,14 +9,14 @@ import LoggedLayout from './components/Layouts/logged'
 export default function App() {
   return (
     <HashRouter>
-      <ThemeProvider theme={theme}>
-        <ChakraProvider theme={theme}>
-          <Header />
-          <LoggedLayout>
-            <Router />
-          </LoggedLayout>
-        </ChakraProvider>
-      </ThemeProvider>
+      <ChakraProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+            <Header />
+            <LoggedLayout>
+              <Router />
+            </LoggedLayout>
+        </ThemeProvider>
+      </ChakraProvider>
     </HashRouter>
   )
 }
