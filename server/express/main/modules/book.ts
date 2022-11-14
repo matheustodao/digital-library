@@ -143,6 +143,22 @@ class BookController {
 			return serverError(res, error as Error);
 		}
 	}
+
+	async getMostCommonCategories(req: Request, res: Response) {
+		try {
+			const categories = await prisma.book.aggregate({
+				_count: {
+					categories: true
+				}
+			});
+
+			console.log(categories);
+
+			return ok(res, categories);
+		} catch (error) {
+			return serverError(res, error as Error);
+		}
+	}
 }
 
 export { BookController };
