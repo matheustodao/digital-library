@@ -1,6 +1,6 @@
-import { User } from '../config/types/digitalLibrary/user';
 import { badRequest, ok } from '../helpers/http';
 import { serverError } from '../helpers/http';
+import { User } from '../config/types/user';
 import { prisma } from '../config/prisma';
 import { Cache } from '../helpers/cache';
 
