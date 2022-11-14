@@ -79,15 +79,22 @@ class ConfigController {
 	async update(req: Request, res: Response) {
 		try {
 			const body = req.body as User;
-			const { email, backupEmail, name } = body;
+			const { email, backupEmail, name, password } = body;
 
 			const config = await Cache.getConfig();
 
+			let newHashedPassword: string;
+
+			if (password) {
+				newHashedPassword = await hash(password, 8);
+			}
+
 			const updatedConfig = await prisma.config.update({
 				data: {
+					name,
 					email,
 					backupEmail,
-					name
+					password: newHashedPassword
 				},
 				where: {
 					id: config.id
