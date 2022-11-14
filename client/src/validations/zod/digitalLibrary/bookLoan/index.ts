@@ -1,43 +1,50 @@
-import zod from 'zod'
+import { z as zod } from 'zod'
 
-interface IReactSelectOption {
-  label: string
-  value: string
-}
+// interface IReactSelectOption {
+//   label: string
+//   value: string
+// }
 
-const commonMessageErrors = { required_error: 'Campo obrigatório' }
+// const commonMessageErrors = { invalid_type_error: 'Campo obrigatório' }
 
-export const createBookLoanValidationSchema = zod.object({
-  isStudent: zod.enum(['true', 'false']).default('true'),
+const commonSchemaValidation = zod.object({
+  personName: zod.string({
+    required_error: 'Campo obrigatorio',
+    description: 'Person name need have a value'
+  }).min(1, { message: 'Campo obrigatório' }),
 
-  personName: zod.string(commonMessageErrors),
   bookId: zod.any({ required_error: 'Livro é obrigatório' })
-    .transform<IReactSelectOption>((option) => option.value),
+    .transform((option) => {
+      console.log('zod:', option?.value)
+      return option?.value
+    }),
 
-  class: zod.string().optional(),
-  teacherName: zod.string().optional(),
+  deliveryDate: zod.date({ required_error: 'Campo obrigatório' }).transform(async (date: Date) => {
+    const dateAsIsoPattern = date.toISOString()
+    console.log({ dateAsIsoPattern })
+    return dateAsIsoPattern
+  }),
 
-  email: zod.string().optional(),
-  phone: zod.string().optional(),
-
-  deliveryDate: zod.date(commonMessageErrors).transform((date: Date) => date.toISOString()),
-
-  exitDate: zod.date().transform((date: Date | undefined) => date?.toISOString())
-
-}).superRefine((data, ctx) => {
-  if (data.isStudent) {
-    ctx.addIssue({
-      path: ['class', 'teacherName'],
-      fatal: true,
-      code: zod.z.ZodIssueCode.custom
-    })
-  }
-
-  if (!data.isStudent) {
-    ctx.addIssue({
-      path: ['email', 'phone'],
-      fatal: true,
-      code: zod.z.ZodIssueCode.custom
-    })
-  }
+  exitDate: zod.date()
+    .transform((date: Date | undefined) => date?.toISOString())
+    .nullable()
+    .default(new Date())
+    .optional()
 })
+
+const createBookLoanForStudent = zod.object({
+  isStudent: zod.literal(true),
+  class: zod.string(),
+  teacherName: zod.string()
+}).merge(commonSchemaValidation)
+
+const createBookLoanForEmployee = zod.object({
+  isStudent: zod.literal(false),
+  email: zod.string().email({ message: 'Digite um e-mail válido' }).min(1, { message: 'Campo obrigatório' }),
+  phone: zod.string()
+}).merge(commonSchemaValidation)
+
+export const createBookLoanValidationSchema = zod.discriminatedUnion('isStudent', [
+  createBookLoanForEmployee,
+  createBookLoanForStudent
+])
