@@ -49,11 +49,12 @@ model BookLoan {
   deliveryDate DateTime
   exitDate     DateTime @default(now())
 
-  teacherName String
-  personName  String
-  phone       String
-  class       String
-  email       String
+  personName String
+
+  teacherName String?
+  phone       String?
+  class       String?
+  email       String?
 
   status String
 

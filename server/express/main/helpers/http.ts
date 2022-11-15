@@ -12,4 +12,10 @@ function noContent(res: Response) {
 	return res.sendStatus(204);
 }
 
-export { badRequest, ok, noContent };
+function serverError(res: Response, error: Error) {
+	console.log(`Error: ${error.message}`);
+
+	return res.sendStatus(500);
+}
+
+export { badRequest, ok, noContent, serverError };
