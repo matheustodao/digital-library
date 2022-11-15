@@ -7,10 +7,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { loginSchemaValidation } from '@validations/yup/digitalLibrary/auth/login'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { invalidCredentials } from 'src/core/infra/errors/digitalLibrary/status/400/invalidCredentials'
+import { configServices } from 'src/core/services/digitalLibrary/config'
 
 export default function Login() {
   const navigate = useNavigate()
-  const { register, formState: { isValid } } = useForm({
+  const { register, formState: { isValid }, handleSubmit } = useForm({
     resolver: yupResolver(loginSchemaValidation),
     mode: 'all'
   })
@@ -19,10 +22,21 @@ export default function Login() {
     navigate('/register')
   }
 
+  async function handleOnSubmit(data: any) {
+    try {
+      await configServices.login(data)
+      toast.success('Oba!')
+    } catch (err: any) {
+      if (err instanceof Error) {
+        invalidCredentials(err)
+      }
+    }
+  }
+
   return (
     <AuthLayout>
       <Logo variant="no-details" size="lg" />
-      <Box maxW="450px" w="100%">
+      <Box maxW="450px" w="100%" as="form" noValidate onSubmit={handleSubmit(handleOnSubmit)}>
         <Stack spacing="24px">
           <FormControl>
             <FormLabel>E-mail</FormLabel>
