@@ -3,13 +3,15 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"],
-      "@validations/*": ["src/validations/*"],
-      "@locales/*": ["src/locales/*"],
+      "@assets/*": ["src/core/assets/*"],
+      "@infra/*": ["src/core/infra/*"],
+      "@services/*": ["src/core/services/*"],
+      "@validations/*": ["src/core/validations/*"],
+      "@locales/*": ["src/core/locales/*"],
       "@pages/*": ["src/pages/*"],
-      "@helpers/*": ["src/helpers/*"],
-      "@mocks/*": ["src/mocks/*"],
-      "@type/*": ["src/types/*"],
+      "@helpers/*": ["src/core/helpers/*"],
+      "@mocks/*": ["src/core/mocks/*"],
+      "@type/*": ["src/core/types/*"],
       "src/*": ["src/*"]
     }
   }

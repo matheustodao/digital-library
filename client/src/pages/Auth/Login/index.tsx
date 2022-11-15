@@ -8,8 +8,8 @@ import { loginSchemaValidation } from '@validations/yup/digitalLibrary/auth/logi
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { invalidCredentials } from 'src/core/infra/errors/digitalLibrary/status/400/invalidCredentials'
-import { configServices } from 'src/core/services/digitalLibrary/config'
+import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
+import { configServices } from '@services/digitalLibrary/config'
 
 export default function Login() {
   const navigate = useNavigate()

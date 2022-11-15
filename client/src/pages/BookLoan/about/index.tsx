@@ -22,7 +22,7 @@ import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
 import loans from '@mocks/loansBooks.json'
-import { loanStatus } from 'src/locales/statusLoan'
+import { loanStatus } from '@locales/statusLoan'
 
 const formatDateOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',

@@ -1,6 +1,6 @@
 import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
-import { digitalLibraryApi } from 'src/core/infra/Apis/digitalLibraryApi'
-import HttpClient from 'src/core/infra/HttpClient'
+import { digitalLibraryApi } from '@infra/Apis/digitalLibraryApi'
+import HttpClient from '@infra/HttpClient'
 
 import { LoginConfigUseCase, loginConfigUseCase } from './usecases/login'
 import { createConfigUseCase, CreateConfigUseCase } from './usecases/create'
