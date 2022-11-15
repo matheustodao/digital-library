@@ -15,7 +15,13 @@ export default function AuthLayout({ children }: any) {
       <Flex as="header" alignItems="center" justifyContent="flex-end">
         <ColorModeSwitcher />
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" gap="40" w="100%" direction={isSmallThan1100 ? 'column' : 'row'}>
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        gap="40"
+        w="100%"
+        direction={isSmallThan1100 ? 'column' : 'row'}
+      >
         {children}
       </Flex>
     </Stack>
