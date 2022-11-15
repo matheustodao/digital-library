@@ -26,7 +26,7 @@ export class ConfigServices {
   async login(data: AuthLoginParams) {
     const validData = this.usecase.login.handleParams(data)
 
-    return await this.httpClient.post({
+    return this.httpClient.post({
       path: '/login',
       data: validData
     })
@@ -35,7 +35,7 @@ export class ConfigServices {
   async register(data: AuthConfigParams) {
     const validData = this.usecase.create.handleParams(data)
 
-    return await this.httpClient.post({
+    return this.httpClient.post({
       path: '/config',
       data: validData
     })
@@ -44,7 +44,7 @@ export class ConfigServices {
   async update(data: AuthConfigParams, original: AuthConfigParams) {
     const validData = this.usecase.update.handleParams(data, original)
 
-    return await this.httpClient.patch({
+    return this.httpClient.patch({
       path: '/config',
       data: validData
     })

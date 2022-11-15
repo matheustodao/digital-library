@@ -4,13 +4,13 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/core/assets/*"],
-      "@infra/*": ["src/core/infra/*"],
-      "@services/*": ["src/core/services/*"],
+      "@infra/*": ["src/core/domain/infra/*"],
+      "@services/*": ["src/core/domain/services/*"],
       "@validations/*": ["src/core/validations/*"],
-      "@locales/*": ["src/core/locales/*"],
+      "@locales/*": ["src/core/assets/locales/*"],
       "@pages/*": ["src/pages/*"],
-      "@helpers/*": ["src/core/helpers/*"],
-      "@mocks/*": ["src/core/mocks/*"],
+      "@helpers/*": ["src/core/utils/helpers/*"],
+      "@mocks/*": ["src/core/utils/mocks/*"],
       "@type/*": ["src/core/types/*"],
       "src/*": ["src/*"]
     }
