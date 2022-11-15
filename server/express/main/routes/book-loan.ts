@@ -1,16 +1,18 @@
-import { BookController } from '../modules/book';
+import { BookLoanController } from '../modules/book-loan';
 
 import { Router } from 'express';
 
-const bookController = new BookController();
+const bookLoanController = new BookLoanController();
 
 const router = Router();
 
-router.delete('/book/:bookId', bookController.delete);
-router.get('/book/:bookId', bookController.getById);
-router.get('/book/top/categories', bookController.getMostCommonCategories);
-router.patch('/book', bookController.update);
-router.post('/book', bookController.create);
-router.get('/book', bookController.find);
+router.get('/book-loan/by/month', bookLoanController.bookLoanByMonth);
+router.get('/book-loan/:bookId', bookLoanController.getById);
+router.get('/dashboard', bookLoanController.bookLoanReport);
+router.get('/book-loan', bookLoanController.find);
+
+router.delete('/book-loan/:bookId', bookLoanController.delete);
+router.patch('/book-loan', bookLoanController.update);
+router.post('/book-loan', bookLoanController.create);
 
 export { router };

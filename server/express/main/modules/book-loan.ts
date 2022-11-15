@@ -3,7 +3,12 @@ import { Book, BookCategories, BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 
 import { Response, Request } from 'express';
-import { BookLoan, BookLoanParams } from '../config/types/loanBook';
+import {
+	BookLoan,
+	BookLoanParams,
+	BookLoanReportByMonth,
+	months
+} from '../config/types/loanBook';
 
 class BookLoanController {
 	async create(req: Request, res: Response) {
@@ -140,6 +145,109 @@ class BookLoanController {
 			});
 
 			return ok(res, books);
+		} catch (error) {
+			return serverError(res, error as Error);
+		}
+	}
+
+	async bookLoanReport(req: Request, res: Response) {
+		try {
+			const { _count: studentLoans } = await prisma.bookLoan.aggregate({
+				where: {
+					teacherName: { not: null },
+					class: { not: null }
+				},
+				_count: true
+			});
+
+			const { _count: employeeLoans } = await prisma.bookLoan.aggregate({
+				where: {
+					phone: { not: null },
+					email: { not: null }
+				},
+				_count: true
+			});
+
+			const { _count: booksQuantity } = await prisma.book.aggregate({
+				_count: true
+			});
+
+			const { _count: bookLoansQuantity } = await prisma.bookLoan.aggregate({
+				_count: true
+			});
+
+			return ok(res, {
+				studentLoans,
+				booksQuantity,
+				employeeLoans,
+				bookLoansQuantity
+			});
+		} catch (error) {
+			return serverError(res, error as Error);
+		}
+	}
+
+	async bookLoanByMonth(req: Request, res: Response) {
+		try {
+			const beginningOfTheYear = new Date();
+			beginningOfTheYear.setDate(1);
+			beginningOfTheYear.setMonth(0);
+			beginningOfTheYear.setHours(0, 0, 0, 0);
+
+			const studentLoans = await prisma.bookLoan.findMany({
+				where: {
+					teacherName: { not: null },
+					class: { not: null },
+					exitDate: { gte: beginningOfTheYear }
+				}
+			});
+
+			const employeeLoans = await prisma.bookLoan.findMany({
+				where: {
+					email: { not: null },
+					phone: { not: null },
+					exitDate: { gte: beginningOfTheYear }
+				}
+			});
+
+			const report = [
+				{ type: 'student', data: [] },
+				{ type: 'employee', data: [] }
+			] as BookLoanReportByMonth;
+
+			studentLoans.forEach((loan) => {
+				const month = new Date(loan.exitDate).toLocaleDateString('pt-BR', {
+					month: 'long'
+				});
+
+				const reportMonthIndex = report[0].data.findIndex(
+					(reportMonth) => reportMonth.month === month
+				);
+
+				if (reportMonthIndex !== -1) {
+					report[0].data.push({ month: month as months, amount: 1 });
+				} else {
+					report[0].data[reportMonthIndex].amount++;
+				}
+			});
+
+			employeeLoans.forEach((loan) => {
+				const month = new Date(loan.exitDate).toLocaleDateString('pt-BR', {
+					month: 'long'
+				});
+
+				const reportMonthIndex = report[1].data.findIndex(
+					(reportMonth) => reportMonth.month === month
+				);
+
+				if (reportMonthIndex !== -1) {
+					report[1].data.push({ month: month as months, amount: 1 });
+				} else {
+					report[1].data[reportMonthIndex].amount++;
+				}
+			});
+
+			return ok(res, report);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}

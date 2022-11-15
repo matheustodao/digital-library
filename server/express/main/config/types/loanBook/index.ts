@@ -1,3 +1,17 @@
+type months =
+	| 'janeiro'
+	| 'fevereiro'
+	| 'março'
+	| 'abril'
+	| 'maio'
+	| 'junho'
+	| 'julho'
+	| 'agosto'
+	| 'setembro'
+	| 'outubro'
+	| 'novembro'
+	| 'dezembro';
+
 type status =
 	| 'no_warning'
 	| 'first_warning'
@@ -23,4 +37,9 @@ type BookLoan = {
 
 type BookLoanParams = Omit<BookLoan, 'id'>;
 
-export { BookLoan, BookLoanParams };
+type BookLoanReportByMonth = {
+	type: 'student' | 'employee';
+	data: { month: months; amount: number }[];
+}[];
+
+export { BookLoan, BookLoanParams, BookLoanReportByMonth, months, status };
