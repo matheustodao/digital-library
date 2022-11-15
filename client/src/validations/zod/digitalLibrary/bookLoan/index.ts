@@ -1,4 +1,5 @@
 import * as yup from 'yup'
+import '../../locales'
 
 export const createBookLoanValidationSchema = yup.object().shape({
   isStudent: yup.boolean().default(true),

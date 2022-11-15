@@ -1,4 +1,5 @@
 import * as yup from 'yup'
+import '../../locales'
 
 export const registerSchemaValidation = yup.object().shape({
   email: yup.string().email().required(),
