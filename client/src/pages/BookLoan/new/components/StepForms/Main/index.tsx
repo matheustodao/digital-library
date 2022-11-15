@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Select } from 'chakra-react-select'
 
-import { Flex, FormControl, FormLabel, Input, Stack, useMediaQuery } from '@chakra-ui/react'
+import { Flex, FormControl, FormErrorMessage, FormLabel, Input, Stack, useMediaQuery } from '@chakra-ui/react'
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import { BookParams } from '@type/digitalLibrary/book'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
@@ -29,7 +29,7 @@ interface IProps {
 export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps) {
   const [exitDate, setExitDate] = useState<Date>(new Date())
   const [deliveryDate, setDeliveryDate] = useState<Date>(new Date())
-  const { control, setValue } = useFormContext()
+  const { control, setValue, formState: { errors } } = useFormContext()
   const [isSmallThan500px] = useMediaQuery('(max-width: 500px)')
 
   function handleChangeExitDate(date: Date) {
@@ -45,10 +45,10 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
   return (
     <Stack spacing={20}>
       <Controller
-        control={control}
         name="bookId"
+        control={control}
         render={({ field }) => (
-          <FormControl>
+          <FormControl isInvalid={!!errors?.bookId}>
             <FormLabel>
               Titulo do Livro
               <RequiredAsterisk />
@@ -60,6 +60,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
               errorBorderColor="red"
               {...field}
             />
+            {errors?.bookId && <FormErrorMessage>{errors.bookId.message as string}</FormErrorMessage>}
           </FormControl>
         )}
       />
@@ -76,7 +77,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
         </FormControl>
       </Flex>
 
-      <Flex gap={8} direction={isSmallThan500px ? 'column' : 'row'}>
+      <Flex gap={8} direction={isSmallThan500px ? 'column' : 'row'} alignItems="center">
         <Controller
           control={control}
           name="exitDate"
@@ -84,7 +85,6 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
             <FormControl>
               <FormLabel>
                 Data de Retirada
-                <RequiredAsterisk />
               </FormLabel>
               <SingleDatepicker
                 date={exitDate}
@@ -105,7 +105,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
           control={control}
           name="deliveryDate"
           render={() => (
-            <FormControl>
+            <FormControl isInvalid={!!errors?.deliveryDate}>
               <FormLabel>
                 Data de Devolução
                 <RequiredAsterisk />
@@ -121,6 +121,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
                   }
                 }}
               />
+              {errors?.deliveryDate && <FormErrorMessage>{errors.deliveryDate.message as string}</FormErrorMessage>}
             </FormControl>
           )}
         />

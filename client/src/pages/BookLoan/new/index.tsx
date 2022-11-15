@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Button, Checkbox, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft, Circle } from 'phosphor-react'
@@ -13,15 +14,16 @@ import { BookParams } from '@type/digitalLibrary/book'
 import { BookResponseParams } from '@type/digitalLibrary/response'
 import StepMainForm from './components/StepForms/Main'
 import StudentForm from './components/StepForms/StudentForm'
+import EmployeeForm from './components/StepForms/EmployeeForm'
 
 export default function NewBookLoanPage() {
   const navigation = useNavigate()
   const iconColor = useColorModeValue('gray.500', 'gray.300')
   const methods = useForm({
-    resolver: zodResolver(createBookLoanValidationSchema),
-    mode: 'all'
+    resolver: yupResolver(createBookLoanValidationSchema),
+    mode: 'all',
+    reValidateMode: 'onChange'
   })
-
   const bookId = methods.watch('bookId')?.value
 
   const [stepForm, setStepForm] = useState(1)
@@ -31,11 +33,26 @@ export default function NewBookLoanPage() {
     label: currentBook.title,
     value: currentBook.id
   })), [])
+  const isStudent = methods.watch('isStudent', true)
 
   const handleGetBookInformation = useCallback(() => {
     const bookSelected = books.results.find((currentBook) => currentBook.id === bookId)
     setBookBeingLoaned(bookSelected)
   }, [bookId])
+
+  function handleToggleIsStudentForm(e: any) {
+    setStepForm(e.target.checked ? 2 : 3)
+
+    if (e.target.checked) {
+      methods.clearErrors(['email', 'phone'])
+      methods.setValue('email', null)
+      methods.setValue('phone', null)
+    } else {
+      methods.clearErrors(['teacherName', 'class'])
+      methods.setValue('teacherName', null)
+      methods.setValue('class', null)
+    }
+  }
 
   function handleChangeStepForm(action: 'next' | 'prev' | 'custom', step?: number) {
     if (action === 'custom' && step) {
@@ -43,6 +60,12 @@ export default function NewBookLoanPage() {
     }
 
     if (action === 'next') {
+      if (isStudent || typeof isStudent === 'undefined') {
+        console.log('tes')
+        setStepForm(2)
+      } else {
+        return setStepForm(3)
+      }
       setStepForm((oldStep) => oldStep + 1)
     }
 
@@ -50,6 +73,12 @@ export default function NewBookLoanPage() {
       setStepForm((oldStep) => oldStep === 1 ? 1 : oldStep - 1)
     }
   }
+
+  async function onRegisterBookLoan(data: any) {
+    console.log({ data })
+  }
+
+  console.log({ stepForm, isStudent })
 
   useEffect(() => {
     handleGetBookInformation()
@@ -75,79 +104,89 @@ export default function NewBookLoanPage() {
       <Stack spacing={12}>
 
       <FormProvider {...methods}>
-        {stepForm === 1 && <StepMainForm bookBeingLoaned={bookBeingLoaned} optionsSelect={optionsSelect} />}
+        <Stack as="form" spacing="10" noValidate onSubmit={methods.handleSubmit(onRegisterBookLoan)}>
 
-        {(stepForm === 2 || stepForm === 3) && (
-          <>
-            <Controller
-              name="isStudent"
-              control={methods.control}
-              defaultValue={true}
-              render={({ field }) => (
-                <Checkbox defaultChecked={field.value} {...field}>
-                  Alugar para Aluno
-                </Checkbox>
-              )}
-            />
+          {stepForm === 1 && <StepMainForm bookBeingLoaned={bookBeingLoaned} optionsSelect={optionsSelect} />}
 
-            <StudentForm />
-          </>
-        )}
-
-        <Flex justifyContent="space-between" alignContent="center">
-
-          <Button fontWeight="normal" onClick={() => handleChangeStepForm('prev')} disabled={stepForm === 1}>
-            Anterior
-          </Button>
-
-          <Flex gap="5px" alignItems="center" justifyContent="center">
-            <button onClick={() => handleChangeStepForm('custom', 1)}>
-              <Icon
-                as={Circle}
-                w={4}
-                h={4}
-                color={stepForm === 1 ? 'orange.400' : 'InactiveBorder'}
-                weight="fill"
+          {(stepForm === 2 || stepForm === 3) && (
+            <>
+              <Controller
+                name="isStudent"
+                control={methods.control}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    defaultChecked={isStudent}
+                    onChange={(e) => {
+                      handleToggleIsStudentForm(e)
+                      field.onChange(e)
+                    }}
+                  >
+                    Alugar para aluno
+                  </Checkbox>
+                )}
               />
-            </button>
 
-            <button onClick={() => handleChangeStepForm('custom', 2)}>
-              <Icon
-                as={Circle}
-                w={4}
-                h={4}
-                color={stepForm === 2 ? 'orange.400' : 'InactiveBorder'}
-                weight="fill"
-              />
-            </button>
+              {stepForm === 2 && <StudentForm />}
+              {stepForm === 3 && <EmployeeForm />}
+            </>
+          )}
+
+          <Flex justifyContent="space-between" alignContent="center">
+
+            <Button fontWeight="normal" onClick={() => handleChangeStepForm('custom', 1)} disabled={stepForm === 1}>
+              Anterior
+            </Button>
+
+            <Flex gap="5px" alignItems="center" justifyContent="center">
+              <button onClick={() => handleChangeStepForm('custom', 1)}>
+                <Icon
+                  as={Circle}
+                  w={4}
+                  h={4}
+                  color={stepForm === 1 ? 'orange.400' : 'InactiveBorder'}
+                  weight="fill"
+                />
+              </button>
+
+              <button onClick={() => handleChangeStepForm('custom', isStudent ? 2 : 3)}>
+                <Icon
+                  as={Circle}
+                  w={4}
+                  h={4}
+                  color={(stepForm === 2 || stepForm === 3) ? 'orange.400' : 'InactiveBorder'}
+                  weight="fill"
+                />
+              </button>
+            </Flex>
+
+            {stepForm === 1 && (
+              <Button
+                bgColor="orange.500"
+                textColor="white"
+                transitionDelay=".23s"
+                _hover={{ bg: 'orange.600' }}
+                onClick={() => handleChangeStepForm('next')}
+                maxWidth="106px"
+                w="100%"
+              >
+                Proximo
+              </Button>
+            )}
+
+            {stepForm !== 1 && (
+              <Button
+                type="submit"
+                  bgColor="orange.500"
+                  textColor="white"
+                  transitionDelay=".23s"
+                  _hover={{ bg: 'orange.600' }}
+                >
+                Cadastrar
+              </Button>
+            )}
           </Flex>
-
-          {stepForm === 1 && (
-            <Button
-              bgColor="orange.500"
-              textColor="white"
-              transitionDelay=".23s"
-              _hover={{ bg: 'orange.600' }}
-              onClick={() => handleChangeStepForm('next')}
-              maxWidth="106px"
-              w="100%"
-            >
-              Proximo
-            </Button>
-          )}
-
-          {stepForm === 2 && (
-            <Button
-            type="submit"
-              bgColor="orange.500"
-              textColor="white"
-              transitionDelay=".23s"
-              _hover={{ bg: 'orange.600' }}
-            >
-              Cadastrar
-            </Button>
-          )}
-        </Flex>
+        </Stack>
       </FormProvider>
 
       </Stack>

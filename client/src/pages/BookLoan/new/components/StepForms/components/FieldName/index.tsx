@@ -14,7 +14,7 @@ export default function FieldName() {
         <RequiredAsterisk />
       </FormLabel>
       <Input placeholder="ex: João Henrique Alves" {...register('personName')} />
-      {!!errors?.personName && (
+      {errors?.personName && (
         <FormErrorMessage>
           {errors.personName.message as string}
         </FormErrorMessage>

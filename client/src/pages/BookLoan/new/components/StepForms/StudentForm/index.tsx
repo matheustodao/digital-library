@@ -1,4 +1,4 @@
-import { Stack, Flex, FormControl, FormLabel, useMediaQuery } from '@chakra-ui/react'
+import { Stack, Flex, FormControl, FormLabel, useMediaQuery, FormErrorMessage } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
 
 import { Input } from '@components/FormUtils/Input'
@@ -21,6 +21,7 @@ export default function StudentForm() {
             <RequiredAsterisk />
           </FormLabel>
           <Input placeholder="ex: 6ºB" {...register('class')} />
+          {errors?.class && <FormErrorMessage>{errors.class.message as string}</FormErrorMessage>}
         </FormControl>
 
         <FormControl isInvalid={!!errors?.teacherName}>
@@ -28,7 +29,8 @@ export default function StudentForm() {
             Professor Responsável
             <RequiredAsterisk />
           </FormLabel>
-          <Input placeholder="ex: Debora Silva" {...register('teacherName')} />
+          <Input placeholder="ex: Debora Silva" {...register('teacherName', { shouldUnregister: true })} />
+          {errors?.teacherName && <FormErrorMessage>{errors.teacherName.message as string}</FormErrorMessage>}
         </FormControl>
       </Flex>
     </Stack>

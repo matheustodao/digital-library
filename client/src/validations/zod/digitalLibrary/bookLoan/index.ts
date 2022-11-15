@@ -1,50 +1,51 @@
-import { z as zod } from 'zod'
+import * as yup from 'yup'
 
-// interface IReactSelectOption {
-//   label: string
-//   value: string
-// }
+export const createBookLoanValidationSchema = yup.object().shape({
+  isStudent: yup.boolean().default(true),
+  personName: yup.string().required(),
 
-// const commonMessageErrors = { invalid_type_error: 'Campo obrigatório' }
-
-const commonSchemaValidation = zod.object({
-  personName: zod.string({
-    required_error: 'Campo obrigatorio',
-    description: 'Person name need have a value'
-  }).min(1, { message: 'Campo obrigatório' }),
-
-  bookId: zod.any({ required_error: 'Livro é obrigatório' })
+  bookId: yup.mixed()
+    .nullable()
     .transform((option) => {
-      console.log('zod:', option?.value)
-      return option?.value
+      console.log('yup:', option?.value)
+      return 12332
+    })
+    .required(),
+
+  deliveryDate: yup.mixed().transform((date: Date) => date.toISOString()).nullable().required(),
+
+  exitDate: yup.date()
+    .default(new Date())
+    .transform((date: Date | undefined) => date?.toISOString())
+    .notRequired(),
+
+  // Student field required
+  class: yup.string()
+    .when('isStudent', {
+      is: (isStudent: boolean) => isStudent,
+      then: (rule) => rule.required(),
+      otherwise: (rule) => rule.transform(() => null)
     }),
 
-  deliveryDate: zod.date({ required_error: 'Campo obrigatório' }).transform(async (date: Date) => {
-    const dateAsIsoPattern = date.toISOString()
-    console.log({ dateAsIsoPattern })
-    return dateAsIsoPattern
-  }),
+  teacherName: yup.string()
+    .when('isStudent', {
+      is: (isStudent: boolean) => isStudent,
+      then: (rule) => rule.required(),
+      otherwise: (rule) => rule.transform(() => null)
+    }),
 
-  exitDate: zod.date()
-    .transform((date: Date | undefined) => date?.toISOString())
-    .nullable()
-    .default(new Date())
-    .optional()
+  // Employee field required
+  email: yup.string()
+    .when('isStudent', {
+      is: (isStudent: boolean) => !isStudent,
+      then: (rule) => rule.email({ message: 'Digite um e-mail válido' }).required(),
+      otherwise: (rule) => rule.transform(() => null)
+    }),
+
+  phone: yup.string()
+    .when('isStudent', {
+      is: (isStudent: boolean) => !isStudent,
+      then: (rule) => rule.required(),
+      otherwise: (rule) => rule.transform(() => null)
+    })
 })
-
-const createBookLoanForStudent = zod.object({
-  isStudent: zod.literal(true),
-  class: zod.string(),
-  teacherName: zod.string()
-}).merge(commonSchemaValidation)
-
-const createBookLoanForEmployee = zod.object({
-  isStudent: zod.literal(false),
-  email: zod.string().email({ message: 'Digite um e-mail válido' }).min(1, { message: 'Campo obrigatório' }),
-  phone: zod.string()
-}).merge(commonSchemaValidation)
-
-export const createBookLoanValidationSchema = zod.discriminatedUnion('isStudent', [
-  createBookLoanForEmployee,
-  createBookLoanForStudent
-])
