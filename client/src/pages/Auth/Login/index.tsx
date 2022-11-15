@@ -5,7 +5,8 @@ import Logo from '@components/Logo'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-  const [isSmallThan1100] = useMediaQuery('(max-width: 1100px)')
+  const [isSmallThan1100, isSmallThan1500] = useMediaQuery(['(max-width: 1100px)', '(max-width: 1500px)'])
+
   const navigate = useNavigate()
 
   function handleNavigateToRegisterConfig() {
@@ -13,7 +14,13 @@ export default function Login() {
   }
 
   return (
-    <Stack h="85vh" py="auto" display="flex" justifyContent="center" mx="70">
+    <Stack
+      h="100vh"
+      py="auto"
+      display="flex"
+      justifyContent="center"
+      mx={isSmallThan1500 ? '24' : '80'}
+    >
       <Flex alignItems="center" justifyContent="space-between" gap="40" w="100%" direction={isSmallThan1100 ? 'column' : 'row'}>
         <Logo variant="no-details" size="lg" />
         <Box maxW="450px" w="100%">
