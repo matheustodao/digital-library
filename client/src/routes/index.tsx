@@ -11,11 +11,16 @@ import BackupSubPage from '@pages/Settings/subpages/Backup'
 import ExportSubPage from '@pages/Settings/subpages/Import'
 import ImportSubPage from '@pages/Settings/subpages/Export'
 import NewBookLoanPage from '@pages/BookLoan/new'
+import Login from '@pages/Auth/Login'
+import RegisterPage from '@pages/Auth/register'
 
 export default function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<RegisterPage />} />
+
       <Route path="/home" element={<HomePage />} />
       <Route path="/books" element={<BooksPage />} />
       <Route path="/books/:id" element={<AboutBook />} />
