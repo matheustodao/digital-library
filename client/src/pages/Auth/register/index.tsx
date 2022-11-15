@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormLabel, Stack } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormLabel, Stack, useMediaQuery } from '@chakra-ui/react'
 
 import { Input } from '@components/FormUtils/Input'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
@@ -6,6 +6,7 @@ import Logo from '@components/Logo'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
+  const [isSmallThan1100] = useMediaQuery('(max-width: 1100px)')
   const navigate = useNavigate()
 
   function handleNavigateToLoginPage() {
@@ -14,7 +15,7 @@ export default function Login() {
 
   return (
     <Stack h="85vh" py="auto" display="flex" justifyContent="center" mx="70">
-      <Flex alignItems="center" justifyContent="space-between" w="100%">
+      <Flex alignItems="center" justifyContent="space-between" gap="24" w="100%" direction={isSmallThan1100 ? 'column' : 'row'}>
         <Logo variant="no-details" size="lg" />
         <Box maxW="450px" w="100%">
           <Stack spacing="24px">
