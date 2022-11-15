@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig-build.json && cp -r ./express/public ./dist/express",
+    "build": "tsc -p tsconfig-build.json",
     "remove-package-folder": "rm -rf dist/packages",
     "move-packages": "cp -r dist/packages/* ../dist && rm -rf dist/packages/*",
     "move-build": "yarn run remove-package-folder && cp -r dist/* ../build && rm -rf dist/* && rm -rf dist",
