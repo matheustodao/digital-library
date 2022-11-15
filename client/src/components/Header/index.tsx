@@ -14,11 +14,10 @@ import {
 } from '@chakra-ui/react'
 import { Gear, List } from 'phosphor-react'
 
-import whiteLogo from '@assets/images/white-logo.svg'
-
 import { Route, Routes, Wrapper } from './styled'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
 import { useRef } from 'react'
+import Logo from '@components/Logo'
 
 const routes = [
   {
@@ -55,7 +54,7 @@ export default function Header() {
       px="10"
     >
       <Flex alignItems="center" justifyContent="space-between">
-        <img src={whiteLogo} alt="digital library logo" />
+        <Logo variant="no-details" size="sm" />
 
         <Flex alignItems="center" justifyContent="space-between">
           <Wrapper>
