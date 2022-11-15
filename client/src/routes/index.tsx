@@ -13,6 +13,8 @@ import ImportSubPage from '@pages/Settings/subpages/Export'
 import NewBookLoanPage from '@pages/BookLoan/new'
 import Login from '@pages/Auth/Login'
 import RegisterPage from '@pages/Auth/register'
+import { ProtectedRoute } from './components/ProtectedRoutes'
+import LoggedLayout from '@components/Layouts/logged'
 
 export default function Router() {
   return (
@@ -21,19 +23,21 @@ export default function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<RegisterPage />} />
 
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/books" element={<BooksPage />} />
-      <Route path="/books/:id" element={<AboutBook />} />
+      <Route element={<ProtectedRoute children={<LoggedLayout />} />}>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/books" element={<BooksPage />} />
+        <Route path="/books/:id" element={<AboutBook />} />
 
-      <Route path="/loans" element={<BookLoanPage/>} />
-      <Route path="/loans/new" element={<NewBookLoanPage />} />
-      <Route path="/loans/:id" element={<AboutLoanedBook />} />
+        <Route path="/loans" element={<BookLoanPage/>} />
+        <Route path="/loans/new" element={<NewBookLoanPage />} />
+        <Route path="/loans/:id" element={<AboutLoanedBook />} />
 
-      <Route path="/settings" element={<SettingsPage />}>
-        <Route index element={<AccountSubPage />} />
-        <Route path="backup" element={<BackupSubPage />} />
-        <Route path="export" element={<ExportSubPage />} />
-        <Route path="import" element={<ImportSubPage />} />
+        <Route path="/settings" element={<SettingsPage />}>
+          <Route index element={<AccountSubPage />} />
+          <Route path="backup" element={<BackupSubPage />} />
+          <Route path="export" element={<ExportSubPage />} />
+          <Route path="import" element={<ImportSubPage />} />
+        </Route>
       </Route>
     </Routes>
   )
