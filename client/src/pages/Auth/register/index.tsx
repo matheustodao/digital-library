@@ -1,13 +1,20 @@
-import { Box, Button, Flex, FormControl, FormLabel, Stack } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Stack } from '@chakra-ui/react'
 
 import { Input } from '@components/FormUtils/Input'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
 import AuthLayout from '@components/Layouts/AuthLayout'
 import Logo from '@components/Logo'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { registerSchemaValidation } from '@validations/zod/digitalLibrary/auth/register'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { register, formState: { isValid, errors } } = useForm({
+    resolver: yupResolver(registerSchemaValidation),
+    mode: 'all'
+  })
 
   function handleNavigateToLoginPage() {
     navigate('/login')
@@ -18,38 +25,61 @@ export default function Login() {
       <Logo variant="no-details" size="lg" />
       <Box maxW="450px" w="100%">
         <Stack spacing="24px">
-          <FormControl>
+          <FormControl isInvalid={!!errors?.name}>
             <FormLabel>
               Nome da instituição
               <RequiredAsterisk />
             </FormLabel>
-            <Input placeholder="seu email" size="lg" />
+            <Input placeholder="instituição" size="lg" {...register('name')} />
+            {!!errors?.name && (
+              <FormErrorMessage>
+                {errors.name.message as string}
+              </FormErrorMessage>
+            )}
           </FormControl>
 
-          <FormControl>
+          <FormControl isInvalid={!!errors?.email}>
             <FormLabel>
               E-mail
               <RequiredAsterisk />
             </FormLabel>
-            <Input placeholder="seu email" size="lg" />
+            <Input placeholder="seu email" type="email" size="lg" {...register('email')} />
+            {!!errors?.email && (
+              <FormErrorMessage>
+                {errors.email.message as string}
+              </FormErrorMessage>
+            )}
           </FormControl>
 
           <FormControl>
             <FormLabel>E-mail de backup</FormLabel>
-            <Input placeholder="seu email" size="lg" />
+            <Input placeholder="seu email" size="lg" type="email" {...register('emailBackup')} />
           </FormControl>
 
-          <FormControl>
+          <FormControl isInvalid={!!errors?.password}>
             <FormLabel>
               Senha
               <RequiredAsterisk />
             </FormLabel>
-            <Input placeholder="sua senha" size="lg" py="18px" type="password" />
+            <Input placeholder="sua senha" size="lg" py="18px" type="password" {...register('password')} />
+            {!!errors?.password && (
+              <FormErrorMessage>
+                {errors.password.message as string}
+              </FormErrorMessage>
+            )}
           </FormControl>
         </Stack>
 
         <Flex direction="column" gap="18px" mt="10">
-          <Button type="submit" bgColor="orange.500" color="white" size="lg">
+          <Button
+            type="submit"
+            bgColor="orange.500"
+            color="white"
+            size="lg"
+            disabled={!isValid}
+            _hover={{ bgColor: !isValid ? 'orange.500' : 'orange.600' }}
+            _active={{ bgColor: !isValid ? 'orange.500' : 'orange.500' }}
+          >
             Cadastrar
           </Button>
           <Button type="button" variant="ghost" size="lg" onClick={handleNavigateToLoginPage}>
