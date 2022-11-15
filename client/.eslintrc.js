@@ -26,6 +26,8 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/restrict-template-expressions': 'error',
     'react/no-children-prop': 'off',
-    'react/display-name': 'off'
+    'react/display-name': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/prefer-ts-expect-error': 'off'
   }
 }
