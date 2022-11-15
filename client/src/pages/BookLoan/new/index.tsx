@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Button, Checkbox, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft, Circle } from 'phosphor-react'
-import { createBookLoanValidationSchema } from '@validations/zod/digitalLibrary/bookLoan'
+import { createBookLoanValidationSchema } from '@validations/yup/digitalLibrary/bookLoan'
 
 import Title from '@components/pages/Title'
 

@@ -5,7 +5,7 @@ import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
 import AuthLayout from '@components/Layouts/AuthLayout'
 import Logo from '@components/Logo'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { registerSchemaValidation } from '@validations/zod/digitalLibrary/auth/register'
+import { registerSchemaValidation } from '@validations/yup/digitalLibrary/auth/register'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 

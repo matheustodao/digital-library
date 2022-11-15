@@ -4,7 +4,7 @@ import { Input } from '@components/FormUtils/Input'
 import AuthLayout from '@components/Layouts/AuthLayout'
 import Logo from '@components/Logo'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { loginSchemaValidation } from '@validations/zod/digitalLibrary/auth/login'
+import { loginSchemaValidation } from '@validations/yup/digitalLibrary/auth/login'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
