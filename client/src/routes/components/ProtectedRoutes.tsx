@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import useAuth from 'src/hooks/useAuth'
 
 interface IProps {
   redirect?: string | null
@@ -7,7 +8,7 @@ interface IProps {
 }
 
 export function ProtectedRoute({ redirect, children }: IProps) {
-  const isAuthenticated = false
+  const { isAuthenticated } = useAuth()
 
   if (!isAuthenticated) {
     return <Navigate to={redirect ?? '/login'} replace />
