@@ -22,7 +22,7 @@ import { FieldInputGroup } from './components/FieldInputGroup'
 export function FormBook() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isSmallThan800] = useMediaQuery('(max-width: 800px)')
-  const { watch } = useFormContext()
+  const { watch, register } = useFormContext()
   const coverURL = watch('cover')
 
   return (
@@ -105,7 +105,7 @@ export function FormBook() {
 
         <FormControl h="623px">
           <FormLabel>Descrição</FormLabel>
-          <Textarea h="100%" resize="none" focusBorderColor="orange.500" />
+          <Textarea h="100%" resize="none" focusBorderColor="orange.500" {...register('description')} />
         </FormControl>
       </Flex>
 
