@@ -9,7 +9,7 @@ import { registerSchemaValidation } from '@validations/yup/digitalLibrary/auth/r
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate()
   const { register, formState: { isValid, errors } } = useForm({
     resolver: yupResolver(registerSchemaValidation),
