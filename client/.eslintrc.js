@@ -29,6 +29,7 @@ module.exports = {
     'react/display-name': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/prefer-ts-expect-error': 'off',
-    '@typescript-eslint/return-await': 'off'
+    '@typescript-eslint/return-await': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off'
   }
 }
