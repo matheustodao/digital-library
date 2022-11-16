@@ -7,13 +7,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { loginSchemaValidation } from '@validations/yup/digitalLibrary/auth/login'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
-import { configServices } from '@services/digitalLibrary/config'
+import useAuth from 'src/hooks/useAuth'
+import { AuthLoginParams } from '@type/digitalLibrary/auth'
 
 export default function Login() {
+  const { handleSignIn } = useAuth()
   const navigate = useNavigate()
-  const { register, formState: { isValid }, handleSubmit } = useForm({
+  const { register, formState: { isValid }, handleSubmit } = useForm<AuthLoginParams>({
     resolver: yupResolver(loginSchemaValidation),
     mode: 'all'
   })
@@ -22,15 +22,8 @@ export default function Login() {
     navigate('/register')
   }
 
-  async function handleOnSubmit(data: any) {
-    try {
-      await configServices.login(data)
-      toast.success('Oba!')
-    } catch (err: any) {
-      if (err instanceof Error) {
-        invalidCredentials(err)
-      }
-    }
+  async function handleOnSubmit(data: AuthLoginParams) {
+    await handleSignIn(data)
   }
 
   return (
