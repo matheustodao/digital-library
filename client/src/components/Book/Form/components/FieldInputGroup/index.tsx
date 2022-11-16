@@ -21,7 +21,7 @@ export function FieldInputGroup({ label, name, description, required = false, _i
   return (
     <FormControl isInvalid={!!errors?.[name]}>
       <FormLabel>
-        <Flex alignItems="center">
+        <Flex alignItems="center" h="30px">
           {label}
           {required && <RequiredAsterisk />}
         </Flex>
