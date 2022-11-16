@@ -1,4 +1,24 @@
-import { Flex, Box, Image, SimpleGrid, Tag, Button, useMediaQuery, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, List, ListItem, ListIcon } from '@chakra-ui/react'
+import {
+  Flex,
+  Box,
+  Image,
+  SimpleGrid,
+  Tag,
+  Button,
+  useMediaQuery,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  List,
+  ListItem,
+  ListIcon,
+  TagLabel
+} from '@chakra-ui/react'
 
 import { CaretRight, User, Asterisk } from 'phosphor-react'
 import { ReactNode } from 'react'
@@ -33,7 +53,7 @@ export default function BookView({ children, book }: IProps) {
         justifyContent="space-between"
         gap="24px"
       >
-        <Box>
+        <Box position="relative">
           <Image
             width="100%"
             maxH="525px"
@@ -45,6 +65,11 @@ export default function BookView({ children, book }: IProps) {
             alt={book.title}
             borderTopRadius="md"
           />
+          <Tag position="absolute" bottom="2" right="2" size="lg" bg="orange.200" title="Quantidade de livros">
+            <TagLabel fontSize="medium" color="gray.900" pointerEvents="none">
+              {book.quantity}
+            </TagLabel>
+          </Tag>
         </Box>
 
         <Flex direction="column" h="full" gap="32px" maxW="479px">
