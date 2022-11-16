@@ -5,7 +5,7 @@ interface CommonCredentials {
 
 export interface AuthConfigParams extends CommonCredentials {
   name: string
-  emailBackup: string
+  emailBackup: string | null
 }
 
 export interface AuthLoginParams extends CommonCredentials { }
