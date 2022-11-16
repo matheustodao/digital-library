@@ -5,8 +5,11 @@ import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
 import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
 import Title from '@components/pages/Title'
+import { useNavigate } from 'react-router-dom'
 
 export default function BooksPage() {
+  const navigate = useNavigate()
+
   return (
     <>
       <Title>Livros</Title>
@@ -14,6 +17,7 @@ export default function BooksPage() {
       <Box pb="8">
         <HeaderPage
           button={{
+            onClick: () => navigate('/books/new'),
             label: (
               <Flex align="center" gap="2">
                 <Plus weight="bold" />

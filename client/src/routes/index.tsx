@@ -15,6 +15,7 @@ import Login from '@pages/Auth/Login'
 import RegisterPage from '@pages/Auth/Register'
 import { ProtectedRoute } from './components/ProtectedRoutes'
 import LoggedLayout from '@components/Layouts/logged'
+import NewBookPage from '@pages/Books/new'
 
 export default function Router() {
   return (
@@ -27,6 +28,7 @@ export default function Router() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/books" element={<BooksPage />} />
         <Route path="/books/:id" element={<AboutBook />} />
+        <Route path="books/new" element={<NewBookPage />} />
 
         <Route path="/loans" element={<BookLoanPage/>} />
         <Route path="/loans/new" element={<NewBookLoanPage />} />
