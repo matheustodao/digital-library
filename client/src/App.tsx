@@ -15,6 +15,10 @@ export default function App() {
         <ToastContainer
           theme="colored"
           autoClose={2000}
+          closeOnClick
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+          newestOnTop
         />
         <ChakraProvider theme={theme}>
           <ThemeProvider theme={theme}>
