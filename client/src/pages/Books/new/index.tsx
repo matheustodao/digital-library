@@ -6,38 +6,50 @@ import { useNavigate } from 'react-router-dom'
 import { CaretLeft } from 'phosphor-react'
 import { useCallback, useEffect, useRef } from 'react'
 import { googleBookServices } from '@services/digitalLibrary/googleBooks'
+import { toast } from 'react-toastify'
 
 export default function NewBookPage() {
+  const refToastId = useRef<any>(null)
+  const currentBgColor = useColorModeValue('white', 'gray.800')
   const navigation = useNavigate()
   const methods = useForm()
-  const currentBgColor = useColorModeValue('white', 'gray.800')
-  const fetchedBookInformation = useRef({})
-  const isbn = methods.watch('isbn')
+  const isbn: any = methods.watch('isbn')?.trim() ?? ''
 
   const findBookInformation = useCallback(async () => {
-    if (!isbn?.trim()) return
-    const data = await googleBookServices.index({ q: isbn.trim() }) as { totalItems: number, items: any[] }
+    if (!isbn) return
+
+    const data = await googleBookServices.index({ q: isbn }) as { totalItems: number, items: any[] }
+
     if (data.totalItems === 0) {
-      fetchedBookInformation.current = { }
+      methods.reset({
+        title: '',
+        authors: '',
+        description: '',
+        cover: '',
+        categories: '',
+        publishingCompany: ''
+      })
+      if (!toast.isActive(refToastId.current)) {
+        refToastId.current = toast.info('Não foi possível encontrar livro pelo isbn 😔')
+      }
       return
     }
 
-    setTimeout(() => {
-      const book = data.items.find((currentItem) => currentItem.volumeInfo?.publisher).volumeInfo
+    const book = data.items.find((currentItem) => (
+      currentItem.volumeInfo?.publisher || currentItem.volumeInfo?.categories || currentItem.volumeInfo?.imageLinks
+    )).volumeInfo
 
-      const parsedBook = {
-        title: !book?.subtitle ? book.title : `${book.title} - ${book.subtitle}`,
-        authors: book?.authors.join(', '),
-        description: book?.description,
-        cover: book?.imageLinks.thumbnail,
-        categories: book?.categories.join(', '),
-        publishingCompany: book.publisher
+    const parsedBook = {
+      title: !book?.subtitle ? book.title : `${book.title} - ${book.subtitle}`,
+      authors: book?.authors?.join(', ') ?? '',
+      description: book?.description ?? '',
+      cover: book?.imageLinks.thumbnail ?? '',
+      categories: book?.categories?.join(', ') ?? '',
+      publishingCompany: book?.publisher ?? ''
 
-      }
+    }
 
-      fetchedBookInformation.current = { ...fetchedBookInformation.current, ...parsedBook }
-      methods.reset(parsedBook)
-    }, 500)
+    methods.reset(parsedBook)
   }, [isbn])
 
   useEffect(() => {
@@ -79,6 +91,8 @@ export default function NewBookPage() {
             </Button>
           </Flex>
         </Box>
+
+        {/* Form Book Component */}
         <FormBook />
       </Box>
     </FormProvider>
