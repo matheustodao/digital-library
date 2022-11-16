@@ -1,8 +1,27 @@
-import { Stack, Flex, Image, Box, Button, FormControl, FormLabel, Textarea } from '@chakra-ui/react'
+import {
+  Stack,
+  Flex,
+  Image,
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Textarea,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+  ModalContent,
+  ModalFooter,
+  useMediaQuery
+} from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
 import { FieldInputGroup } from './components/FieldInputGroup'
 
 export function FormBook() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isSmallThan800] = useMediaQuery('(max-width: 800px)')
   const { watch } = useFormContext()
   const coverURL = watch('cover')
 
@@ -14,7 +33,7 @@ export function FormBook() {
         required
       />
 
-      <Flex alignItems="center" gap="24px">
+      <Flex alignItems="center" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
         <FieldInputGroup
           label="ISBN"
           name="isbn"
@@ -25,7 +44,7 @@ export function FormBook() {
           label="Tombo"
           name="tumble"
           description={
-            <Button variant="link" size="sm" fontSize="0.875rem" fontWeight="thin" color="GrayText" mb="-10px">
+            <Button variant="link" size="sm" fontSize="0.875rem" fontWeight="thin" color="GrayText" mb="-10px" onClick={onOpen}>
               Gerar Tombo
             </Button>
           }
@@ -33,7 +52,7 @@ export function FormBook() {
         />
       </Flex>
 
-      <Flex alignItems="center" gap="24px">
+      <Flex alignItems="center" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
         <FieldInputGroup
           label="Autor"
           name="authors"
@@ -49,7 +68,7 @@ export function FormBook() {
         />
       </Flex>
 
-      <Flex alignItems="center" gap="24px">
+      <Flex alignItems="center" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
         <FieldInputGroup
           label="Editora"
           name="publishingCompany"
@@ -63,7 +82,7 @@ export function FormBook() {
         />
       </Flex>
 
-      <Flex alignItems="center" gap="24px">
+      <Flex alignItems="center" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
         <Box w="100%">
           <FieldInputGroup
             label="URL da Capa"
@@ -90,6 +109,34 @@ export function FormBook() {
         </FormControl>
       </Flex>
 
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        blockScrollOnMount
+        size="6xl"
+      >
+        <ModalOverlay />
+        <ModalContent bgColor="white" color="blackAlpha.800">
+          <ModalHeader>Gerar Tombo</ModalHeader>
+            <ModalBody>
+              <iframe
+                src="https://www.tabelacutter.com/"
+                width="100%"
+                height="610px"
+                style={{
+                  overflowX: 'hidden'
+                }}
+              />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button onClick={onClose} bgColor="GrayText" color="white" _hover={{ bgColor: 'none' }} _active={{ bgColor: 'none' }}>
+                Fechar
+              </Button>
+            </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Stack>
   )
 }
