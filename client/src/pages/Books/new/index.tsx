@@ -36,6 +36,7 @@ export default function NewBookPage() {
               type="submit"
               size="lg"
               bgColor="orange.500"
+              color="white"
               transition="all ease .25s"
               _hover={{ bgColor: 'orange.600' }}
               _active={{ bgColor: 'orange.500' }}
