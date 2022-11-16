@@ -61,7 +61,6 @@ export default function NewBookLoanPage() {
 
     if (action === 'next') {
       if (isStudent || typeof isStudent === 'undefined') {
-        console.log('tes')
         setStepForm(2)
       } else {
         return setStepForm(3)
@@ -77,8 +76,6 @@ export default function NewBookLoanPage() {
   async function onRegisterBookLoan(data: any) {
     console.log({ data })
   }
-
-  console.log({ stepForm, isStudent })
 
   useEffect(() => {
     handleGetBookInformation()

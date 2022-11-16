@@ -8,7 +8,6 @@ export const createBookLoanValidationSchema = yup.object().shape({
   bookId: yup.mixed()
     .nullable()
     .transform((option) => {
-      console.log('yup:', option?.value)
       return 12332
     })
     .required(),
