@@ -12,7 +12,7 @@ import ExportSubPage from '@pages/Settings/subpages/Import'
 import ImportSubPage from '@pages/Settings/subpages/Export'
 import NewBookLoanPage from '@pages/BookLoan/new'
 import Login from '@pages/Auth/Login'
-import RegisterPage from '@pages/Auth/register'
+import RegisterPage from '@pages/Auth/Register'
 import { ProtectedRoute } from './components/ProtectedRoutes'
 import LoggedLayout from '@components/Layouts/logged'
 
