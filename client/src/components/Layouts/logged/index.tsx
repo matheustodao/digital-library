@@ -9,10 +9,12 @@ interface IProps {
 
 export default function LoggedLayout({ children }: IProps) {
   return (
-    <Stack as="main" px="10" py="6">
+    <>
       <Header />
-      <Outlet />
-      {children}
-    </Stack>
+      <Stack as="main" px="10" py="6">
+        <Outlet />
+        {children}
+      </Stack>
+    </>
   )
 }
