@@ -5,16 +5,28 @@ import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
 import AuthLayout from '@components/Layouts/AuthLayout'
 import Logo from '@components/Logo'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { configServices } from '@services/digitalLibrary/config'
+import { AuthConfigParams } from '@type/digitalLibrary/auth'
 import { registerSchemaValidation } from '@validations/yup/digitalLibrary/auth/register'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import useAuth from 'src/hooks/useAuth'
 
 export default function Register() {
+  const { handleSignIn } = useAuth()
   const navigate = useNavigate()
-  const { register, formState: { isValid, errors } } = useForm({
+  const { register, formState: { isValid, errors }, handleSubmit } = useForm<AuthConfigParams>({
     resolver: yupResolver(registerSchemaValidation),
     mode: 'all'
   })
+
+  async function handleOnSubmit(data: AuthConfigParams) {
+    await configServices.register(data)
+    await handleSignIn({
+      email: data.email,
+      password: data.password
+    })
+  }
 
   function handleNavigateToLoginPage() {
     navigate('/login')
@@ -23,7 +35,7 @@ export default function Register() {
   return (
     <AuthLayout>
       <Logo variant="no-details" size="lg" />
-      <Box maxW="450px" w="100%">
+      <Box maxW="450px" w="100%" as="form" noValidate onSubmit={handleSubmit(handleOnSubmit)}>
         <Stack spacing="24px">
           <FormControl isInvalid={!!errors?.name}>
             <FormLabel>
