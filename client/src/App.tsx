@@ -6,19 +6,22 @@ import { ToastContainer } from 'react-toastify'
 import Router from './routes'
 
 import 'react-toastify/dist/ReactToastify.css'
+import AuthProvider from './contexts/auth/AuthContext'
 
 export default function App() {
   return (
     <HashRouter>
-      <ToastContainer
-        theme="colored"
-        autoClose={2000}
-      />
-      <ChakraProvider theme={theme}>
-        <ThemeProvider theme={theme}>
-          <Router />
-        </ThemeProvider>
-      </ChakraProvider>
+      <AuthProvider>
+        <ToastContainer
+          theme="colored"
+          autoClose={2000}
+        />
+        <ChakraProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <Router />
+          </ThemeProvider>
+        </ChakraProvider>
+      </AuthProvider>
     </HashRouter>
   )
 }
