@@ -2,10 +2,12 @@ import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { NewBookParams } from '@type/digitalLibrary/book'
 import { indexBooksUseCase, IndexBooksUseCase } from './usecases'
 import { CreateBookUseCase, createBookUseCase } from './usecases/create'
+import { findBookById, FindBookById } from './usecases/findById'
 
 interface BooksUseCaseType {
   create: CreateBookUseCase
   index: IndexBooksUseCase
+  findById: FindBookById
 }
 
 export class BooksServices extends HttpClientDigitalLibrary {
@@ -15,7 +17,8 @@ export class BooksServices extends HttpClientDigitalLibrary {
     super('/book')
     this.usecase = {
       create: createBookUseCase,
-      index: indexBooksUseCase
+      index: indexBooksUseCase,
+      findById: findBookById
     }
   }
 
@@ -32,6 +35,16 @@ export class BooksServices extends HttpClientDigitalLibrary {
     return this.httpClient.post({
       data: validData
     })
+  }
+
+  async show(bookId: string) {
+    const validParams = this.usecase.findById.handleParams({ bookId })
+
+    const book = await this.httpClient.get({
+      path: `/${validParams.bookId}`
+    })
+
+    return this.usecase.findById.handleBook(book)
   }
 }
 
