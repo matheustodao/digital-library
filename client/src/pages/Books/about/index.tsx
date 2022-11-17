@@ -1,45 +1,78 @@
-import { Flex, Button, Stack, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalHeader, ModalBody, ModalFooter, useDisclosure, Text } from '@chakra-ui/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { CaretRight } from 'phosphor-react'
+import { useParams } from 'react-router-dom'
+import {
+  Flex,
+  Button,
+  Stack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Text
+} from '@chakra-ui/react'
 
 import BookView from '@components/Book/View'
 import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
-import books from '@mocks/books.json'
-import { useRef } from 'react'
+import { booksServices } from '@services/digitalLibrary/books'
+import { BookParams } from '@type/digitalLibrary/book'
 
 export default function AboutBook() {
+  const params = useParams()
+  const [book, setBook] = useState({} as BookParams)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isLoading, setIsLoading] = useState(true)
   const finalRef = useRef(null)
+
+  const loadBookInfo = useCallback(async () => {
+    const data = await booksServices.show(params.id as string)
+    console.log(data)
+    setBook(data)
+    setIsLoading(false)
+  }, [params.id])
+
+  useEffect(() => {
+    loadBookInfo()
+  }, [loadBookInfo])
+
+  if (isLoading) return <h1>Carregando...</h1>
 
   return (
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>
       <HeaderNavigationAbout onEditionClick={() => console.log('open')} />
-      <BookView book={books.results[0]}>
-        <BookViewContent.Container>
-          <Button variant="unstyled" h="min-content" onClick={onOpen}>
-            <BookViewContent.Title>
-              <Flex alignItems="center">
-                Descrição
-                <CaretRight />
-              </Flex>
-            </BookViewContent.Title>
-          </Button>
+      <BookView book={book}>
+        {book.description && (
+          <BookViewContent.Container>
+            <Button variant="unstyled" h="min-content" onClick={onOpen}>
+              <BookViewContent.Title>
+                <Flex alignItems="center">
+                  Descrição
+                  <CaretRight />
+                </Flex>
+              </BookViewContent.Title>
+            </Button>
 
-          <BookViewContent.Text noOfLines={3}>
-            {books.results[0].description}
-          </BookViewContent.Text>
-        </BookViewContent.Container>
+            <BookViewContent.Text noOfLines={3}>
+              {book.description}
+            </BookViewContent.Text>
+          </BookViewContent.Container>
+        )}
       </BookView>
 
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered size="6xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="orange.500" fontSize="3xl">Descrição</ModalHeader>
           <ModalCloseButton color="orange.500" size="lg" />
           <ModalBody>
             <Text lineHeight={2}>
-              {books.results[0].description}
+              {book.description}
             </Text>
           </ModalBody>
 
