@@ -16,10 +16,19 @@ import {
   ModalFooter,
   useMediaQuery
 } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { FieldInputGroup } from './components/FieldInputGroup'
 
-export function FormBook() {
+interface FormBookProps {
+  fields?: {
+    _isbn?: {
+      description: ReactNode
+    }
+  }
+}
+
+export function FormBook({ fields }: FormBookProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isSmallThan800] = useMediaQuery('(max-width: 800px)')
   const { watch, register } = useFormContext()
@@ -37,7 +46,7 @@ export function FormBook() {
         <FieldInputGroup
           label="ISBN"
           name="isbn"
-          description="Digite isbn para buscar os dados do livro"
+          description={fields?._isbn?.description}
         />
 
         <FieldInputGroup
@@ -79,10 +88,15 @@ export function FormBook() {
           label="Exemplares"
           name="quantity"
           required
+          _inputProps={{
+            type: 'number',
+            min: 1,
+            inputMode: 'numeric'
+          }}
         />
       </Flex>
 
-      <Flex alignItems="center" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
+      <Flex alignItems="flex-start" gap="24px" direction={isSmallThan800 ? 'column' : 'row'}>
         <Box w="100%">
           <FieldInputGroup
             label="URL da Capa"
@@ -139,4 +153,8 @@ export function FormBook() {
       </Modal>
     </Stack>
   )
+}
+
+FormBook.defaultProps = {
+  fields: null
 }
