@@ -8,6 +8,7 @@ export class CreateBookUseCase {
     Object.entries(params).forEach(([key, value]) => {
       if (key === 'isbn' || key === 'description' || key === 'cover') {
         Object.assign(validParams, { [key]: value ?? '' })
+        return
       }
 
       if (!value) {
