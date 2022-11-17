@@ -13,7 +13,7 @@ export default function App() {
     <HashRouter>
       <AuthProvider>
         <ToastContainer
-          theme="colored"
+          theme="light"
           autoClose={2000}
           closeOnClick
           pauseOnHover={false}
