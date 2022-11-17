@@ -1,9 +1,16 @@
-import { Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, InputProps } from '@chakra-ui/react'
+import { ReactNode } from 'react'
+import { useFormContext } from 'react-hook-form'
+import {
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  InputProps
+} from '@chakra-ui/react'
 
 import { Input } from '@components/FormUtils/Input'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
-import { ReactNode } from 'react'
-import { useFormContext } from 'react-hook-form'
 
 interface FieldInputGroupProps {
   label: string
@@ -19,18 +26,13 @@ export function FieldInputGroup({ label, name, description, required = false, _i
   const { register, formState: { errors } } = useFormContext()
 
   return (
-    <FormControl isInvalid={!!errors?.[name]}>
+    <FormControl isInvalid={!!errors?.[name]} h="145px">
       <FormLabel>
         <Flex alignItems="center" h="30px">
           {label}
           {required && <RequiredAsterisk />}
         </Flex>
       </FormLabel>
-      {description && (
-        <FormHelperText mb="5">
-          {description}
-        </FormHelperText>
-      )}
 
       <Input
         size="lg"
@@ -45,6 +47,12 @@ export function FieldInputGroup({ label, name, description, required = false, _i
             errors[name].message as string
           }
         </FormErrorMessage>
+      )}
+
+      {description && (
+        <FormHelperText>
+          {description}
+        </FormHelperText>
       )}
     </FormControl>
   )
