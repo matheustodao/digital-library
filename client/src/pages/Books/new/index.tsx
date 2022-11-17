@@ -17,8 +17,7 @@ export default function NewBookPage() {
   const navigation = useNavigate()
   const methods = useForm<NewBookParams>({
     resolver: yupResolver(createBookSchemaValidation),
-    mode: 'onBlur',
-    defaultValues: { quantity: 1 }
+    mode: 'onBlur'
   })
 
   async function handleFindBookInformation() {
