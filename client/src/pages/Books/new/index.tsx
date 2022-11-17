@@ -7,12 +7,14 @@ import { CaretLeft } from 'phosphor-react'
 import { useCallback, useEffect, useRef } from 'react'
 import { googleBookServices } from '@services/digitalLibrary/googleBooks'
 import { toast } from 'react-toastify'
+import { NewBookParams } from '@type/digitalLibrary/book'
+import { booksServices } from '@services/digitalLibrary/books'
 
 export default function NewBookPage() {
   const refToastId = useRef<any>(null)
   const currentBgColor = useColorModeValue('white', 'gray.800')
   const navigation = useNavigate()
-  const methods = useForm()
+  const methods = useForm<NewBookParams>()
   const isbn: any = methods.watch('isbn')?.trim() ?? ''
 
   const findBookInformation = useCallback(async () => {
@@ -52,13 +54,18 @@ export default function NewBookPage() {
     methods.reset(parsedBook)
   }, [isbn])
 
+  async function handleOnSubmit(data: NewBookParams) {
+    const registeredBook = await booksServices.create(data)
+    navigation(`/books/${registeredBook.id}`, { replace: true })
+  }
+
   useEffect(() => {
     findBookInformation()
   }, [findBookInformation])
 
   return (
     <FormProvider {...methods}>
-      <Box as="form" position="relative">
+      <Box as="form" position="relative" onSubmit={methods.handleSubmit(handleOnSubmit)}>
         <Box as="header" position="sticky" top="10px" left="0" maxW="1300px" mx="auto" p="5" borderRadius="sm" bgColor={currentBgColor} zIndex="sticky">
           <Flex alignItems="center" justifyContent="space-between">
             <Button
