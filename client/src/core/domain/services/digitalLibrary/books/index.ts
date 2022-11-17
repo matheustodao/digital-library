@@ -2,12 +2,12 @@ import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { NewBookParams } from '@type/digitalLibrary/book'
 import { indexBooksUseCase, IndexBooksUseCase } from './usecases'
 import { CreateBookUseCase, createBookUseCase } from './usecases/create'
-import { findBookById, FindBookById } from './usecases/findById'
+import { findBookByIdUseCase, FindBookByIdUseCase } from './usecases/findById'
 
 interface BooksUseCaseType {
   create: CreateBookUseCase
   index: IndexBooksUseCase
-  findById: FindBookById
+  findById: FindBookByIdUseCase
 }
 
 export class BooksServices extends HttpClientDigitalLibrary {
@@ -18,7 +18,7 @@ export class BooksServices extends HttpClientDigitalLibrary {
     this.usecase = {
       create: createBookUseCase,
       index: indexBooksUseCase,
-      findById: findBookById
+      findById: findBookByIdUseCase
     }
   }
 
