@@ -6,7 +6,17 @@ export const createBookSchemaValidation = yup.object().shape({
   authors: yup.string().required(),
   categories: yup.string().required(),
   publishingCompany: yup.string().required(),
-  quantity: yup.number().required().min(1).positive().default(1),
+  quantity: yup.string().required().test((value: any, ctx) => {
+    if (Number(value) === 0) {
+      return ctx.createError({ message: 'Quantidade de livros tem que ser diferente de zero ' })
+    }
+
+    if (Number(value) < 0) {
+      return ctx.createError({ message: 'Quantidade de livros não pode ser negativa ' })
+    }
+
+    return value
+  }),
   cover: yup.string(),
   description: yup.string(),
   isbn: yup.string()
