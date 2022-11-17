@@ -4,22 +4,28 @@ import { Box, Button, Flex, Icon, useColorModeValue } from '@chakra-ui/react'
 import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
 import { CaretLeft } from 'phosphor-react'
-import { useCallback, useEffect, useRef } from 'react'
+
 import { googleBookServices } from '@services/digitalLibrary/googleBooks'
 import { toast } from 'react-toastify'
 import { NewBookParams } from '@type/digitalLibrary/book'
 import { booksServices } from '@services/digitalLibrary/books'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { createBookSchemaValidation } from '@validations/yup/digitalLibrary/book/create'
 
 export default function NewBookPage() {
-  const refToastId = useRef<any>(null)
   const currentBgColor = useColorModeValue('white', 'gray.800')
   const navigation = useNavigate()
-  const methods = useForm<NewBookParams>()
-  const isbn: any = methods.watch('isbn')?.trim() ?? ''
+  const methods = useForm<NewBookParams>({
+    resolver: yupResolver(createBookSchemaValidation),
+    mode: 'onBlur',
+    defaultValues: { quantity: 1 }
+  })
 
-  const findBookInformation = useCallback(async () => {
+  async function handleFindBookInformation() {
+    const isbn: any = methods.watch('isbn')?.trim() ?? ''
     if (!isbn) return
 
+    const toastId = toast.loading('Procurando livro pelo ISBN...')
     const data = await googleBookServices.index({ q: isbn }) as { totalItems: number, items: any[] }
 
     if (data.totalItems === 0) {
@@ -31,15 +37,26 @@ export default function NewBookPage() {
         categories: '',
         publishingCompany: ''
       })
-      if (!toast.isActive(refToastId.current)) {
-        refToastId.current = toast.info('Não foi possível encontrar livro pelo isbn 😔')
-      }
+
+      toast.update(toastId, {
+        render: 'Não foi possível encontrar livro 😔',
+        isLoading: false,
+        type: 'info',
+        autoClose: 860
+      })
       return
     }
 
     const book = data.items.find((currentItem) => (
       currentItem.volumeInfo?.publisher || currentItem.volumeInfo?.categories || currentItem.volumeInfo?.imageLinks
     )).volumeInfo
+
+    toast.update(toastId, {
+      render: 'Livro Encontrado 😃',
+      isLoading: false,
+      autoClose: 860,
+      type: 'success'
+    })
 
     const parsedBook = {
       title: !book?.subtitle ? book.title : `${book.title} - ${book.subtitle}`,
@@ -52,16 +69,12 @@ export default function NewBookPage() {
     }
 
     methods.reset(parsedBook)
-  }, [isbn])
+  }
 
   async function handleOnSubmit(data: NewBookParams) {
     const registeredBook = await booksServices.create(data)
     navigation(`/books/${registeredBook.id}`, { replace: true })
   }
-
-  useEffect(() => {
-    findBookInformation()
-  }, [findBookInformation])
 
   return (
     <FormProvider {...methods}>
@@ -100,7 +113,17 @@ export default function NewBookPage() {
         </Box>
 
         {/* Form Book Component */}
-        <FormBook />
+        <FormBook
+          fields={{
+            _isbn: {
+              description: (
+              <Button variant="link" size="sm" fontSize="0.875rem" fontWeight="thin" color="GrayText" mb="-10px" onClick={handleFindBookInformation}>
+                Buscar informações do livro pelo ISBN
+              </Button>
+              )
+            }
+          }}
+        />
       </Box>
     </FormProvider>
   )
