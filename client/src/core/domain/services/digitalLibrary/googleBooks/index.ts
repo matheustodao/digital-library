@@ -1,15 +1,13 @@
-import { digitalLibraryApi } from '@infra/Apis/digitalLibraryApi'
-import HttpClient from '@infra/HttpClient'
+import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 
-class GoogleBookServices {
-  readonly httpClient: HttpClient
+class GoogleBookServices extends HttpClientDigitalLibrary {
   constructor() {
-    this.httpClient = digitalLibraryApi
+    super('/google')
   }
 
   async index(filters?: { q: string }) {
     return await this.httpClient.get({
-      path: '/google/books',
+      path: '/books',
       options: {
         params: filters
       }

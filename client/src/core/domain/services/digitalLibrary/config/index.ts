@@ -1,13 +1,11 @@
 import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
-import { digitalLibraryApi } from '@infra/Apis/digitalLibraryApi'
-import HttpClient from '@infra/HttpClient'
 
 import { LoginConfigUseCase, loginConfigUseCase } from './usecases/login'
 import { createConfigUseCase, CreateConfigUseCase } from './usecases/create'
 import { UpdateConfigUseCase, updateConfigUseCase } from './usecases/update'
+import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 
-export class ConfigServices {
-  readonly httpClient: HttpClient
+export class ConfigServices extends HttpClientDigitalLibrary {
   protected usecase: {
     update: UpdateConfigUseCase
     create: CreateConfigUseCase
@@ -15,7 +13,7 @@ export class ConfigServices {
   }
 
   constructor() {
-    this.httpClient = digitalLibraryApi
+    super()
     this.usecase = {
       update: updateConfigUseCase,
       create: createConfigUseCase,
