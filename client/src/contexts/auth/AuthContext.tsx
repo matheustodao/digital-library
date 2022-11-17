@@ -33,7 +33,7 @@ export default function AuthProvider({ children }: any) {
 
       handleSetupConfig(data)
       navigate('/home', { replace: true })
-      toast.success('Login realizado com sucesso', { position: 'top-center' })
+      toast.success('Login realizado com sucesso', { position: 'bottom-center' })
     } catch (err) {
       if (err instanceof Error) {
         invalidCredentials(err)
