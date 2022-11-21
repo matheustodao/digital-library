@@ -44,9 +44,7 @@ export default function BooksPage() {
           }}
         />
       </Box>
-      {(books.length > 0 && books.length < 6)
-        ? <BooksList books={books} _simpleGridProps={{ templateColumns: 'repeat(6, 249px)' }} />
-        : <BooksList books={books} />}
+      <BooksList books={books} />
     </>
   )
 }
