@@ -72,7 +72,7 @@ export default function BookView({ children, book }: IProps) {
           </Tag>
         </Box>
 
-        <Flex direction="column" h="full" gap="32px" maxW="479px">
+        <Flex direction="column" h="full" gap="32px" maxW="479px" w="full">
           <BookViewContent.Container title={book.title}>
             <BookViewContent.Title>Titulo do livro</BookViewContent.Title>
             <BookViewContent.Text fontSize="32" fontWeight="300" noOfLines={2}>{book.title}</BookViewContent.Text>
