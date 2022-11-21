@@ -33,6 +33,7 @@ export default function BookCard({ book }: BookCardProps) {
       _hover={{
         transform: 'scale(1.05)'
       }}
+      flex="1 1 210px"
     >
       <Image
         width="100%"

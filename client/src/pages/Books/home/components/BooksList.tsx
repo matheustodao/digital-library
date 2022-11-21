@@ -1,23 +1,18 @@
-import { SimpleGrid, SimpleGridProps } from '@chakra-ui/react'
+import { Flex, FlexProps } from '@chakra-ui/react'
 import BookCard from '@components/Book/Card'
 import { BookParams } from '@type/digitalLibrary/book'
 
 interface BooksListProps {
   books: BookParams[]
-  _simpleGridProps?: SimpleGridProps
+  _flexProps?: FlexProps
 }
 
-export default function BooksList({ books, _simpleGridProps }: BooksListProps) {
+export default function BooksList({ books, _flexProps }: BooksListProps) {
   return (
-    <SimpleGrid
-      minChildWidth={249}
-      spacingX="24px"
-      spacingY="32px"
-      {..._simpleGridProps}
-    >
+    <Flex flexWrap="wrap" gap="32px 24px" {..._flexProps}>
       {books.map((book) => (
         <BookCard book={book} key={book.id} />
       ))}
-    </SimpleGrid>
+    </Flex>
   )
 }
