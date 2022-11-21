@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { booksServices } from '@services/digitalLibrary/books'
 import { BookParams } from '@type/digitalLibrary/book'
 import BooksList from './components/BooksList'
+import NotBookFound from '@components/Book/errors/NotBookFound'
 
 export default function BooksPage() {
   const navigate = useNavigate()
@@ -44,7 +45,12 @@ export default function BooksPage() {
           }}
         />
       </Box>
+
       <BooksList books={books} />
+
+      {!books.length && (
+        <NotBookFound />
+      )}
     </>
   )
 }
