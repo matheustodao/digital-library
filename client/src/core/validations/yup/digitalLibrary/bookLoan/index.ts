@@ -36,6 +36,7 @@ export const createBookLoanValidationSchema = yup.object().shape({
 
   // Employee field required
   email: yup.string()
+    .nullable()
     .when('isStudent', {
       is: (isStudent: boolean) => !isStudent,
       then: (rule) => rule.email({ message: 'Digite um e-mail válido' }).required(),
@@ -43,6 +44,7 @@ export const createBookLoanValidationSchema = yup.object().shape({
     }),
 
   phone: yup.string()
+    .nullable()
     .when('isStudent', {
       is: (isStudent: boolean) => !isStudent,
       then: (rule) => rule.required(),
