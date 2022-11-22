@@ -8,7 +8,7 @@ import { loginSchemaValidation } from '@validations/yup/digitalLibrary/auth/logi
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import useAuth from 'src/hooks/useAuth'
-import { AuthLoginParams } from '@type/digitalLibrary/auth'
+import { AuthLoginParams } from '@type/auth'
 
 export default function Login() {
   const { handleSignIn } = useAuth()

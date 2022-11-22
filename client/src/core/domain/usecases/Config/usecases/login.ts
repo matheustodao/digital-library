@@ -1,4 +1,4 @@
-import { AuthLoginParams } from '@type/digitalLibrary/auth'
+import { AuthLoginParams } from '@type/auth'
 
 export class LoginConfigUseCase {
   handleParams(params: AuthLoginParams) {

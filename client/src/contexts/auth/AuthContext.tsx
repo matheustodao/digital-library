@@ -1,6 +1,6 @@
 import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
 import { configServices } from '@services/config'
-import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
+import { AuthConfigParams, AuthLoginParams } from '@type/auth'
 import { createContext, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'

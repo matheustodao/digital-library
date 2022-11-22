@@ -1,5 +1,5 @@
 import MissingParam from '@infra/errors/MissingParam'
-import { NewBookParams } from '@type/digitalLibrary/book'
+import { NewBookParams } from '@type/book'
 
 export class CreateBookUseCase {
   handleParams(params: NewBookParams) {

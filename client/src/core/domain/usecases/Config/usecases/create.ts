@@ -1,4 +1,4 @@
-import { AuthConfigParams } from '@type/digitalLibrary/auth'
+import { AuthConfigParams } from '@type/auth'
 
 export class CreateConfigUseCase {
   handleParams(params: AuthConfigParams) {

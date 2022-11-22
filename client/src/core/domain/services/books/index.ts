@@ -1,5 +1,5 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
-import { NewBookParams } from '@type/digitalLibrary/book'
+import { NewBookParams } from '@type/book'
 import { BookController } from '@usecases/Book'
 
 export class BooksServices extends HttpClientDigitalLibrary {

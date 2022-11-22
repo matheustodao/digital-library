@@ -8,7 +8,7 @@ import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import { booksServices } from '@services/books'
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 import BooksList from './components/BooksList'
 import NotBookFound from '@components/Book/errors/NotBookFound'
 

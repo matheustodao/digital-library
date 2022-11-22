@@ -22,7 +22,7 @@ import {
 
 import { CaretRight, User, Asterisk } from 'phosphor-react'
 import { ReactNode } from 'react'
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 import { BookViewContent } from './components/BookContent'
 
 interface IProps {

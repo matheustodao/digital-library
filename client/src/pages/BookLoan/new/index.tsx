@@ -10,8 +10,8 @@ import { createBookLoanValidationSchema } from '@validations/yup/digitalLibrary/
 import Title from '@components/pages/Title'
 
 import booksMock from '@mocks/books.json'
-import { BookParams } from '@type/digitalLibrary/book'
-import { BookResponseParams } from '@type/digitalLibrary/response'
+import { BookParams } from '@type/book'
+import { BookResponseParams } from '@type/response'
 import StepMainForm from './components/StepForms/Main'
 import StudentForm from './components/StepForms/StudentForm'
 import EmployeeForm from './components/StepForms/EmployeeForm'

@@ -21,7 +21,7 @@ import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
 import { booksServices } from '@services/books'
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 
 export default function AboutBook() {
   const params = useParams()

@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from '@chakra-ui/react'
 import BookCard from '@components/Book/Card'
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 
 interface BooksListProps {
   books: BookParams[]

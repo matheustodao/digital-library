@@ -3,7 +3,7 @@ import { Select } from 'chakra-react-select'
 
 import { Flex, FormControl, FormErrorMessage, FormLabel, Input, Stack, useMediaQuery } from '@chakra-ui/react'
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
 import { Controller, useFormContext } from 'react-hook-form'
 

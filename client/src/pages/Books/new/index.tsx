@@ -7,7 +7,7 @@ import { CaretLeft } from 'phosphor-react'
 
 import { googleBookServices } from '@services/googleBooks'
 import { toast } from 'react-toastify'
-import { NewBookParams } from '@type/digitalLibrary/book'
+import { NewBookParams } from '@type/book'
 import { booksServices } from '@services/books'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createBookSchemaValidation } from '@validations/yup/digitalLibrary/book/create'

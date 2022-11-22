@@ -12,7 +12,7 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 
 interface BookCardProps {
   book: BookParams

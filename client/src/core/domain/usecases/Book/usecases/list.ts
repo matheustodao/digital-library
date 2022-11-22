@@ -1,4 +1,4 @@
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 
 export class ListBooksUseCase {
   handleBooks(books: BookParams[]): BookParams[] {

@@ -1,4 +1,4 @@
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 import MissingParam from '@infra/errors/MissingParam'
 
 export class FindBookByIdUseCase {

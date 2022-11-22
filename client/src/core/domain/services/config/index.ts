@@ -1,4 +1,4 @@
-import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
+import { AuthConfigParams, AuthLoginParams } from '@type/auth'
 
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { ConfigController } from '@usecases/Config'
