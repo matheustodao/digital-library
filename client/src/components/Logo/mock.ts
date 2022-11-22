@@ -1,10 +1,10 @@
 // Logos with Details
-import logoWhite from '@assets/images/logo-white.svg'
-import logoDark from '@assets/images/logo-dark.svg'
+import logoWhite from '@assets/images/logos/logo-white.svg'
+import logoDark from '@assets/images/logos/logo-dark.svg'
 
 // Dark Logo No Details
-import logoDarkNoDetails from '@assets/images/logo-dark-no-details.svg'
-import logoWhiteNoDetails from '@assets/images/logo-white-no-details.svg'
+import logoDarkNoDetails from '@assets/images/logos/logo-dark-no-details.svg'
+import logoWhiteNoDetails from '@assets/images/logos/logo-white-no-details.svg'
 
 export const logosMocks = {
   white: {
