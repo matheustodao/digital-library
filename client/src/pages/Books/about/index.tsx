@@ -45,7 +45,8 @@ export default function AboutBook() {
 
   return (
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>
-      <HeaderNavigationAbout onEditionClick={() => console.log('open')} />
+      <HeaderNavigationAbout onEditionClick={() => console.log('open')} onDelete={() => {}} />
+
       <BookView book={book}>
         {book.description && (
           <BookViewContent.Container>
