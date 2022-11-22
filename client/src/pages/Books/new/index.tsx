@@ -5,10 +5,10 @@ import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
 import { CaretLeft } from 'phosphor-react'
 
-import { googleBookServices } from '@services/digitalLibrary/googleBooks'
+import { googleBookServices } from '@services/googleBooks'
 import { toast } from 'react-toastify'
 import { NewBookParams } from '@type/digitalLibrary/book'
-import { booksServices } from '@services/digitalLibrary/books'
+import { booksServices } from '@services/books'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { createBookSchemaValidation } from '@validations/yup/digitalLibrary/book/create'
 

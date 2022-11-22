@@ -1,5 +1,5 @@
 import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
-import { configServices } from '@services/digitalLibrary/config'
+import { configServices } from '@services/config'
 import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
 import { createContext, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'

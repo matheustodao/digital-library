@@ -20,7 +20,7 @@ import BookView from '@components/Book/View'
 import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
-import { booksServices } from '@services/digitalLibrary/books'
+import { booksServices } from '@services/books'
 import { BookParams } from '@type/digitalLibrary/book'
 
 export default function AboutBook() {
