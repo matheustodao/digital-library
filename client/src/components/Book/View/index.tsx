@@ -65,9 +65,9 @@ export default function BookView({ children, book }: IProps) {
             alt={book.title}
             borderTopRadius="md"
           />
-          <Tag position="absolute" bottom="2" right="2" size="lg" bg="orange.200" title="Quantidade de livros">
-            <TagLabel fontSize="medium" color="gray.900" pointerEvents="none">
-              {book.quantity}
+          <Tag position="absolute" bottom="2" right="2" size="lg" bg="blue.300" title="Quantidade de livros">
+            <TagLabel fontSize="medium" pointerEvents="none" color="white" fontWeight="bold">
+              Exemplares: {book.quantity}
             </TagLabel>
           </Tag>
         </Box>
@@ -103,7 +103,7 @@ export default function BookView({ children, book }: IProps) {
             </Flex>
           </BookViewContent.Container>
 
-          <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="100%" columnGap={{ sm: '40', md: '50%' }}>
+          <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="full" columnGap={{ sm: '40' }}>
             <BookViewContent.Container>
               {book.authors.length > 1 && (
                 <Button variant="unstyled" h="min-content" onClick={onOpenAuthorModal}>
@@ -125,6 +125,7 @@ export default function BookView({ children, book }: IProps) {
                   key={author}
                   fontWeight="300"
                   fontSize="16"
+                  noOfLines={1}
                 >
                     {author}
                 </BookViewContent.Text>
