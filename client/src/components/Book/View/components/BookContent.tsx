@@ -11,7 +11,7 @@ type ITextProps = ChildrenProp & TextProps
 
 function Container({ children, ...restProps }: IContainerProps) {
   return (
-    <Stack {...restProps}>
+    <Stack w="full" {...restProps}>
       {children}
     </Stack>
   )
