@@ -1,6 +1,6 @@
 import { BookParams } from '@type/digitalLibrary/book'
 
-export class IndexBooksUseCase {
+export class ListBooksUseCase {
   handleBooks(books: BookParams[]): BookParams[] {
     const booksParsed = books.map((currentBook) => {
       const book = {}
@@ -19,5 +19,3 @@ export class IndexBooksUseCase {
     return booksParsed as BookParams[]
   }
 }
-
-export const indexBooksUseCase = new IndexBooksUseCase()

@@ -11,5 +11,3 @@ export class UpdateConfigUseCase {
     return validParams
   }
 }
-
-export const updateConfigUseCase = new UpdateConfigUseCase()

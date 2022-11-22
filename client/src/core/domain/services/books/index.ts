@@ -1,30 +1,18 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { NewBookParams } from '@type/digitalLibrary/book'
-import { indexBooksUseCase, IndexBooksUseCase } from './usecases'
-import { CreateBookUseCase, createBookUseCase } from './usecases/create'
-import { findBookByIdUseCase, FindBookByIdUseCase } from './usecases/findById'
-
-interface BooksUseCaseType {
-  create: CreateBookUseCase
-  index: IndexBooksUseCase
-  findById: FindBookByIdUseCase
-}
+import { BookController } from '@usecases/Book'
 
 export class BooksServices extends HttpClientDigitalLibrary {
-  protected usecase: BooksUseCaseType
+  protected usecase: BookController
 
   constructor() {
     super('/book')
-    this.usecase = {
-      create: createBookUseCase,
-      index: indexBooksUseCase,
-      findById: findBookByIdUseCase
-    }
+    this.usecase = new BookController()
   }
 
   async index() {
     const books = await this.httpClient.get()
-    const booksParsed = this.usecase.index.handleBooks(books)
+    const booksParsed = this.usecase.list.handleBooks(books)
 
     return booksParsed
   }

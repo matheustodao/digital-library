@@ -1,24 +1,14 @@
 import { AuthConfigParams, AuthLoginParams } from '@type/digitalLibrary/auth'
 
-import { LoginConfigUseCase, loginConfigUseCase } from './usecases/login'
-import { createConfigUseCase, CreateConfigUseCase } from './usecases/create'
-import { UpdateConfigUseCase, updateConfigUseCase } from './usecases/update'
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
+import { ConfigController } from '@usecases/Config'
 
 export class ConfigServices extends HttpClientDigitalLibrary {
-  protected usecase: {
-    update: UpdateConfigUseCase
-    create: CreateConfigUseCase
-    login: LoginConfigUseCase
-  }
+  protected usecase: ConfigController
 
   constructor() {
     super()
-    this.usecase = {
-      update: updateConfigUseCase,
-      create: createConfigUseCase,
-      login: loginConfigUseCase
-    }
+    this.usecase = new ConfigController()
   }
 
   async login(data: AuthLoginParams) {

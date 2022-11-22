@@ -29,5 +29,3 @@ export class CreateBookUseCase {
     return validParams
   }
 }
-
-export const createBookUseCase = new CreateBookUseCase()

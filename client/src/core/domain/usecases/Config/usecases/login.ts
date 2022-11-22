@@ -15,5 +15,3 @@ export class LoginConfigUseCase {
     return validParams
   }
 }
-
-export const loginConfigUseCase = new LoginConfigUseCase()

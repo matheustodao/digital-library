@@ -19,5 +19,3 @@ export class CreateConfigUseCase {
     return validParams
   }
 }
-
-export const createConfigUseCase = new CreateConfigUseCase()

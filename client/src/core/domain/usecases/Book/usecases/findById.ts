@@ -25,5 +25,3 @@ export class FindBookByIdUseCase {
     return book
   }
 }
-
-export const findBookByIdUseCase = new FindBookByIdUseCase()
