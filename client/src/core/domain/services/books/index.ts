@@ -34,6 +34,14 @@ export class BooksServices extends HttpClientDigitalLibrary {
 
     return this.usecase.findById.handleBook(book)
   }
+
+  async delete(bookId: string) {
+    const validParams = this.usecase.delete.handleParams({ bookId })
+
+    return this.httpClient.delete({
+      path: `/${validParams.bookId}`
+    })
+  }
 }
 
 export const booksServices = new BooksServices()
