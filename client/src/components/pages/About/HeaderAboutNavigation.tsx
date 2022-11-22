@@ -3,11 +3,11 @@ import { ArrowLeft, PencilSimpleLine, Trash } from 'phosphor-react'
 import { useNavigate } from 'react-router-dom'
 
 interface IProps {
-  onEditionClick: () => void
+  onEdit: () => void
   onDelete: () => void
 }
 
-export default function HeaderNavigationAbout({ onEditionClick, onDelete }: IProps) {
+export default function HeaderNavigationAbout({ onEdit, onDelete }: IProps) {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,7 +27,7 @@ export default function HeaderNavigationAbout({ onEditionClick, onDelete }: IPro
 
       <Flex gap="12px">
         <Button
-          onClick={() => onEditionClick()}
+          onClick={() => onEdit()}
           size="lg"
           iconSpacing={6}
           leftIcon={<PencilSimpleLine size={32} />}

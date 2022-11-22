@@ -42,7 +42,7 @@ export default function AboutLoanedBook() {
 
   return (
     <Stack maxW="900px" w="100%" mx="auto" width="100%" my="16" gap="32">
-      <HeaderNavigationAbout onEditionClick={() => console.log('okay')} onDelete={() => {}} />
+      <HeaderNavigationAbout onEdit={() => console.log('okay')} onDelete={() => {}} />
 
       <Box>
         <Flex
