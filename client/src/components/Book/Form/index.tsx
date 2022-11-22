@@ -53,7 +53,7 @@ export function FormBook({ fields }: FormBookProps) {
           label="Tombo"
           name="tumble"
           description={
-            <Button variant="link" size="sm" fontSize="0.875rem" fontWeight="thin" color="GrayText" mb="-10px" onClick={onOpen}>
+            <Button variant="link" textDecor="underline" size="sm" fontSize="0.875rem" fontWeight="thin" color="blue.600" mb="-10px" onClick={onOpen}>
               Gerar Tombo
             </Button>
           }
