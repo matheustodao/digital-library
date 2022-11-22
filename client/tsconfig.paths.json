@@ -6,6 +6,7 @@
       "@assets/*": ["src/core/assets/*"],
       "@infra/*": ["src/core/domain/infra/*"],
       "@services/*": ["src/core/domain/services/*"],
+      "@usecases/*": ["src/core/domain/usecases/*"],
       "@validations/*": ["src/core/validations/*"],
       "@locales/*": ["src/core/assets/locales/*"],
       "@pages/*": ["src/pages/*"],
