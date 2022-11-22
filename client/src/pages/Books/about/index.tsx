@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CaretRight } from 'phosphor-react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   Flex,
   Button,
@@ -25,6 +25,7 @@ import { BookParams } from '@type/book'
 
 export default function AboutBook() {
   const params = useParams()
+  const navigate = useNavigate()
   const [book, setBook] = useState({} as BookParams)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isLoading, setIsLoading] = useState(true)
@@ -37,6 +38,11 @@ export default function AboutBook() {
     setIsLoading(false)
   }, [params.id])
 
+  async function handleDeleteBookById() {
+    await booksServices.delete(book.id)
+    navigate('/books')
+  }
+
   useEffect(() => {
     loadBookInfo()
   }, [loadBookInfo])
@@ -45,7 +51,11 @@ export default function AboutBook() {
 
   return (
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>
-      <HeaderNavigationAbout onEdit={() => console.log('open')} onDelete={() => {}} />
+
+      <HeaderNavigationAbout
+        onEdit={() => console.log('open')}
+        onDelete={handleDeleteBookById}
+      />
 
       <BookView book={book}>
         {book.description && (
