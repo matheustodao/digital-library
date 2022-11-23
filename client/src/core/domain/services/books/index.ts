@@ -1,5 +1,5 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
-import { NewBookParams } from '@type/book'
+import { BookParams, NewBookParams } from '@type/book'
 import { BookController } from '@usecases/Book'
 
 export class BooksServices extends HttpClientDigitalLibrary {
@@ -33,6 +33,19 @@ export class BooksServices extends HttpClientDigitalLibrary {
     })
 
     return this.usecase.findById.handleBook(book)
+  }
+
+  async update(id: string, newValues: NewBookParams, originalValues?: BookParams) {
+    const fieldsHaveChanged = this.usecase.update.handleParams(newValues, originalValues)
+    console.log(fieldsHaveChanged)
+
+    const bookUpdated = await this.httpClient.patch({
+      data: { ...fieldsHaveChanged, id }
+    })
+
+    const bookParsed = this.usecase.findById.handleBook(bookUpdated)
+
+    return bookParsed
   }
 
   async delete(bookId: string) {
