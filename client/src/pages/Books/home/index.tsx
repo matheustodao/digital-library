@@ -6,7 +6,7 @@ import HeaderPage from '@components/pages/HeaderPage'
 import { Plus, SortAscending, SortDescending } from 'phosphor-react'
 import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
-import { useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { booksServices } from '@services/books'
 import { BookParams } from '@type/book'
 import BooksList from './components/BooksList'
@@ -17,18 +17,26 @@ export default function BooksPage() {
   const navigate = useNavigate()
   const [books, setBooks] = useState<BookParams[]>([] as BookParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
+  const [searchByTerm, setSearchByTerm] = useState('')
 
   const loadBooks = useCallback(async () => {
     const data = await booksServices.index({
       filters: {
-        orderBy: sortBook
+        orderBy: sortBook,
+        text: searchByTerm
       }
     })
     setBooks(data)
-  }, [sortBook])
+  }, [sortBook, searchByTerm])
 
   function handleToggleSortBook() {
     setSortBook((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
+  }
+
+  function handleChangeSearchByTerm(e: ChangeEvent<HTMLInputElement>) {
+    setTimeout(() => {
+      setSearchByTerm(e.target.value)
+    }, 500)
   }
 
   useEffect(() => {
@@ -51,7 +59,8 @@ export default function BooksPage() {
             )
           }}
           search={{
-            placeholder: 'Pesquise por autor, titulo do livro, sinopse...'
+            placeholder: 'Pesquise por autor, titulo do livro, sinopse...',
+            onChange: (e) => handleChangeSearchByTerm(e)
           }}
         />
 
