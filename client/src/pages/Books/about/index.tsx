@@ -13,7 +13,8 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Text
+  Text,
+  useColorModeValue
 } from '@chakra-ui/react'
 
 import BookView from '@components/Book/View'
@@ -22,20 +23,31 @@ import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation
 
 import { booksServices } from '@services/books'
 import { BookParams } from '@type/book'
+import Title from '@components/pages/Title'
+import { FormBook } from '@components/Book/Form'
+import { FormProvider, useForm } from 'react-hook-form'
 
 export default function AboutBook() {
   const params = useParams()
   const navigate = useNavigate()
   const [book, setBook] = useState({} as BookParams)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isOpenEditModal, onOpen: onOpenEditModal, onClose: onCloseEditModal } = useDisclosure()
   const [isLoading, setIsLoading] = useState(true)
   const finalRef = useRef(null)
+  const currentBgColor = useColorModeValue('white', 'gray.800')
+  const bookBeingEditedMethodsForm = useForm()
 
   const loadBookInfo = useCallback(async () => {
     const data = await booksServices.show(params.id as string)
-    console.log(data)
     setBook(data)
     setIsLoading(false)
+
+    bookBeingEditedMethodsForm.reset({
+      ...data,
+      authors: data.authors.join(', '),
+      categories: data.categories.join(', ')
+    })
   }, [params.id])
 
   async function handleDeleteBookById() {
@@ -53,7 +65,7 @@ export default function AboutBook() {
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>
 
       <HeaderNavigationAbout
-        onEdit={() => console.log('open')}
+        onEdit={onOpenEditModal}
         onDelete={handleDeleteBookById}
       />
 
@@ -92,6 +104,37 @@ export default function AboutBook() {
               Fechar
             </Button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenEditModal} onClose={onCloseEditModal} size="6xl">
+        <ModalContent bgColor={currentBgColor}>
+
+          <ModalHeader
+            position="sticky" top="20px" left="0" maxW="1300px" mx="auto" p="5" borderRadius="sm" bgColor={currentBgColor} zIndex="sticky" mb="12"
+            w="full" display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap" gap="34px" mt="42px"
+          >
+            <ModalCloseButton size="lg" />
+            <Title noOfLines={1} my="0">Editar livro: {book.title}</Title>
+
+            <Button
+              type="button"
+              onClick={onCloseEditModal}
+              transition="all ease .25s"
+              _hover={{ bgColor: 'orange.600' }}
+              _active={{ bgColor: 'orange.500' }}
+              bgColor="orange.500"
+              size="lg"
+            >
+              Atualizar
+            </Button>
+          </ModalHeader>
+
+          <ModalBody>
+            <FormProvider {...bookBeingEditedMethodsForm}>
+              <FormBook />
+            </FormProvider>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Stack>
