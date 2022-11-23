@@ -8,7 +8,6 @@ export class UpdateBookUseCase {
 
     Object.entries(newValues).forEach(([key, value]) => {
       if (key === 'quantity') {
-        console.log(typeof Number(value))
         return originalValues.quantity === Number(value)
           ? null
           : Object.assign(fieldsUpdated, { quantity: Number(value) })
