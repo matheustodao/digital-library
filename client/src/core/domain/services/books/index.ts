@@ -37,7 +37,8 @@ export class BooksServices extends HttpClientDigitalLibrary {
 
   async update(id: string, newValues: NewBookParams, originalValues?: BookParams) {
     const fieldsHaveChanged = this.usecase.update.handleParams(newValues, originalValues)
-    console.log(fieldsHaveChanged)
+
+    if (JSON.stringify(fieldsHaveChanged) === '{}') return false
 
     const bookUpdated = await this.httpClient.patch({
       data: { ...fieldsHaveChanged, id }
