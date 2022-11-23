@@ -55,6 +55,7 @@ export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack }: 
           w="48px"
           h="48px"
           bgColor="red.500"
+          color="white"
           _hover={{ bgColor: 'red.400' }}
           aria-label="Deletar"
           transition="all ease .25s"
