@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import BookCard from '@components/Book/Card'
-
-import { Box, Button, Flex, SimpleGrid } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import HeaderPage from '@components/pages/HeaderPage'
-import { Plus, SortAscending, SortDescending } from 'phosphor-react'
+import { Plus } from 'phosphor-react'
 import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
