@@ -11,7 +11,7 @@ export default function LoggedLayout({ children }: IProps) {
   return (
     <>
       <Header />
-      <Stack as="main" px="10" py="6">
+      <Stack as="main" px="10" py="6" mb="42px">
         <Outlet />
         {children}
       </Stack>
