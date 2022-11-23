@@ -22,10 +22,13 @@ import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
 import { booksServices } from '@services/books'
-import { BookParams } from '@type/book'
+import { BookParams, NewBookParams } from '@type/book'
 import Title from '@components/pages/Title'
 import { FormBook } from '@components/Book/Form'
 import { FormProvider, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { updateBookSchemaValidation } from '@validations/yup/digitalLibrary/book/update'
+import { toast } from 'react-toastify'
 
 export default function AboutBook() {
   const params = useParams()
@@ -36,7 +39,10 @@ export default function AboutBook() {
   const [isLoading, setIsLoading] = useState(true)
   const finalRef = useRef(null)
   const currentBgColor = useColorModeValue('white', 'gray.800')
-  const bookBeingEditedMethodsForm = useForm()
+  const bookBeingEditedMethodsForm = useForm<NewBookParams>({
+    resolver: yupResolver(updateBookSchemaValidation),
+    mode: 'onBlur'
+  })
 
   const loadBookInfo = useCallback(async () => {
     const data = await booksServices.show(params.id as string)
@@ -53,6 +59,16 @@ export default function AboutBook() {
   async function handleDeleteBookById() {
     await booksServices.delete(book.id)
     navigate('/books')
+  }
+
+  async function handleUpdateBook(data: NewBookParams) {
+    try {
+      const updated = await booksServices.update(book.id, data, book)
+      setBook(updated)
+      onCloseEditModal()
+    } catch {
+      toast.error('Aconteceu algum erro, tente novamente mais tarde')
+    }
   }
 
   useEffect(() => {
@@ -108,8 +124,7 @@ export default function AboutBook() {
       </Modal>
 
       <Modal isOpen={isOpenEditModal} onClose={onCloseEditModal} size="6xl">
-        <ModalContent bgColor={currentBgColor}>
-
+        <ModalContent bgColor={currentBgColor} as="form" noValidate onSubmit={bookBeingEditedMethodsForm.handleSubmit(handleUpdateBook)}>
           <ModalHeader
             position="sticky" top="20px" left="0" maxW="1300px" mx="auto" p="5" borderRadius="sm" bgColor={currentBgColor} zIndex="sticky" mb="12"
             w="full" display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap" gap="34px" mt="42px"
@@ -118,8 +133,7 @@ export default function AboutBook() {
             <Title noOfLines={1} my="0">Editar livro: {book.title}</Title>
 
             <Button
-              type="button"
-              onClick={onCloseEditModal}
+              type="submit"
               transition="all ease .25s"
               _hover={{ bgColor: 'orange.600' }}
               _active={{ bgColor: 'orange.500' }}
