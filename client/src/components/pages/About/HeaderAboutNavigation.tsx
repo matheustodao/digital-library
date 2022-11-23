@@ -5,16 +5,26 @@ import { useNavigate } from 'react-router-dom'
 interface IProps {
   onEdit: () => void
   onDelete: () => void
+  pathGoBack?: string
 }
 
-export default function HeaderNavigationAbout({ onEdit, onDelete }: IProps) {
+export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack }: IProps) {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  function handleGoBack() {
+    if (pathGoBack) {
+      navigate(pathGoBack)
+      return null
+    }
+
+    navigate(-1)
+  }
 
   return (
     <Flex justifyContent="space-between" alignItems="center" width="100%">
       <Button
-        onClick={() => navigate(-1)}
+        onClick={handleGoBack}
         color="blackAlpha.700"
         bgColor="gray.200"
         _hover={{ bg: 'gray.300' }}

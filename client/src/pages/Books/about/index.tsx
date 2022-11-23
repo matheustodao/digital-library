@@ -54,6 +54,7 @@ export default function AboutBook() {
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>
 
       <HeaderNavigationAbout
+        pathGoBack="/books"
         onEdit={onOpenEditModal}
         onDelete={handleDeleteBookById}
       />
