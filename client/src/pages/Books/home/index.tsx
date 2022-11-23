@@ -12,12 +12,14 @@ import { BookParams } from '@type/book'
 import BooksList from './components/BooksList'
 import NotBookFound from '@components/Book/errors/NotBookFound'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
+import NotFoundData from '@components/Errors/NotFoundData'
 
 export default function BooksPage() {
   const navigate = useNavigate()
   const [books, setBooks] = useState<BookParams[]>([] as BookParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
   const [searchByTerm, setSearchByTerm] = useState('')
+  const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
 
   const loadBooks = useCallback(async () => {
     const data = await booksServices.index({
@@ -26,6 +28,9 @@ export default function BooksPage() {
         text: searchByTerm
       }
     })
+
+    setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+
     setBooks(data)
   }, [sortBook, searchByTerm])
 
@@ -71,8 +76,12 @@ export default function BooksPage() {
 
       <BooksList books={books} />
 
-      {!books.length && (
+      {(!books.length && !hasSearchedBookByTerm) && (
         <NotBookFound />
+      )}
+
+      {hasSearchedBookByTerm && (
+        <NotFoundData />
       )}
     </>
   )
