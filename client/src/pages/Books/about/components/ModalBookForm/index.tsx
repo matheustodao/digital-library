@@ -60,13 +60,21 @@ export default function ModalBookForm({ bookBeingEdited, disclosure, onSetBook }
 
   return (
     <Modal isOpen={disclosure.isOpen} onClose={() => disclosure.onClose()} size="6xl">
-      <ModalContent bgColor={currentBgColor} as="form" noValidate onSubmit={bookBeingEditedMethodsForm.handleSubmit(handleUpdateBook)}>
+      <ModalContent
+        bgColor={currentBgColor}
+        as="form"
+        noValidate
+        onSubmit={bookBeingEditedMethodsForm.handleSubmit(handleUpdateBook)}
+        position="relative"
+      >
+        <ModalCloseButton size="lg" />
         <ModalHeader
           position="sticky" top="20px" left="0" maxW="1300px" mx="auto" p="5" borderRadius="sm" bgColor={currentBgColor} zIndex="sticky" mb="12"
           w="full" display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap" gap="34px" mt="42px"
         >
-          <ModalCloseButton size="lg" />
-          <Title noOfLines={1} my="0">Editar livro: {bookBeingEdited.title}</Title>
+          <Title noOfLines={1} my="0">
+            Editar livro: {bookBeingEdited.title}
+          </Title>
 
           <Button
             type="submit"
