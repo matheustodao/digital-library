@@ -70,7 +70,7 @@ export default function ModalBookForm({ bookBeingEdited, disclosure, onSetBook }
         <ModalCloseButton size="lg" />
         <ModalHeader
           position="sticky" top="20px" left="0" maxW="1300px" mx="auto" p="5" borderRadius="sm" bgColor={currentBgColor} zIndex="sticky" mb="12"
-          w="full" display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap" gap="34px" mt="42px"
+          w="full" display="flex" alignItems="center" justifyContent="space-around" flexWrap="wrap" gap="34px" mt="62px"
         >
           <Title noOfLines={1} my="0">
             Editar livro: {bookBeingEdited.title}
