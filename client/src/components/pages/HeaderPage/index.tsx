@@ -28,6 +28,7 @@ export default function HeaderPage({ button, search }: IProps) {
       >
         <SearchBar {...search} />
       </Box>
+
       <Button
         bgColor="orange.500"
         color="white"
