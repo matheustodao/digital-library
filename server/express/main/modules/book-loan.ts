@@ -99,15 +99,35 @@ class BookLoanController {
 
 	async getById(req: Request, res: Response) {
 		try {
-			const params = req.params as { bookLoanId: string };
+			const params = req.params as { loanBookId: string };
 
 			const bookLoan = await prisma.bookLoan.findUnique({
 				where: {
-					id: params.bookLoanId
+					id: params.loanBookId
+				},
+				include: {
+					book: {
+						select: {
+							id: true,
+							title: true,
+							cover: true,
+							authors: true,
+							tumble: true,
+							publishingCompany: true
+						}
+					}
 				}
 			});
 
-			return ok(res, bookLoan);
+			const loansParsed = {
+				...bookLoan,
+				book: {
+					...bookLoan.book,
+					authors: bookLoan.book.authors?.trim()?.split(',') ?? ['Desconhecido']
+				}
+			}
+
+			return ok(res, loansParsed);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
