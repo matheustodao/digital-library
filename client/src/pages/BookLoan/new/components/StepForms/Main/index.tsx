@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { Select } from 'chakra-react-select'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { AsyncSelect } from 'chakra-react-select'
 
 import { Flex, FormControl, FormErrorMessage, FormLabel, Input, Stack, useMediaQuery } from '@chakra-ui/react'
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import { BookParams } from '@type/book'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
 import { Controller, useFormContext } from 'react-hook-form'
+import { booksServices } from '@services/books'
 
 const days = [
   'D', 'S', 'T', 'Q', 'Q', 'S', 'S'
@@ -21,16 +22,21 @@ const configDatePicker = {
   dayNames: days
 }
 
-interface IProps {
-  optionsSelect: Array<{ label: string, value: string }> | undefined
-  bookBeingLoaned: BookParams | undefined
-}
-
-export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps) {
+export default function StepMainForm() {
   const [exitDate, setExitDate] = useState<Date>(new Date())
   const [deliveryDate, setDeliveryDate] = useState<Date>(new Date())
-  const { control, setValue, formState: { errors } } = useFormContext()
+  const { control, setValue, formState: { errors }, watch } = useFormContext()
   const [isSmallThan500px] = useMediaQuery('(max-width: 500px)')
+  const [bookBeingLoaned, setBookBeingLoaned] = useState({} as BookParams)
+  const bookId = watch('bookId')?.value
+  const yesterday = useMemo(() => {
+    const date = new Date()
+    const currentDay = date.getDate()
+    const currentMonth = date.getMonth() + 1
+    const currentYear = date.getFullYear()
+
+    return new Date(`${currentYear}-${currentMonth}-${currentDay}`)
+  }, [])
 
   function handleChangeExitDate(date: Date) {
     setExitDate(date)
@@ -41,6 +47,24 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
     setDeliveryDate(date)
     setValue('deliveryDate', date)
   }
+
+  const findBookInformation = useCallback(async () => {
+    const bookFound = await booksServices.show(bookId)
+    setBookBeingLoaned(bookFound)
+  }, [bookId])
+
+  const loadBooks = useCallback(async() => {
+    const data = await booksServices.index()
+
+    return data.map((currentBook) => ({
+      label: currentBook.title,
+      value: currentBook.id
+    }))
+  }, [])
+
+  useEffect(() => {
+    findBookInformation()
+  }, [findBookInformation])
 
   return (
     <Stack spacing={20}>
@@ -53,8 +77,10 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
               Titulo do Livro
               <RequiredAsterisk />
             </FormLabel>
-            <Select
-              options={optionsSelect}
+            <AsyncSelect
+              loadOptions={loadBooks}
+              cacheOptions
+              defaultOptions
               placeholder="Escolhe um livro"
               focusBorderColor="orange.500"
               errorBorderColor="red"
@@ -68,7 +94,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
       <Flex gap={8} direction={isSmallThan500px ? 'column' : 'row'}>
         <FormControl>
           <FormLabel>Autor</FormLabel>
-          <Input disabled value={bookBeingLoaned?.authors.join(', ') ?? ''} />
+          <Input disabled value={bookBeingLoaned?.authors?.join(', ') ?? ''} />
         </FormControl>
 
         <FormControl>
@@ -90,7 +116,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
                 date={exitDate}
                 onDateChange={handleChangeExitDate}
                 configs={configDatePicker}
-                minDate={new Date()}
+                minDate={yesterday}
                 propsConfigs={{
                   inputProps: {
                     focusBorderColor: 'orange.500'
@@ -114,7 +140,7 @@ export default function StepMainForm({ optionsSelect, bookBeingLoaned }: IProps)
                 date={deliveryDate}
                 onDateChange={handleChangeDeliveryDate}
                 configs={configDatePicker}
-                minDate={new Date()}
+                minDate={yesterday}
                 propsConfigs={{
                   inputProps: {
                     focusBorderColor: 'orange.500'
