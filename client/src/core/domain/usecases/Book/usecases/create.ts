@@ -20,10 +20,10 @@ export class CreateBookUseCase {
       }
 
       if (key === 'categories' || key === 'authors') {
-        return Object.assign(validParams, { [key]: value.split(',') })
+        return Object.assign(validParams, { [key]: value.trim().split(',') })
       }
 
-      Object.assign(validParams, { [key]: value })
+      Object.assign(validParams, { [key]: value.trim() })
     })
 
     return validParams

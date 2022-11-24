@@ -20,10 +20,10 @@ export class UpdateBookUseCase {
       if (key === 'categories' || key === 'authors') {
         if (originalValues[key].join().trim() === value.trim()) return null
 
-        return Object.assign(fieldsUpdated, { [key]: value.split(',') })
+        return Object.assign(fieldsUpdated, { [key]: value.trim().split(',') })
       }
 
-      Object.assign(fieldsUpdated, { [key]: value })
+      Object.assign(fieldsUpdated, { [key]: value.trim() })
     })
 
     return fieldsUpdated
