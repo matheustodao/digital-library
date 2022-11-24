@@ -1,8 +1,9 @@
+'use-strict'
 import * as yup from 'yup'
 import '../../locales'
 
 export const createBookLoanValidationSchema = yup.object().shape({
-  isStudent: yup.boolean().default(true),
+  isStudent: yup.boolean(),
   personName: yup.string().required(),
 
   bookId: yup.mixed()
@@ -12,15 +13,13 @@ export const createBookLoanValidationSchema = yup.object().shape({
     })
     .required(),
 
-  deliveryDate: yup.mixed().transform((date: Date) => date.toISOString()).nullable().required(),
+  deliveryDate: yup.string().required(),
 
-  exitDate: yup.date()
-    .default(new Date())
-    .transform((date: Date | undefined) => date?.toISOString())
-    .notRequired(),
+  exitDate: yup.date().default(new Date()).optional(),
 
   // Student field required
   class: yup.string()
+    .nullable()
     .when('isStudent', {
       is: (isStudent: boolean) => isStudent,
       then: (rule) => rule.required(),
@@ -28,6 +27,7 @@ export const createBookLoanValidationSchema = yup.object().shape({
     }),
 
   teacherName: yup.string()
+    .nullable()
     .when('isStudent', {
       is: (isStudent: boolean) => isStudent,
       then: (rule) => rule.required(),
