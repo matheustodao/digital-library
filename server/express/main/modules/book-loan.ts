@@ -140,6 +140,18 @@ class BookLoanController {
 					: {},
 				orderBy: {
 					deliveryDate: orderBy || 'asc'
+				},
+				include: {
+					book: {
+						select: {
+							id: true,
+							title: true,
+							cover: true,
+							authors: true,
+							tumble: true,
+							publishingCompany: true
+						}
+					}
 				}
 			});
 
