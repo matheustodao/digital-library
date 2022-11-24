@@ -8,14 +8,18 @@ export const createBookLoanValidationSchema = yup.object().shape({
 
   bookId: yup.mixed()
     .nullable()
-    .transform((option) => {
-      return 12332
-    })
+    .transform((option) => option.value)
     .required(),
 
-  deliveryDate: yup.string().required(),
+  deliveryDate: yup.string().transform((option) => new Date(option).toISOString()).required(),
 
-  exitDate: yup.date().default(new Date()).optional(),
+  exitDate: yup.string().transform((option) => {
+    if (!option) {
+      return new Date().toISOString()
+    }
+
+    return new Date(option).toISOString()
+  }).optional().default(new Date().toISOString()),
 
   // Student field required
   class: yup.string()
