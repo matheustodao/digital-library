@@ -155,7 +155,15 @@ class BookLoanController {
 				}
 			});
 
-			return ok(res, books);
+			const loansParsed = books.map((currentLoan) => ({
+				...currentLoan,
+				book: {
+					...currentLoan.book,
+					authors: currentLoan.book.authors?.split(',') ?? ['Desconhecido']
+				}
+			}))
+
+			return ok(res, loansParsed);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
