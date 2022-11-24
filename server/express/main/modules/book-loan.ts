@@ -16,25 +16,24 @@ class BookLoanController {
 			const body = req.body as BookLoanParams;
 			const {
 				deliveryDate,
-				book,
+				bookId,
 				email,
 				exitDate,
 				personName,
 				phone,
-				status,
 				teacherName
 			} = body;
 
 			const bookLoan = await prisma.bookLoan.create({
 				data: {
-					bookId: book.id,
+					bookId,
 					class: body.class,
 					deliveryDate: new Date(deliveryDate),
 					exitDate: new Date(exitDate),
 					email,
 					personName,
 					phone,
-					status,
+					status: 'no_warning',
 					teacherName
 				}
 			});

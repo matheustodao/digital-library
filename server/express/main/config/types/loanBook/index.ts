@@ -35,7 +35,9 @@ type BookLoan = {
 	phone: string | null;
 };
 
-type BookLoanParams = Omit<BookLoan, 'id'>;
+type BookLoanParams = Omit<BookLoan, 'id' | 'book' | 'status'> & {
+	bookId: string
+};
 
 type BookLoanReportByMonth = {
 	type: 'student' | 'employee';
