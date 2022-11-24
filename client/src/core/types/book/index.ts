@@ -17,4 +17,5 @@ export interface NewBookParams extends Omit<BookParams, 'authors' | 'categories'
   isbn: string | null
   description: string | null
   cover: string | null
+  isStudent: boolean | any
 }
