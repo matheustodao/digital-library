@@ -135,9 +135,9 @@ class BookLoanController {
 
 	async find(req: Request, res: Response) {
 		try {
-			const filters = req.query as { text: string; orderBy: 'asc' | 'desc' };
+			const filters = req.query as { text: string; orderBy: 'asc' | 'desc', orderDeliveryDateBy: 'asc' | 'desc' };
 
-			const { text, orderBy } = filters;
+			const { text, orderBy, orderDeliveryDateBy } = filters;
 
 			const books = await prisma.bookLoan.findMany({
 				where: text
@@ -158,9 +158,14 @@ class BookLoanController {
 							]
 					  }
 					: {},
-				orderBy: {
-					deliveryDate: orderBy || 'asc'
-				},
+				orderBy: [
+					{
+						deliveryDate: orderDeliveryDateBy || 'asc'
+					},
+					{
+						personName: orderBy || 'asc',
+					}
+				],
 				include: {
 					book: {
 						select: {
