@@ -10,6 +10,7 @@ import { bookLoanServices } from '@services/bookLoan'
 import BooksLoanedList from './components/BooksLoanedList'
 import NotFoundData from '@components/Errors/NotFoundData'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
+import NotBookLoanedFound from '@components/BookLoan/errors/NotBookLoanedFound'
 
 export default function LoansBooksPage() {
   const navigation = useNavigate()
@@ -108,7 +109,7 @@ export default function LoansBooksPage() {
       <BooksLoanedList loans={booksLoaned} />
 
       {(!booksLoaned.length && !hasSearchedBookByTerm) && (
-        <p>Não há emprestimo</p>
+        <NotBookLoanedFound />
       )}
 
       {hasSearchedBookByTerm && (
