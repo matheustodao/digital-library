@@ -37,7 +37,7 @@ export default function BookLoanCard({ loan }: BookLoanCardProps) {
     const diffInYears = Math.floor(diffInMonth / 12)
 
     if (diffInDays <= 0) {
-      if (diffInDays === 0) {
+      if (diffInDays === -1) {
         return 'Entrega Hoje'
       }
 
