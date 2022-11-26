@@ -1,13 +1,16 @@
-import { Button } from '@chakra-ui/react'
+import { Button, ButtonProps } from '@chakra-ui/react'
 import React from 'react'
 import SortIcon from './components/SortIcon'
 
 interface SortButtonProps {
   sort: 'asc' | 'desc'
   onSort: () => void
+  ascLabel?: string | null
+  descLabel?: string | null
+  _buttonProps?: ButtonProps
 }
 
-export default function SortButton({ onSort, sort }: SortButtonProps) {
+export default function SortButton({ onSort, sort, ascLabel, descLabel, _buttonProps }: SortButtonProps) {
   return (
     <Button
       bg="orange.100"
@@ -17,11 +20,16 @@ export default function SortButton({ onSort, sort }: SortButtonProps) {
       _hover={{ bg: 'orange.200' }}
       _active={{ bg: 'orange.200' }}
       onClick={onSort}
-      w="175px"
+      {..._buttonProps}
     >
-      <span style={{ width: '96px' }}>
-        {sort === 'asc' ? 'Crescente' : 'Decrescente'}
+      <span style={{ minWidth: '96px' }}>
+        {sort === 'asc' ? ascLabel : descLabel}
       </span>
     </Button>
   )
+}
+
+SortButton.defaultProps = {
+  ascLabel: 'Crescente',
+  descLabel: 'Decrescente'
 }
