@@ -2,7 +2,7 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
-import { Button, Checkbox, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Button, Checkbox, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft } from 'phosphor-react'
 import { createBookLoanValidationSchema } from '@validations/yup/digitalLibrary/bookLoan'
 
@@ -76,16 +76,18 @@ export default function NewBookLoanPage() {
           {(isStudent) && <StudentForm />}
           {(!isStudent) && <EmployeeForm />}
 
-          <Button
-            type="submit"
+          <Flex alignItems="center" justifyContent="center">
+            <Button
+              type="submit"
               bgColor="orange.500"
               size="lg"
               textColor="white"
               transitionDelay=".23s"
               _hover={{ bg: 'orange.600' }}
-            >
-            Cadastrar
-          </Button>
+              >
+              Cadastrar
+            </Button>
+          </Flex>
         </Stack>
       </FormProvider>
 
