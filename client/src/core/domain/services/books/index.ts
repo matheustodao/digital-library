@@ -1,12 +1,10 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { BookParams, NewBookParams } from '@type/book'
+import { FilterOptionsType } from '@type/index'
 import { BookController } from '@usecases/Book'
 
-interface ListOptionsParams {
-  filters: {
-    text?: string
-    orderBy?: 'asc' | 'desc'
-  }
+interface ListOptionParams {
+  filters?: FilterOptionsType
 }
 
 export class BooksServices extends HttpClientDigitalLibrary {
@@ -17,7 +15,7 @@ export class BooksServices extends HttpClientDigitalLibrary {
     this.usecase = new BookController()
   }
 
-  async index(options?: ListOptionsParams) {
+  async index(options?: ListOptionParams) {
     const books = await this.httpClient.get({
       options: {
         params: options?.filters
