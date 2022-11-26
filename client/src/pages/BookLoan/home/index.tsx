@@ -1,14 +1,27 @@
-import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
-import BookLoanCard from '@components/BookLoan/Card'
+import { Box, Flex } from '@chakra-ui/react'
 
-import loansBooks from '@mocks/loansBooks.json'
 import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
 import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { BookLoanParams } from '@type/bookLoan'
+import { bookLoanServices } from '@services/bookLoan'
+import BooksLoanedList from './components/BooksLoanedList'
 
 export default function LoansBooksPage() {
   const navigation = useNavigate()
+  const [booksLoaned, setBooksLoaned] = useState([] as BookLoanParams[])
+
+  const loadBooksLoaned = useCallback(async () => {
+    const data = await bookLoanServices.index()
+    setBooksLoaned(data)
+  }, [])
+
+  useEffect(() => {
+    loadBooksLoaned()
+  }, [loadBooksLoaned])
+
   return (
     <>
       <Title>Livros Alugados</Title>
@@ -29,11 +42,10 @@ export default function LoansBooksPage() {
           }}
         />
       </Box>
-      <SimpleGrid minChildWidth={249} spacingX="24px" spacingY="32px">
-        {loansBooks.results.map((loan) => (
-          <BookLoanCard loan={loan} key={loan.id} />
-        ))}
-      </SimpleGrid>
+
+      {!!booksLoaned.length && (
+        <BooksLoanedList loans={booksLoaned} />
+      )}
     </>
   )
 }

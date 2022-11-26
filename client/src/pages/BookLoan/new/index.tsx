@@ -12,6 +12,7 @@ import StepMainForm from './components/StepForms/Main'
 import StudentForm from './components/StepForms/StudentForm'
 import EmployeeForm from './components/StepForms/EmployeeForm'
 import { NewBookParams } from '@type/book'
+import { bookLoanServices } from '@services/bookLoan'
 
 export default function NewBookLoanPage() {
   const navigation = useNavigate()
@@ -26,7 +27,12 @@ export default function NewBookLoanPage() {
   const isStudent = Boolean(methods.watch('isStudent'))
 
   async function onRegisterBookLoan(data: any) {
-    console.log({ data })
+    try {
+      const response = await bookLoanServices.create(data)
+      navigation(`/loans/${response.id}`)
+    } catch {
+      console.error('Happened an error')
+    }
   }
 
   return (

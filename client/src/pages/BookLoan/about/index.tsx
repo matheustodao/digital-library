@@ -21,8 +21,11 @@ import { CaretRight, Circle, List, User } from 'phosphor-react'
 import { BookViewContent } from '@components/Book/View/components/BookContent'
 import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation'
 
-import loans from '@mocks/loansBooks.json'
 import { loanStatus } from '@locales/statusLoan'
+import { useCallback, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { bookLoanServices } from '@services/bookLoan'
+import { BookLoanParams } from '@type/bookLoan'
 
 const formatDateOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
@@ -31,7 +34,8 @@ const formatDateOptions: Intl.DateTimeFormatOptions = {
 }
 
 export default function AboutLoanedBook() {
-  const loan = loans.results[0]
+  const [loan, setLoan] = useState(null as BookLoanParams | null)
+  const params = useParams()
   const [isSmallThan900] = useMediaQuery('(max-width: 900px)')
   const [isSmallThan395] = useMediaQuery('(max-width: 395px)')
   const {
@@ -39,10 +43,24 @@ export default function AboutLoanedBook() {
     onOpen: onOpenAuthorModal,
     onClose: onCloseAuthorModal
   } = useDisclosure()
+  const loadBookLoanedInformation = useCallback(async () => {
+    const data = await bookLoanServices.show(params.id as string)
+    setLoan(data)
+  }, [params.id])
+
+  useEffect(() => {
+    loadBookLoanedInformation()
+  }, [loadBookLoanedInformation])
+
+  if (!loan) return <p>loading...</p>
 
   return (
     <Stack maxW="900px" w="100%" mx="auto" width="100%" my="16" gap="32">
-      <HeaderNavigationAbout onEdit={() => console.log('okay')} onDelete={() => {}} />
+      <HeaderNavigationAbout
+        onEdit={() => console.log('okay')}
+        onDelete={() => {}}
+        pathGoBack="/loans"
+      />
 
       <Box>
         <Flex
