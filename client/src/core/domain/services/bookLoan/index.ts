@@ -31,6 +31,12 @@ class BookLoanServices extends HttpClientDigitalLibrary {
       path: `/${id}`
     })
   }
+
+  async delete(id: string) {
+    return this.httpClient.delete({
+      path: `/${id}`
+    })
+  }
 }
 
 export const bookLoanServices = new BookLoanServices()
