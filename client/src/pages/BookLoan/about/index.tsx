@@ -23,7 +23,7 @@ import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation
 
 import { loanStatus } from '@locales/statusLoan'
 import { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { bookLoanServices } from '@services/bookLoan'
 import { BookLoanParams } from '@type/bookLoan'
 
@@ -36,6 +36,7 @@ const formatDateOptions: Intl.DateTimeFormatOptions = {
 export default function AboutLoanedBook() {
   const [loan, setLoan] = useState(null as BookLoanParams | null)
   const params = useParams()
+  const navigate = useNavigate()
   const [isSmallThan900] = useMediaQuery('(max-width: 900px)')
   const [isSmallThan395] = useMediaQuery('(max-width: 395px)')
   const {
@@ -43,10 +44,18 @@ export default function AboutLoanedBook() {
     onOpen: onOpenAuthorModal,
     onClose: onCloseAuthorModal
   } = useDisclosure()
+
   const loadBookLoanedInformation = useCallback(async () => {
     const data = await bookLoanServices.show(params.id as string)
     setLoan(data)
   }, [params.id])
+
+  async function handleDeleteBookLoanedById() {
+    if (!loan) return null
+
+    await bookLoanServices.delete(loan.id)
+    navigate('/loans')
+  }
 
   useEffect(() => {
     loadBookLoanedInformation()
@@ -58,8 +67,9 @@ export default function AboutLoanedBook() {
     <Stack maxW="900px" w="100%" mx="auto" width="100%" my="16" gap="32">
       <HeaderNavigationAbout
         onEdit={() => console.log('okay')}
-        onDelete={() => {}}
+        onDelete={handleDeleteBookLoanedById}
         pathGoBack="/loans"
+        messageDelete="Tem certeza que deseja deletar esse empréstimo?"
       />
 
       <Box>
