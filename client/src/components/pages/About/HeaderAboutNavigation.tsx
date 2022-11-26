@@ -6,9 +6,10 @@ interface IProps {
   onEdit: () => void
   onDelete: () => void
   pathGoBack?: string
+  messageDelete?: string
 }
 
-export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack }: IProps) {
+export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack, messageDelete }: IProps) {
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -70,7 +71,10 @@ export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack }: 
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tem certeza que deseja deletar esse livro?</ModalHeader>
+          <ModalHeader>
+            {!messageDelete && 'Tem certeza que deseja deletar esse livro?'}
+            {messageDelete}
+          </ModalHeader>
             <ModalBody>
               <Text>Essa ação não poderá ser revertida!</Text>
             </ModalBody>
@@ -84,6 +88,7 @@ export default function HeaderNavigationAbout({ onEdit, onDelete, pathGoBack }: 
                 bgColor="red.500"
                 _hover={{ bgColor: 'red.400' }}
                 onClick={() => onDelete()}
+                color="white"
               >
                 Deletar
               </Button>
