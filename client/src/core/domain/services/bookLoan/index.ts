@@ -1,4 +1,11 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
+import { FilterOptionsType } from '@type/index'
+
+interface ListOptionParams {
+  filters?: FilterOptionsType & {
+    orderDeliveryDateBy?: 'asc' | 'desc'
+  }
+}
 
 class BookLoanServices extends HttpClientDigitalLibrary {
   constructor() {
@@ -11,8 +18,12 @@ class BookLoanServices extends HttpClientDigitalLibrary {
     })
   }
 
-  async index() {
-    return this.httpClient.get()
+  async index(options?: ListOptionParams) {
+    return this.httpClient.get({
+      options: {
+        params: options?.filters
+      }
+    })
   }
 
   async show(id: string) {
