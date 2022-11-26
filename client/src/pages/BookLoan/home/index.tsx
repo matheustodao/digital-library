@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 
 import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
@@ -18,6 +18,7 @@ export default function LoansBooksPage() {
   const [orderDeliveryDateBy, setOrderDeliveryDateBy] = useState<'asc' | 'desc'>('asc')
   const [searchByTerm, setSearchByTerm] = useState('')
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
+  const bgHoverSortButtonDelivery = useColorModeValue('gray.100', 'gray.700')
 
   const loadBooksLoaned = useCallback(async () => {
     const data = await bookLoanServices.index({
@@ -71,9 +72,35 @@ export default function LoansBooksPage() {
         />
 
         <Box mt="18px">
-          <Flex gap="12px" w="full">
-            <SortButton sort={sortBook} onSort={handleToggleSortBook} ascLabel="Nome Crescente" descLabel="Nome Decrescente" />
-            <SortButton sort={orderDeliveryDateBy} onSort={handleToggleOrderDeliveryDateBy} ascLabel="Entrega Crescente" descLabel="Entrega Decrescente" />
+          <Flex gap="12px" w="full" flexWrap="wrap">
+            <SortButton
+              sort={sortBook}
+              onSort={handleToggleSortBook}
+              ascLabel="Nome Crescente" descLabel="Nome Decrescente"
+              _buttonProps={{
+                minW: '208px'
+              }}
+            />
+
+            <SortButton
+              sort={orderDeliveryDateBy}
+              onSort={handleToggleOrderDeliveryDateBy}
+              ascLabel="Entrega Crescente"
+              descLabel="Entrega Decrescente"
+              _buttonProps={{
+                minW: '224px',
+                variant: 'outline',
+                bg: 'transparent',
+                color: 'ButtonText',
+                fontWeight: 'medium',
+                _hover: {
+                  bg: bgHoverSortButtonDelivery
+                },
+                _active: {
+                  bg: bgHoverSortButtonDelivery
+                }
+              }}
+            />
           </Flex>
         </Box>
       </Box>
