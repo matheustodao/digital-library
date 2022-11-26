@@ -92,6 +92,7 @@ export default function BookLoanCard({ loan }: BookLoanCardProps) {
       boxShadow="md"
       borderWidth="1px"
       transition="all .302s ease"
+      flex="1 1 210px"
       _hover={{
         transform: 'scale(1.05)'
       }}
