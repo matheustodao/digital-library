@@ -33,6 +33,7 @@ type BookLoan = {
 	teacherName: string | null;
 	email: string | null;
 	phone: string | null;
+	isStudent: boolean;
 };
 
 type BookLoanParams = Omit<BookLoan, 'id' | 'book' | 'status'> & {

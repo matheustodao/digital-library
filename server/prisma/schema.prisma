@@ -51,6 +51,8 @@ model BookLoan {
 
   personName String
 
+  isStudent Boolean @default(true)
+
   teacherName String?
   phone       String?
   class       String?

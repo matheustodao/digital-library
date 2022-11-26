@@ -21,6 +21,7 @@ class BookLoanController {
 				exitDate,
 				personName,
 				phone,
+				isStudent,
 				teacherName
 			} = body;
 
@@ -34,7 +35,8 @@ class BookLoanController {
 					personName,
 					phone,
 					status: 'no_warning',
-					teacherName
+					teacherName,
+					isStudent
 				}
 			});
 
@@ -83,11 +85,11 @@ class BookLoanController {
 
 	async delete(req: Request, res: Response) {
 		try {
-			const params = req.params as { bookLoanId: string };
+			const params = req.params as { loanBookId: string };
 
 			await prisma.bookLoan.delete({
 				where: {
-					id: params.bookLoanId
+					id: params.loanBookId
 				}
 			});
 
