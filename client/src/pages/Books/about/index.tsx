@@ -23,6 +23,7 @@ import HeaderNavigationAbout from '@components/pages/About/HeaderAboutNavigation
 import { booksServices } from '@services/books'
 import { BookParams } from '@type/book'
 import ModalBookForm from './components/ModalBookForm'
+import BookLoader from '@components/Loader'
 
 export default function AboutBook() {
   const params = useParams()
@@ -48,7 +49,7 @@ export default function AboutBook() {
     loadBookInfo()
   }, [loadBookInfo])
 
-  if (isLoading) return <h1>Carregando...</h1>
+  if (isLoading) return <BookLoader />
 
   return (
     <Stack maxW="896px" w="100%" mx="auto" width="100%" my="16" gap="32" ref={finalRef}>

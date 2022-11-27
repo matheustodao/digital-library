@@ -10,25 +10,31 @@ import BooksList from './components/BooksList'
 import NotBookFound from '@components/Book/errors/NotBookFound'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
 import NotFoundData from '@components/Errors/NotFoundData'
+import BookLoader from '@components/Loader'
 
 export default function BooksPage() {
   const navigate = useNavigate()
   const [books, setBooks] = useState<BookParams[]>([] as BookParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
   const [searchByTerm, setSearchByTerm] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
 
   const loadBooks = useCallback(async () => {
-    const data = await booksServices.index({
-      filters: {
-        orderBy: sortBook,
-        text: searchByTerm
-      }
-    })
+    try {
+      const data = await booksServices.index({
+        filters: {
+          orderBy: sortBook,
+          text: searchByTerm
+        }
+      })
 
-    setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
 
-    setBooks(data)
+      setBooks(data)
+    } finally {
+      setIsLoading(false)
+    }
   }, [sortBook, searchByTerm])
 
   function handleToggleSortBook() {
@@ -44,6 +50,8 @@ export default function BooksPage() {
   useEffect(() => {
     loadBooks()
   }, [loadBooks])
+
+  if (isLoading) return <BookLoader />
 
   return (
     <>

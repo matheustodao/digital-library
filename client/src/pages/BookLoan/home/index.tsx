@@ -11,6 +11,7 @@ import BooksLoanedList from './components/BooksLoanedList'
 import NotFoundData from '@components/Errors/NotFoundData'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
 import NotBookLoanedFound from '@components/BookLoan/errors/NotBookLoanedFound'
+import BookLoader from '@components/Loader'
 
 export default function LoansBooksPage() {
   const navigation = useNavigate()
@@ -20,17 +21,22 @@ export default function LoansBooksPage() {
   const [searchByTerm, setSearchByTerm] = useState('')
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
   const bgHoverSortButtonDelivery = useColorModeValue('gray.100', 'gray.700')
+  const [isLoading, setIsLoading] = useState(true)
 
   const loadBooksLoaned = useCallback(async () => {
-    const data = await bookLoanServices.index({
-      filters: {
-        orderBy: sortBook,
-        text: searchByTerm,
-        orderDeliveryDateBy
-      }
-    })
-    setBooksLoaned(data)
-    setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+    try {
+      const data = await bookLoanServices.index({
+        filters: {
+          orderBy: sortBook,
+          text: searchByTerm,
+          orderDeliveryDateBy
+        }
+      })
+      setBooksLoaned(data)
+      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+    } finally {
+      setIsLoading(false)
+    }
   }, [sortBook, searchByTerm, orderDeliveryDateBy])
 
   function handleToggleSortBook() {
@@ -50,6 +56,8 @@ export default function LoansBooksPage() {
   useEffect(() => {
     loadBooksLoaned()
   }, [loadBooksLoaned])
+
+  if (isLoading) return <BookLoader />
 
   return (
     <>

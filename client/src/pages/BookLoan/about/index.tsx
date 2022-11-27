@@ -27,6 +27,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { bookLoanServices } from '@services/bookLoan'
 import { BookLoanParams } from '@type/bookLoan'
 import ModalBookLoanForm from './components/ModalBookLoanForm'
+import BookLoader from '@components/Loader'
 
 const formatDateOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
@@ -40,6 +41,7 @@ export default function AboutLoanedBook() {
   const navigate = useNavigate()
   const [isSmallThan900] = useMediaQuery('(max-width: 900px)')
   const [isSmallThan395] = useMediaQuery('(max-width: 395px)')
+  const [isLoading, setIsLoading] = useState(true)
   const {
     isOpen: isOpenAuthorModal,
     onOpen: onOpenAuthorModal,
@@ -52,8 +54,12 @@ export default function AboutLoanedBook() {
   } = useDisclosure()
 
   const loadBookLoanedInformation = useCallback(async () => {
-    const data = await bookLoanServices.show(params.id as string)
-    setLoan(data)
+    try {
+      const data = await bookLoanServices.show(params.id as string)
+      setLoan(data)
+    } finally {
+      setIsLoading(false)
+    }
   }, [params.id])
 
   async function handleDeleteBookLoanedById() {
@@ -67,7 +73,7 @@ export default function AboutLoanedBook() {
     loadBookLoanedInformation()
   }, [loadBookLoanedInformation])
 
-  if (!loan) return <p>loading...</p>
+  if (isLoading || !loan) return <BookLoader />
 
   return (
     <Stack maxW="900px" w="100%" mx="auto" width="100%" my="16" gap="32">
