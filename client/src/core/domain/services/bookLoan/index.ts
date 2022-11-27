@@ -1,5 +1,7 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
+import { BookLoanParams, UpdateBookLoanParams } from '@type/bookLoan'
 import { FilterOptionsType } from '@type/index'
+import { BookLoanController } from '@usecases/BookLoan'
 
 interface ListOptionParams {
   filters?: FilterOptionsType & {
@@ -8,8 +10,11 @@ interface ListOptionParams {
 }
 
 class BookLoanServices extends HttpClientDigitalLibrary {
+  readonly usecase: BookLoanController
+
   constructor() {
     super('/book-loan')
+    this.usecase = new BookLoanController()
   }
 
   async create(data: any) {
@@ -29,6 +34,15 @@ class BookLoanServices extends HttpClientDigitalLibrary {
   async show(id: string) {
     return this.httpClient.get({
       path: `/${id}`
+    })
+  }
+
+  async update(id: string, data: UpdateBookLoanParams, originalValues?: BookLoanParams) {
+    return this.httpClient.patch({
+      data: {
+        ...data,
+        id
+      }
     })
   }
 
