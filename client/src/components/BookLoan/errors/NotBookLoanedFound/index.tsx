@@ -7,7 +7,7 @@ export default function NotBookLoanedFound() {
   const navigate = useNavigate()
 
   function handleNavigateToCreateBook() {
-    navigate('/loans')
+    navigate('/loans/new')
   }
 
   return (
