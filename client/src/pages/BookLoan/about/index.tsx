@@ -105,13 +105,13 @@ export default function AboutLoanedBook() {
             />
           </Box>
 
-          <Flex direction="column" h="full" gap="32px" maxW="479px">
+          <Flex direction="column" h="full" gap="32px" maxW="479px" w="full">
             <BookViewContent.Container>
               <BookViewContent.Title>Titulo do livro</BookViewContent.Title>
               <BookViewContent.Text fontSize="32" fontWeight="300">{loan.book.title}</BookViewContent.Text>
             </BookViewContent.Container>
 
-            <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="100%" columnGap={{ sm: '10', md: '20%' }}>
+            <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="full" columnGap={{ sm: '10', md: '20%' }}>
               <BookViewContent.Container>
                 {loan.book.authors.length > 1 && (
                   <Button variant="unstyled" h="min-content" onClick={onOpenAuthorModal}>
