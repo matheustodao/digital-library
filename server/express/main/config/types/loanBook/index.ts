@@ -41,7 +41,7 @@ type BookLoanParams = Omit<BookLoan, 'id' | 'book' | 'status'> & {
 };
 
 type BookLoanReportByMonth = {
-	type: 'student' | 'employee';
+	id: 'student' | 'employee';
 	data: { month: months; amount: number }[];
 }[];
 

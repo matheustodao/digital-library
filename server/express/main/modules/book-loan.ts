@@ -263,8 +263,8 @@ class BookLoanController {
 			});
 
 			const report = [
-				{ type: 'student', data: [] },
-				{ type: 'employee', data: [] }
+				{ id: 'student', data: [] },
+				{ id: 'employee', data: [] }
 			] as BookLoanReportByMonth;
 
 			studentLoans.forEach((loan) => {
