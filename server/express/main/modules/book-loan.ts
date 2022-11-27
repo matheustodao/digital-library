@@ -244,16 +244,14 @@ class BookLoanController {
 
 			const studentLoans = await prisma.bookLoan.findMany({
 				where: {
-					teacherName: { not: null },
-					class: { not: null },
+					isStudent: { equals: true },
 					exitDate: { gte: beginningOfTheYear }
 				}
 			});
 
 			const employeeLoans = await prisma.bookLoan.findMany({
 				where: {
-					email: { not: null },
-					phone: { not: null },
+					isStudent: { equals: false },
 					exitDate: { gte: beginningOfTheYear }
 				}
 			});
@@ -269,10 +267,10 @@ class BookLoanController {
 				});
 
 				const reportMonthIndex = report[0].data.findIndex(
-					(reportMonth) => reportMonth.month === month
+					(reportMonth) => reportMonth.month.includes(month)
 				);
 
-				if (reportMonthIndex !== -1) {
+				if (reportMonthIndex === -1) {
 					report[0].data.push({ month: month as months, amount: 1 });
 				} else {
 					report[0].data[reportMonthIndex].amount++;
@@ -285,10 +283,10 @@ class BookLoanController {
 				});
 
 				const reportMonthIndex = report[1].data.findIndex(
-					(reportMonth) => reportMonth.month === month
+					(reportMonth) => reportMonth.month.includes(month)
 				);
 
-				if (reportMonthIndex !== -1) {
+				if (reportMonthIndex === -1) {
 					report[1].data.push({ month: month as months, amount: 1 });
 				} else {
 					report[1].data[reportMonthIndex].amount++;
