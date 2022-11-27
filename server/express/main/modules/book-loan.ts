@@ -267,6 +267,16 @@ class BookLoanController {
 				{ id: 'employee', data: [] }
 			] as BookLoanReportByMonth;
 
+			for (const currentReport in report) {
+				for (let index = 0; index < 12; index++) {
+					const month = new Date(`2022-${index + 1}-21`).toLocaleDateString('pt-BR', {
+						month: 'long'
+					}) as months;
+
+					report[currentReport].data.push({ month, amount: 0 })
+				}
+			}
+
 			studentLoans.forEach((loan) => {
 				const month = new Date(loan.exitDate).toLocaleDateString('pt-BR', {
 					month: 'long'
