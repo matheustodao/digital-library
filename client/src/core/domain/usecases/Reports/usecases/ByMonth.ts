@@ -20,7 +20,6 @@ export class ReportByMonthLoanUseCase {
       }
     })
 
-    console.log({ parsed })
     return parsed
   }
 }
