@@ -128,6 +128,12 @@ class BookController {
 									publishingCompany: { contains: text }
 								},
 								{
+									categories: { contains: text }
+								},
+								{
+									tumble: { contains: text }
+								},
+								{
 									description: { contains: text }
 								},
 								{

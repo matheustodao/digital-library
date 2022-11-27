@@ -157,8 +157,14 @@ class BookLoanController {
 									book: { authors: { contains: text } }
 								},
 								{
+									book: { tumble: { contains: text } }
+								},
+								{
+									book: { categories: { contains: text } }
+								},
+								{
 									status: { contains: text }
-								}
+								},
 							]
 					  }
 					: {},
