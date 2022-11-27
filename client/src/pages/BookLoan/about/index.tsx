@@ -108,7 +108,7 @@ export default function AboutLoanedBook() {
           <Flex direction="column" h="full" gap="32px" maxW="479px" w="full">
             <BookViewContent.Container>
               <BookViewContent.Title>Titulo do livro</BookViewContent.Title>
-              <BookViewContent.Text fontSize="32" fontWeight="300">{loan.book.title}</BookViewContent.Text>
+              <BookViewContent.Text fontSize="32" fontWeight="300" noOfLines={3}>{loan.book.title}</BookViewContent.Text>
             </BookViewContent.Container>
 
             <SimpleGrid columns={isSmallThan395 ? 1 : 2} rowGap="8" width="full" columnGap={{ sm: '10', md: '20%' }}>
