@@ -26,6 +26,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { bookLoanServices } from '@services/bookLoan'
 import { BookLoanParams } from '@type/bookLoan'
+import ModalBookLoanForm from './components/ModalBookLoanForm'
 
 const formatDateOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
@@ -43,6 +44,11 @@ export default function AboutLoanedBook() {
     isOpen: isOpenAuthorModal,
     onOpen: onOpenAuthorModal,
     onClose: onCloseAuthorModal
+  } = useDisclosure()
+  const {
+    isOpen: isOpenEditLoan,
+    onOpen: onOpenEditLoan,
+    onClose: onCloseEditLoan
   } = useDisclosure()
 
   const loadBookLoanedInformation = useCallback(async () => {
@@ -66,7 +72,7 @@ export default function AboutLoanedBook() {
   return (
     <Stack maxW="900px" w="100%" mx="auto" width="100%" my="16" gap="32">
       <HeaderNavigationAbout
-        onEdit={() => console.log('okay')}
+        onEdit={() => onOpenEditLoan()}
         onDelete={handleDeleteBookLoanedById}
         pathGoBack="/loans"
         messageDelete="Tem certeza que deseja deletar esse empréstimo?"
@@ -160,10 +166,8 @@ export default function AboutLoanedBook() {
               <BookViewContent.Container>
                 <BookViewContent.Title>Status</BookViewContent.Title>
                 <BookViewContent.Text display="flex" alignItems="center" gap="2">
-                  { /* @ts-expect-error */ }
                   <Circle size={24} weight="fill" color={loanStatus[loan.status].color} />
-                  { /* @ts-expect-error */ }
-                  {loanStatus[loan.status].translation['pt-bt']}
+                  {loanStatus[loan.status].translation['pt-br']}
                 </BookViewContent.Text>
               </BookViewContent.Container>
 
@@ -204,6 +208,15 @@ export default function AboutLoanedBook() {
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+      <ModalBookLoanForm
+        bookLoaned={loan}
+        onSetBookLoaned={(data) => setLoan(data)}
+        disclosure={{
+          isOpen: isOpenEditLoan,
+          onClose: onCloseEditLoan
+        }}
+      />
       </Box>
     </Stack>
   )
