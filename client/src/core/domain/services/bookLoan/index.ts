@@ -38,12 +38,16 @@ class BookLoanServices extends HttpClientDigitalLibrary {
   }
 
   async update(id: string, data: UpdateBookLoanParams, originalValues?: BookLoanParams) {
-    return this.httpClient.patch({
+    const response = await this.httpClient.patch({
       data: {
         ...data,
         id
       }
     })
+
+    const bookLoaned = this.show(response.id)
+
+    return bookLoaned
   }
 
   async delete(id: string) {
