@@ -15,6 +15,13 @@ class ReportsServices extends HttpClientDigitalLibrary {
 
     return dataParsed
   }
+
+  async getTopBooksCategories() {
+    const data = await this.httpClient.get({ path: '/book/top/categories' })
+    const dataParsed = this.usecase.topCategories.formatToPieGraphNivo(data)
+
+    return dataParsed
+  }
 }
 
 export const reportsServices = new ReportsServices()
