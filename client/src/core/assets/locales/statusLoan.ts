@@ -1,8 +1,21 @@
-export const loanStatus = {
+import { LoanBookStatus } from '@type/bookLoan/index'
+
+interface TContentStatusParam {
+  color: string
+  translation: {
+    'pt-br': string
+  }
+}
+
+export type LoanStatusParams = {
+  [key in LoanBookStatus]: TContentStatusParam
+}
+
+export const loanStatus: LoanStatusParams = {
   no_warning: {
     color: '#99CF63',
     translation: {
-      'pt-bt': 'Sem Aviso'
+      'pt-br': 'Sem Aviso'
     }
   },
 
