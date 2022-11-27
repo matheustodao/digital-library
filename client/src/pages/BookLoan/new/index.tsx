@@ -1,7 +1,7 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
-import { Button, Checkbox, Flex, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Button, Checkbox, Icon, Stack, useColorModeValue } from '@chakra-ui/react'
 import { CaretLeft } from 'phosphor-react'
 import { createBookLoanValidationSchema } from '@validations/yup/digitalLibrary/bookLoan'
 
@@ -35,7 +35,7 @@ export default function NewBookLoanPage() {
   }
 
   return (
-    <Stack margin="auto" maxW="866px" width="100%" spacing={12} mt={32}>
+    <Stack margin="auto" maxW="866px" width="100%" spacing={12} mt="12px">
       <Button
         onClick={() => navigation(-1)}
         display="flex"
@@ -75,18 +75,16 @@ export default function NewBookLoanPage() {
           {(isStudent) && <StudentForm />}
           {(!isStudent) && <EmployeeForm />}
 
-          <Flex alignItems="center" justifyContent="center">
-            <Button
-              type="submit"
-              bgColor="orange.500"
-              size="lg"
-              textColor="white"
-              transitionDelay=".23s"
-              _hover={{ bg: 'orange.600' }}
-              >
-              Cadastrar
-            </Button>
-          </Flex>
+          <Button
+            type="submit"
+            bgColor="orange.500"
+            size="lg"
+            textColor="white"
+            transitionDelay=".23s"
+            _hover={{ bg: 'orange.600' }}
+            >
+            Cadastrar
+          </Button>
         </Stack>
       </FormProvider>
 
