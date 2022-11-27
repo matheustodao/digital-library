@@ -48,7 +48,7 @@ class BookLoanController {
 
 	async update(req: Request, res: Response) {
 		try {
-			const body = req.body as BookLoan;
+			const body = req.body as BookLoanParams & { id: string, status: string };
 			const {
 				deliveryDate,
 				email,
@@ -57,7 +57,8 @@ class BookLoanController {
 				personName,
 				phone,
 				status,
-				teacherName
+				teacherName,
+				bookId
 			} = body;
 
 			const bookLoan = await prisma.bookLoan.update({
@@ -73,7 +74,8 @@ class BookLoanController {
 					personName,
 					phone,
 					status,
-					teacherName
+					teacherName,
+					bookId
 				}
 			});
 
