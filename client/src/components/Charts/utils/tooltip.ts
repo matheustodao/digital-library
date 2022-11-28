@@ -15,6 +15,9 @@ const Container = styled.div`
   justify-content: center;
   gap: 12px;
   padding: 12px;
+
+  box-shadow: 0px 4px 15px -3px rgba(0,0,0,0.1);
+
   span {
     color: #252525 !important;
 
