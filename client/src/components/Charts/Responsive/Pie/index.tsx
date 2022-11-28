@@ -17,7 +17,6 @@ export default function ResponsivePieCustom({ data, _containerProps }: Responsiv
       <ResponsivePie
         data={data}
         margin={{ right: 170, left: 32 }}
-        startAngle={16}
         sortByValue={true}
         innerRadius={0.55}
         padAngle={0.7}
@@ -63,7 +62,7 @@ export default function ResponsivePieCustom({ data, _containerProps }: Responsiv
               {
                 on: 'hover',
                 style: {
-                  itemTextColor: '#000'
+                  itemOpacity: 0.7
                 }
               }
             ]
