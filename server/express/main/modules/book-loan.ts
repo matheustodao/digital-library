@@ -208,23 +208,25 @@ class BookLoanController {
 		try {
 			const { _count: studentLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					teacherName: { not: null },
-					class: { not: null }
+					isStudent: true,
 				},
 				_count: true
 			});
 
 			const { _count: employeeLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					phone: { not: null },
-					email: { not: null }
+					isStudent: false,
 				},
 				_count: true
 			});
 
-			const { _count: booksQuantity } = await prisma.book.aggregate({
-				_count: true
+			const books = await prisma.book.findMany({
+				select: {
+					quantity: true
+				}
 			});
+
+			const booksQuantity = books.reduce((accumulator, currentBook) => accumulator + currentBook.quantity, 0)
 
 			const { _count: bookLoansQuantity } = await prisma.bookLoan.aggregate({
 				_count: true
