@@ -1,8 +1,8 @@
 import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
 import { configServices } from '@services/config'
 import { AuthConfigParams, AuthLoginParams } from '@type/auth'
-import { createContext, useMemo, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { createContext, useEffect, useMemo, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 interface AuthContextProps {
@@ -17,21 +17,36 @@ export const AuthContext = createContext({} as AuthContextProps)
 
 export default function AuthProvider({ children }: any) {
   const navigate = useNavigate()
+  const location = useLocation()
   const configsRef = useRef<AuthConfigParams>({} as AuthConfigParams)
   const isAuthenticatedRef = useRef(!configsRef.current)
 
   function handleSetupConfig(data?: AuthConfigParams) {
     if (!data) return
 
+    isAuthenticatedRef.current = true
     configsRef.current = { ...configsRef.current, ...data }
+  }
+
+  function persistLogin(authConfig?: AuthConfigParams) {
+    const hasLoginSaved = sessionStorage.getItem('@auth')
+
+    if (authConfig) {
+      sessionStorage.setItem('@auth', JSON.stringify(authConfig))
+      handleSetupConfig(authConfig)
+      return
+    }
+
+    isAuthenticatedRef.current = true
+    handleSetupConfig(JSON.parse(hasLoginSaved as string))
+    navigate(location.pathname)
   }
 
   async function handleSignIn(params: AuthLoginParams) {
     try {
       const data: AuthConfigParams = await configServices.login(params)
-      isAuthenticatedRef.current = true
 
-      handleSetupConfig(data)
+      persistLogin(data)
       navigate('/home', { replace: true })
       toast.success('Login realizado com sucesso', { position: 'bottom-center' })
     } catch (err) {
@@ -54,6 +69,10 @@ export default function AuthProvider({ children }: any) {
     handleSetupConfig: (params?: AuthConfigParams) => handleSetupConfig(params),
     handleSignOut: () => handleSignOut()
   }), [configsRef.current, isAuthenticatedRef.current])
+
+  useEffect(() => {
+    persistLogin()
+  }, [])
 
   return (
     <AuthContext.Provider value={values}>
