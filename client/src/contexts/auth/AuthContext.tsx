@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useRef } from 'react'
+import { createContext, ReactNode, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -17,7 +17,7 @@ interface AuthContextProps {
 
 export const AuthContext = createContext({} as AuthContextProps)
 
-export default function AuthProvider({ children }: any) {
+export default function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
   const configsRef = useRef<AuthConfigParams>({} as AuthConfigParams)
@@ -31,15 +31,13 @@ export default function AuthProvider({ children }: any) {
   }
 
   function persistLogin(authConfig?: AuthConfigParams) {
-    const hasLoginSaved = sessionStorage.getItem('@auth')
-
     if (authConfig) {
       sessionStorage.setItem('@auth', JSON.stringify(authConfig))
       handleSetupConfig(authConfig)
       return
     }
+    const hasLoginSaved = sessionStorage.getItem('@auth')
 
-    isAuthenticatedRef.current = true
     handleSetupConfig(JSON.parse(hasLoginSaved as string))
     navigate(location.pathname)
   }
@@ -62,6 +60,7 @@ export default function AuthProvider({ children }: any) {
     configsRef.current = {} as never
     navigate('/login', { replace: true })
     isAuthenticatedRef.current = false
+    sessionStorage.removeItem('@auth')
   }
 
   const values = useMemo(() => ({
