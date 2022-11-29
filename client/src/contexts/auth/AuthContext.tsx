@@ -1,9 +1,11 @@
-import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
-import { configServices } from '@services/config'
-import { AuthConfigParams, AuthLoginParams } from '@type/auth'
 import { createContext, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+
+import { configServices } from '@services/config'
+
+import { invalidCredentials } from '@infra/errors/digitalLibrary/status/400/invalidCredentials'
+import { AuthConfigParams, AuthLoginParams } from '@type/auth'
 
 interface AuthContextProps {
   configs: AuthConfigParams
