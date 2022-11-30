@@ -32,12 +32,12 @@ export default function BookLoanCard({ loan }: BookLoanCardProps) {
     const currentDate = new Date()
     // @ts-expect-error
     const diffInMS = deliveryDate - currentDate
-    const diffInDays = Math.floor(diffInMS / (1000 * 60 * 60 * 24))
-    const diffInMonth = Math.floor(diffInDays / 30.417)
-    const diffInYears = Math.floor(diffInMonth / 12)
+    const diffInDays = Math.floor(diffInMS / (1000 * 60 * 60 * 24)) + 1
+    const diffInMonth = Math.floor(diffInDays / 30.417) + 1
+    const diffInYears = Math.floor(diffInMonth / 12) + 1
 
     if (diffInDays <= 0) {
-      if (diffInDays === -1) {
+      if (diffInDays === 0) {
         return 'Entrega Hoje'
       }
 
