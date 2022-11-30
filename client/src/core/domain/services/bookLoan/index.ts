@@ -5,7 +5,7 @@ import { BookLoanController } from '@usecases/BookLoan'
 
 interface ListOptionParams {
   filters?: FilterOptionsType & {
-    orderDeliveryDateBy?: 'asc' | 'desc'
+    date?: 'in_date' | 'out_date' | null
   }
 }
 

@@ -1,7 +1,7 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Flex, Text } from '@chakra-ui/react'
 
 import HeaderPage from '@components/pages/HeaderPage'
-import { Plus } from 'phosphor-react'
+import { Plus, X } from 'phosphor-react'
 import Title from '@components/pages/Title'
 import { useNavigate } from 'react-router-dom'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
@@ -17,10 +17,10 @@ export default function LoansBooksPage() {
   const navigation = useNavigate()
   const [booksLoaned, setBooksLoaned] = useState([] as BookLoanParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
-  const [orderDeliveryDateBy, setOrderDeliveryDateBy] = useState<'asc' | 'desc'>('asc')
+  const [orderDeliveryOutDate, setOrderDeliveryOutDate] = useState<null | 'out_date'>(null)
+  const [orderDeliveryInDate, setOrderDeliveryInDate] = useState<null | 'in_date'>(null)
   const [searchByTerm, setSearchByTerm] = useState('')
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
-  const bgHoverSortButtonDelivery = useColorModeValue('gray.100', 'gray.700')
   const [isLoading, setIsLoading] = useState(true)
 
   const loadBooksLoaned = useCallback(async () => {
@@ -29,7 +29,7 @@ export default function LoansBooksPage() {
         filters: {
           orderBy: sortBook,
           text: searchByTerm,
-          orderDeliveryDateBy
+          date: orderDeliveryInDate ?? orderDeliveryOutDate
         }
       })
       setBooksLoaned(data)
@@ -37,14 +37,21 @@ export default function LoansBooksPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [sortBook, searchByTerm, orderDeliveryDateBy])
+  }, [sortBook, searchByTerm, orderDeliveryInDate, orderDeliveryOutDate])
 
   function handleToggleSortBook() {
     setSortBook((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
   }
 
-  function handleToggleOrderDeliveryDateBy() {
-    setOrderDeliveryDateBy((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
+  function handleToggleOrderDeliveryInDate() {
+    setOrderDeliveryInDate((oldState) => (oldState === 'in_date' ? null : 'in_date'))
+    setOrderDeliveryOutDate(null)
+  }
+
+  function handleToggleOrderDeliveryOutDate() {
+    setOrderDeliveryOutDate((oldState) => (
+      oldState === 'out_date' ? null : 'out_date'))
+    setOrderDeliveryInDate(null)
   }
 
   function handleChangeSearchByTerm(e: ChangeEvent<HTMLInputElement>) {
@@ -91,25 +98,37 @@ export default function LoansBooksPage() {
               }}
             />
 
-            <SortButton
-              sort={orderDeliveryDateBy}
-              onSort={handleToggleOrderDeliveryDateBy}
-              ascLabel="Entrega Crescente"
-              descLabel="Entrega Decrescente"
-              _buttonProps={{
-                minW: '224px',
-                variant: 'outline',
-                bg: 'transparent',
-                color: 'ButtonText',
-                fontWeight: 'medium',
-                _hover: {
-                  bg: bgHoverSortButtonDelivery
-                },
-                _active: {
-                  bg: bgHoverSortButtonDelivery
-                }
-              }}
-            />
+            <Button
+              transition="all .35s ease"
+              bg={orderDeliveryInDate ? 'red.500' : 'transparent'}
+              variant={orderDeliveryInDate ? 'solid' : 'outline'}
+              color={orderDeliveryInDate ? 'white' : 'current'}
+              leftIcon={orderDeliveryInDate ? <X /> : <></>}
+              _hover={{ bg: orderDeliveryInDate ? 'red.400' : 'blackAlpha.300' }}
+              _active={{ bg: orderDeliveryInDate ? 'red.400' : 'blackAlpha.300' }}
+              onClick={handleToggleOrderDeliveryInDate}
+              flex="175px 1 100px"
+            >
+              <Text as="span" noOfLines={1}>
+                Em Dia
+              </Text>
+            </Button>
+
+            <Button
+              transition="all .35s ease"
+              bg={orderDeliveryOutDate ? 'red.500' : 'transparent'}
+              variant={orderDeliveryOutDate ? 'solid' : 'outline'}
+              color={orderDeliveryOutDate ? 'white' : 'current'}
+              leftIcon={orderDeliveryOutDate ? <X /> : <></>}
+              _hover={{ bg: orderDeliveryOutDate ? 'red.400' : 'blackAlpha.300' }}
+              _active={{ bg: orderDeliveryOutDate ? 'red.400' : 'blackAlpha.300' }}
+              onClick={handleToggleOrderDeliveryOutDate}
+              flex="175px 1 100px"
+            >
+              <Text as="span" noOfLines={1}>
+                Em Atraso
+              </Text>
+            </Button>
           </Flex>
         </Box>
       </Box>
