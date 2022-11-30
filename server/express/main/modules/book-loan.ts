@@ -139,35 +139,49 @@ class BookLoanController {
 
 	async find(req: Request, res: Response) {
 		try {
-			const filters = req.query as { text: string; orderBy: 'asc' | 'desc' };
+			const filters = req.query as { text: string; orderBy: 'asc' | 'desc', date: 'in_date' | 'out_date' };
 
-			const { text, orderBy } = filters;
+			const { text, orderBy, date } = filters;
+			const currentDate = new Date();
+			const yesterday = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`)
+
+			const whereContent = {}
+
+			if (date === 'out_date' || date === 'in_date') {
+				const dateConditional = date === 'out_date' ? { lte: yesterday } : { gt: yesterday }
+
+				Object.assign(whereContent, { deliveryDate: dateConditional })
+			}
+
+			if (text) {
+				const searchConditional = {
+					OR: [
+						{
+							personName: { contains: text }
+						},
+						{
+							book: { title: { contains: text } }
+						},
+						{
+							book: { authors: { contains: text } }
+						},
+						{
+							book: { tumble: { contains: text } }
+						},
+						{
+							book: { categories: { contains: text } }
+						},
+						{
+							status: { contains: text }
+						},
+					]
+				}
+
+				Object.assign(whereContent, { ...searchConditional })
+			}
 
 			const books = await prisma.bookLoan.findMany({
-				where: text
-					? {
-							OR: [
-								{
-									personName: { contains: text }
-								},
-								{
-									book: { title: { contains: text } }
-								},
-								{
-									book: { authors: { contains: text } }
-								},
-								{
-									book: { tumble: { contains: text } }
-								},
-								{
-									book: { categories: { contains: text } }
-								},
-								{
-									status: { contains: text }
-								},
-							]
-					  }
-					: {},
+				where: whereContent,
 				orderBy: {
 					personName: orderBy || 'asc'
 				},
@@ -185,58 +199,7 @@ class BookLoanController {
 				}
 			});
 
-			const loansParsed = books.map((currentLoan) => ({
-				...currentLoan,
-				book: {
-					...currentLoan.book,
-					authors: currentLoan.book.authors?.split(',') ?? ['Desconhecido']
-				}
-			}))
-
-			return ok(res, orderBy === 'desc' ? loansParsed.reverse() : loansParsed.sort());
-		} catch (error) {
-			return serverError(res, error as Error);
-		}
-	}
-
-	async findDeliveryDate(req: Request, res: Response) {
-		const currentDate = new Date();
-
-		const yesterday = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`)
-		try {
-			const filters = req.query as { date: 'out_date' | 'in_date' };
-
-			const { date } = filters;
-
-			const books = await prisma.bookLoan.findMany({
-				where: date === 'out_date' || date === 'in_date' ? {
-					deliveryDate: date === 'out_date'
-						? { lte: yesterday }
-						: { gt: yesterday }
-				} : {},
-				include: {
-					book: {
-						select: {
-							id: true,
-							title: true,
-							cover: true,
-							authors: true,
-							tumble: true,
-							publishingCompany: true
-						}
-					}
-				}
-			});
-
-			const loansParsed = books.map((currentLoan) => ({
-				...currentLoan,
-				book: {
-					...currentLoan.book,
-					authors: currentLoan.book.authors?.split(',') ?? ['Desconhecido']
-				}
-			}))
-
-			return ok(res, loansParsed);
+			return ok(res, books);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
