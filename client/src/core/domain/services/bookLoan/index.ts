@@ -24,11 +24,13 @@ class BookLoanServices extends HttpClientDigitalLibrary {
   }
 
   async index(options?: ListOptionParams) {
-    return this.httpClient.get({
+    const bookLoans = await this.httpClient.get({
       options: {
         params: options?.filters
       }
     })
+
+    return this.usecase.list.handleBookLoans(bookLoans)
   }
 
   async show(id: string) {

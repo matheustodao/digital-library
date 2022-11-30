@@ -20,5 +20,9 @@ export interface BookLoanParams {
 
 }
 
+export interface ResponseBookLoanParams extends Omit<BookLoanParams, 'book'> {
+  book: Omit<LoanedBookParams, 'authors'> & { authors: string }
+}
+
 export interface CreateBookLoanParams extends Omit<BookLoanParams, 'id' | 'book' | 'status'> { }
 export interface UpdateBookLoanParams extends BookLoanParams { }
