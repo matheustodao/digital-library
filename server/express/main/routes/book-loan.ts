@@ -9,6 +9,7 @@ const router = Router();
 router.get('/book-loan/by/month', bookLoanController.bookLoanByMonth);
 router.get('/dashboard', bookLoanController.bookLoanReport);
 router.get('/book-loan/:loanBookId', bookLoanController.getById);
+router.get('/book-loan', bookLoanController.findDeliveryDate);
 router.get('/book-loan', bookLoanController.find);
 
 router.delete('/book-loan/:loanBookId', bookLoanController.delete);
