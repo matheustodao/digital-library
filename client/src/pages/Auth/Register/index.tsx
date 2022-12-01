@@ -65,7 +65,7 @@ export default function Register() {
 
           <FormControl>
             <FormLabel>E-mail de backup</FormLabel>
-            <Input placeholder="seu email" size="lg" type="email" {...register('emailBackup')} />
+            <Input placeholder="seu email" size="lg" type="email" {...register('backupEmail')} />
           </FormControl>
 
           <FormControl isInvalid={!!errors?.password}>
