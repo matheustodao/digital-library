@@ -3,6 +3,12 @@ import { Book, BookCategories, BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 
 import { Response, Request } from 'express';
+import { QueryPagination, BookResponseParams } from '../config/types/response';
+
+type FindQueryOptions = QueryPagination & {
+	text: string,
+	orderBy: 'asc' | 'desc'
+}
 
 class BookController {
 	async create(req: Request, res: Response) {
@@ -113,9 +119,16 @@ class BookController {
 
 	async find(req: Request, res: Response) {
 		try {
-			const filters = req.query as { text: string; orderBy: 'asc' | 'desc' };
+			const filters = req.query as FindQueryOptions;
 
-			const { text, orderBy } = filters;
+			const totalOfBooks = await prisma.book.count()
+
+			const { text, orderBy, page, limit  } = filters;
+
+			const currentPage = Number(page) || 1
+			const perPage = Number(limit) || 10
+			const pages = Math.floor(totalOfBooks / perPage)
+			const offset = (currentPage * perPage) - perPage
 
 			const books = await prisma.book.findMany({
 				where: text
@@ -144,8 +157,29 @@ class BookController {
 					: {},
 				orderBy: {
 					title: orderBy || 'asc'
-				}
+				},
+				take: perPage,
+				skip: offset
 			});
+
+			const response: BookResponseParams = {
+				limit: perPage,
+				page: currentPage,
+				pages,
+				results: books
+			}
+
+			return ok(res, response);
+		} catch (error) {
+			return serverError(res, error as Error);
+		}
+	}
+
+		async findAll(req: Request, res: Response) {
+		try {
+			const books = await prisma.book.findMany();
+
+			console.log(books)
 
 			return ok(res, books);
 		} catch (error) {
