@@ -23,22 +23,29 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const configsRef = useRef<AuthConfigParams>({} as AuthConfigParams)
   const isAuthenticatedRef = useRef(!configsRef.current)
 
-  function handleSetupConfig(data?: AuthConfigParams) {
+  function setupConfig(data?: AuthConfigParams) {
     if (!data) return
 
     isAuthenticatedRef.current = true
     configsRef.current = { ...configsRef.current, ...data }
   }
 
+  function handleSetupConfig(data?: AuthConfigParams) {
+    if (!data) return
+
+    setupConfig(data)
+    sessionStorage.setItem('@auth', JSON.stringify(data))
+  }
+
   function persistLogin(authConfig?: AuthConfigParams) {
     if (authConfig) {
       sessionStorage.setItem('@auth', JSON.stringify(authConfig))
-      handleSetupConfig(authConfig)
+      setupConfig(authConfig)
       return
     }
     const hasLoginSaved = sessionStorage.getItem('@auth')
 
-    handleSetupConfig(JSON.parse(hasLoginSaved as string))
+    setupConfig(JSON.parse(hasLoginSaved as string))
     navigate(location.pathname)
   }
 
