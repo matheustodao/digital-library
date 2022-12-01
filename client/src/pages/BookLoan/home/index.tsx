@@ -32,8 +32,8 @@ export default function LoansBooksPage() {
           date: orderDeliveryInDate ?? orderDeliveryOutDate
         }
       })
-      setBooksLoaned(data)
-      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+      setBooksLoaned(data.results)
+      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.results.length)
     } finally {
       setIsLoading(false)
     }

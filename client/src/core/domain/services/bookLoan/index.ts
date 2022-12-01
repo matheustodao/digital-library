@@ -1,6 +1,7 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { BookLoanParams, UpdateBookLoanParams } from '@type/bookLoan'
 import { FilterOptionsType } from '@type/index'
+import { BookLoanResponseParams, ResponsePatternApi } from '@type/response'
 import { BookLoanController } from '@usecases/BookLoan'
 
 interface ListOptionParams {
@@ -23,14 +24,19 @@ class BookLoanServices extends HttpClientDigitalLibrary {
     })
   }
 
-  async index(options?: ListOptionParams) {
+  async index(options?: ListOptionParams): Promise<ResponsePatternApi<BookLoanParams[]>> {
     const bookLoans = await this.httpClient.get({
       options: {
         params: options?.filters
       }
-    })
+    }) as BookLoanResponseParams
 
-    return this.usecase.list.handleBookLoans(bookLoans)
+    const loansParsed = this.usecase.list.handleBookLoans(bookLoans.results)
+
+    return {
+      ...bookLoans,
+      results: loansParsed
+    }
   }
 
   async show(id: string) {
