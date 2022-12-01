@@ -130,31 +130,38 @@ class BookController {
 			const pages = Math.floor(totalOfBooks / perPage)
 			const offset = (currentPage * perPage) - perPage
 
+			const whereContent = {}
+
+			if (text) {
+				const searchConditional = {
+					OR: [
+						{
+							title: { contains: text }
+						},
+						{
+							publishingCompany: { contains: text }
+						},
+						{
+							categories: { contains: text }
+						},
+						{
+							tumble: { contains: text }
+						},
+						{
+							description: { contains: text }
+						},
+						{
+							authors: { contains: text }
+						}
+					]
+				}
+
+				Object.assign(whereContent, { ...searchConditional })
+			}
+
+
 			const books = await prisma.book.findMany({
-				where: text
-					? {
-							OR: [
-								{
-									title: { contains: text }
-								},
-								{
-									publishingCompany: { contains: text }
-								},
-								{
-									categories: { contains: text }
-								},
-								{
-									tumble: { contains: text }
-								},
-								{
-									description: { contains: text }
-								},
-								{
-									authors: { contains: text }
-								}
-							]
-					  }
-					: {},
+				where: whereContent,
 				orderBy: {
 					title: orderBy || 'asc'
 				},
