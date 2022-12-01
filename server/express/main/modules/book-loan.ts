@@ -9,6 +9,13 @@ import {
 	BookLoanReportByMonth,
 	months
 } from '../config/types/loanBook';
+import { BookLoanResponseParams, QueryPagination } from '../config/types/response';
+
+type FindQueryOptions = QueryPagination & {
+	text: string,
+	orderBy: 'asc' | 'desc',
+	date: 'in_date' | 'out_date'
+}
 
 class BookLoanController {
 	async create(req: Request, res: Response) {
@@ -139,9 +146,13 @@ class BookLoanController {
 
 	async find(req: Request, res: Response) {
 		try {
-			const filters = req.query as { text: string; orderBy: 'asc' | 'desc', date: 'in_date' | 'out_date' };
+			const filters = req.query as FindQueryOptions;
 
-			const { text, orderBy, date } = filters;
+			const { text, orderBy, date, page, limit } = filters;
+
+			const currentPage = Number(page) || 1
+			const perPage = Number(limit) || 10
+
 			const currentDate = new Date();
 			const yesterday = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`)
 
@@ -180,6 +191,11 @@ class BookLoanController {
 				Object.assign(whereContent, { ...searchConditional })
 			}
 
+			const totalLoans = await prisma.bookLoan.count({ where: whereContent })
+
+			const pages = Math.floor(totalLoans / perPage)
+			const offset = (currentPage * perPage) - perPage
+
 			const books = await prisma.bookLoan.findMany({
 				where: whereContent,
 				orderBy: {
@@ -196,10 +212,19 @@ class BookLoanController {
 							publishingCompany: true
 						}
 					}
-				}
+				},
+				take: perPage,
+				skip: offset,
 			});
 
-			return ok(res, books);
+			const response: BookLoanResponseParams = {
+				limit: perPage,
+				page: currentPage,
+				pages,
+				results: books
+			}
+
+			return ok(res, response);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
