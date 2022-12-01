@@ -1,10 +1,12 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { BookParams, NewBookParams } from '@type/book'
 import { FilterOptionsType } from '@type/index'
+import { BookResponseParams, QueryPagination } from '@type/response'
 import { BookController } from '@usecases/Book'
 
 interface ListOptionParams {
   filters?: FilterOptionsType
+  pagination?: QueryPagination
 }
 
 export class BooksServices extends HttpClientDigitalLibrary {
@@ -15,12 +17,29 @@ export class BooksServices extends HttpClientDigitalLibrary {
     this.usecase = new BookController()
   }
 
-  async index(options?: ListOptionParams) {
+  async index(options?: ListOptionParams): Promise<BookResponseParams> {
     const books = await this.httpClient.get({
       options: {
-        params: options?.filters
+        params: {
+          ...options?.filters,
+          ...options?.pagination
+        }
       }
+    }) as BookResponseParams
+
+    const booksParsed = this.usecase.list.handleBooks(books.results)
+
+    return {
+      ...books,
+      results: booksParsed
+    }
+  }
+
+  async listAll() {
+    const books = await this.httpClient.get({
+      path: '-all'
     })
+
     const booksParsed = this.usecase.list.handleBooks(books)
 
     return booksParsed

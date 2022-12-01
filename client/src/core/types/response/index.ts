@@ -1,11 +1,18 @@
 import { BookLoanParams } from './../bookLoan/index'
 import { BookParams } from '../book'
 
-export interface ResponsePatternApi<DataType = any> {
+export interface QueryPagination {
+  page: number
   pages: number
-  perPage: number
-  results: DataType[]
+  limit: number
 }
 
-export interface BookResponseParams extends ResponsePatternApi<BookParams> { }
-export interface BookLoanResponseParams extends ResponsePatternApi<BookLoanParams> { }
+export interface ResponsePatternApi<DataType = any> {
+  page: number
+  pages: number
+  limit: number
+  results: DataType
+}
+
+export interface BookResponseParams extends ResponsePatternApi<BookParams[]> { }
+export interface BookLoanResponseParams extends ResponsePatternApi<BookLoanParams[]> { }

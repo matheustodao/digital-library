@@ -54,7 +54,7 @@ export default function StepMainForm() {
   }, [bookId])
 
   const loadBooks = useCallback(async() => {
-    const data = await booksServices.index()
+    const data = await booksServices.listAll()
 
     return data.map((currentBook) => ({
       label: currentBook.title,

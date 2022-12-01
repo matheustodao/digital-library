@@ -29,9 +29,9 @@ export default function BooksPage() {
         }
       })
 
-      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.length)
+      setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.results.length)
 
-      setBooks(data)
+      setBooks(data.results)
     } finally {
       setIsLoading(false)
     }
