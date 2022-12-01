@@ -1,17 +1,31 @@
 import { Box, Button, Flex, FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import { Input } from '@components/FormUtils/Input'
 import Title from '@components/pages/Title'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { configServices } from '@services/config'
+import { AuthConfigParams } from '@type/auth'
+import { updateConfigSchemaValidation } from '@validations/yup/digitalLibrary/auth/update'
 import { CloudArrowUp } from 'phosphor-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import useAuth from 'src/hooks/useAuth'
 
 export default function BackupSubPage() {
-  const { configs } = useAuth()
-  const methods = useForm({
+  const { configs, handleSetupConfig } = useAuth()
+  const methods = useForm<AuthConfigParams>({
+    resolver: yupResolver(updateConfigSchemaValidation),
+    mode: 'onSubmit',
     defaultValues: {
-      emailBackup: configs.emailBackup
+      backupEmail: configs.backupEmail,
+      name: configs.name,
+      email: configs.email,
+      password: ''
     }
   })
+
+  async function handleOnUpdateConfigEmailBackup(data: AuthConfigParams) {
+    const responseData = await configServices.update(data, configs)
+    handleSetupConfig(responseData)
+  }
 
   return (
     <Stack maxW="425px" mx="auto">
@@ -34,7 +48,7 @@ export default function BackupSubPage() {
       </Box>
 
       <FormProvider {...methods}>
-        <Box as="form">
+        <Box as="form" onSubmit={methods.handleSubmit(handleOnUpdateConfigEmailBackup)}>
           <Title as="h2" mb="32px">Atualizar</Title>
           <Stack spacing="24px">
             <FormControl>
@@ -46,13 +60,14 @@ export default function BackupSubPage() {
                 size="lg"
                 type="email"
                 inputMode="email"
-                {...methods.register('emailBackup')}
+                {...methods.register('backupEmail')}
               />
             </FormControl>
           </Stack>
 
           <Button
             mt="32px"
+            type="submit"
             color="white"
             bg="orange.500"
             transition="all ease .25s"

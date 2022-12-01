@@ -29,8 +29,10 @@ export class ConfigServices extends HttpClientDigitalLibrary {
     })
   }
 
-  async update(data: AuthConfigParams, original: AuthConfigParams) {
+  async update(data: AuthConfigParams, original?: AuthConfigParams) {
     const validData = this.usecase.update.handleParams(data, original)
+
+    if (!validData) return
 
     return this.httpClient.patch({
       path: '/config',
