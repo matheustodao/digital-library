@@ -1,12 +1,15 @@
 import { HttpClientDigitalLibrary } from '@infra/Apis/digitalLibraryApi'
 import { BookParams, NewBookParams } from '@type/book'
 import { FilterOptionsType } from '@type/index'
-import { BookResponseParams, QueryPagination } from '@type/response'
+import { BookResponseParams } from '@type/response'
 import { BookController } from '@usecases/Book'
 
 interface ListOptionParams {
   filters?: FilterOptionsType
-  pagination?: QueryPagination
+  pagination?: {
+    page: number
+    limit?: number
+  }
 }
 
 export class BooksServices extends HttpClientDigitalLibrary {
