@@ -9,10 +9,12 @@ interface BooksListProps {
 }
 
 const BooksList = forwardRef(({ books, _flexProps }: BooksListProps, currentRef) => {
+  if (!books.length) return null
+
   return (
-    <Flex flexWrap="wrap" gap="32px 24px" {..._flexProps} ref={currentRef as never}>
+    <Flex flexWrap="wrap" gap="32px 24px" {..._flexProps}>
       {books.map((book) => (
-        <BookCard book={book} key={book.id} />
+        <BookCard book={book} key={book.id} ref={currentRef as never} />
       ))}
     </Flex>
   )

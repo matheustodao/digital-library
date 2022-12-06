@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Box,
@@ -18,7 +19,7 @@ interface BookCardProps {
   book: BookParams
 }
 
-export default function BookCard({ book }: BookCardProps) {
+const BookCard = forwardRef(({ book }: BookCardProps, ref) => {
   const { colorMode } = useColorMode()
   return (
     <LinkBox
@@ -34,6 +35,7 @@ export default function BookCard({ book }: BookCardProps) {
         transform: 'scale(1.05)'
       }}
       flex="1 1 210px"
+      ref={ref as never}
     >
       <Image
         width="100%"
@@ -74,4 +76,6 @@ export default function BookCard({ book }: BookCardProps) {
       </Stack>
     </LinkBox>
   )
-}
+})
+
+export default BookCard
