@@ -29,12 +29,12 @@ model Book {
   title String
 
   publishingCompany String
-  description       String
+  description       String?
   categories        String
   authors           String
 
   tumble String
-  isbn   String
+  isbn   String?
 
   quantity Int @default(1)
 
