@@ -4,18 +4,20 @@ import { prisma } from '../config/prisma';
 
 import { Response, Request } from 'express';
 import {
-	BookLoan,
 	BookLoanParams,
 	BookLoanReportByMonth,
 	months
 } from '../config/types/loanBook';
-import { BookLoanResponseParams, QueryPagination } from '../config/types/response';
+import {
+	BookLoanResponseParams,
+	QueryPagination
+} from '../config/types/response';
 
 type FindQueryOptions = QueryPagination & {
-	text: string,
-	orderBy: 'asc' | 'desc',
-	date: 'in_date' | 'out_date'
-}
+	text: string;
+	orderBy: 'asc' | 'desc';
+	date: 'in_date' | 'out_date';
+};
 
 class BookLoanController {
 	async create(req: Request, res: Response) {
@@ -55,7 +57,7 @@ class BookLoanController {
 
 	async update(req: Request, res: Response) {
 		try {
-			const body = req.body as BookLoanParams & { id: string, status: string };
+			const body = req.body as BookLoanParams & { id: string; status: string };
 			const {
 				deliveryDate,
 				email,
@@ -136,7 +138,7 @@ class BookLoanController {
 					...bookLoan.book,
 					authors: bookLoan.book.authors?.trim()?.split(',') ?? ['Desconhecido']
 				}
-			}
+			};
 
 			return ok(res, loansParsed);
 		} catch (error) {
@@ -150,18 +152,23 @@ class BookLoanController {
 
 			const { text, orderBy, date, page, limit } = filters;
 
-			const currentPage = Number(page) || 1
-			const perPage = Number(limit) || 10
+			const currentPage = Number(page) || 1;
+			const perPage = Number(limit) || 10;
 
 			const currentDate = new Date();
-			const yesterday = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`)
+			const yesterday = new Date(
+				`${currentDate.getFullYear()}-${
+					currentDate.getMonth() + 1
+				}-${currentDate.getDate()}`
+			);
 
-			const whereContent = {}
+			const whereContent = {};
 
 			if (date === 'out_date' || date === 'in_date') {
-				const dateConditional = date === 'out_date' ? { lte: yesterday } : { gt: yesterday }
+				const dateConditional =
+					date === 'out_date' ? { lte: yesterday } : { gt: yesterday };
 
-				Object.assign(whereContent, { deliveryDate: dateConditional })
+				Object.assign(whereContent, { deliveryDate: dateConditional });
 			}
 
 			if (text) {
@@ -184,17 +191,17 @@ class BookLoanController {
 						},
 						{
 							status: { contains: text }
-						},
+						}
 					]
-				}
+				};
 
-				Object.assign(whereContent, { ...searchConditional })
+				Object.assign(whereContent, { ...searchConditional });
 			}
 
-			const totalLoans = await prisma.bookLoan.count({ where: whereContent })
+			const totalLoans = await prisma.bookLoan.count({ where: whereContent });
 
-			const pages = Math.floor(totalLoans / perPage)
-			const offset = (currentPage * perPage) - perPage
+			const pages = Math.floor(totalLoans / perPage);
+			const offset = currentPage * perPage - perPage;
 
 			const books = await prisma.bookLoan.findMany({
 				where: whereContent,
@@ -214,7 +221,7 @@ class BookLoanController {
 					}
 				},
 				take: perPage,
-				skip: offset,
+				skip: offset
 			});
 
 			const response: BookLoanResponseParams = {
@@ -222,7 +229,7 @@ class BookLoanController {
 				page: currentPage,
 				pages,
 				results: books
-			}
+			};
 
 			return ok(res, response);
 		} catch (error) {
@@ -234,14 +241,14 @@ class BookLoanController {
 		try {
 			const { _count: studentLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					isStudent: true,
+					isStudent: true
 				},
 				_count: true
 			});
 
 			const { _count: employeeLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					isStudent: false,
+					isStudent: false
 				},
 				_count: true
 			});
@@ -252,7 +259,10 @@ class BookLoanController {
 				}
 			});
 
-			const booksQuantity = books.reduce((accumulator, currentBook) => accumulator + currentBook.quantity, 0)
+			const booksQuantity = books.reduce(
+				(accumulator, currentBook) => accumulator + currentBook.quantity,
+				0
+			);
 
 			const { _count: bookLoansQuantity } = await prisma.bookLoan.aggregate({
 				_count: true
@@ -297,11 +307,14 @@ class BookLoanController {
 
 			for (const currentReport in report) {
 				for (let index = 0; index < 12; index++) {
-					const month = new Date(`2022-${index + 1}-21`).toLocaleDateString('pt-BR', {
-						month: 'long'
-					}) as months;
+					const month = new Date(`2022-${index + 1}-21`).toLocaleDateString(
+						'pt-BR',
+						{
+							month: 'long'
+						}
+					) as months;
 
-					report[currentReport].data.push({ month, amount: 0 })
+					report[currentReport].data.push({ month, amount: 0 });
 				}
 			}
 
@@ -310,8 +323,8 @@ class BookLoanController {
 					month: 'long'
 				});
 
-				const reportMonthIndex = report[0].data.findIndex(
-					(reportMonth) => reportMonth.month.includes(month)
+				const reportMonthIndex = report[0].data.findIndex((reportMonth) =>
+					reportMonth.month.includes(month)
 				);
 
 				if (reportMonthIndex === -1) {
@@ -326,8 +339,8 @@ class BookLoanController {
 					month: 'long'
 				});
 
-				const reportMonthIndex = report[1].data.findIndex(
-					(reportMonth) => reportMonth.month.includes(month)
+				const reportMonthIndex = report[1].data.findIndex((reportMonth) =>
+					reportMonth.month.includes(month)
 				);
 
 				if (reportMonthIndex === -1) {
