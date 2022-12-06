@@ -1,14 +1,20 @@
 import { Stack } from '@chakra-ui/react'
+import Header from '@components/Header'
 import { ReactNode } from 'react'
+import { Outlet } from 'react-router-dom'
 
 interface IProps {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export default function LoggedLayout({ children }: IProps) {
   return (
-    <Stack as="main" px="10" py="6">
-      {children}
-    </Stack>
+    <>
+      <Header />
+      <Stack as="main" px="10" py="6" mb="42px">
+        <Outlet />
+        {children}
+      </Stack>
+    </>
   )
 }

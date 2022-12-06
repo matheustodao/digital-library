@@ -4,11 +4,20 @@ import { prisma } from '../config/prisma';
 
 import { Response, Request } from 'express';
 import {
-	BookLoan,
 	BookLoanParams,
 	BookLoanReportByMonth,
 	months
 } from '../config/types/loanBook';
+import {
+	BookLoanResponseParams,
+	QueryPagination
+} from '../config/types/response';
+
+type FindQueryOptions = QueryPagination & {
+	text: string;
+	orderBy: 'asc' | 'desc';
+	date: 'in_date' | 'out_date';
+};
 
 class BookLoanController {
 	async create(req: Request, res: Response) {
@@ -16,26 +25,27 @@ class BookLoanController {
 			const body = req.body as BookLoanParams;
 			const {
 				deliveryDate,
-				book,
+				bookId,
 				email,
 				exitDate,
 				personName,
 				phone,
-				status,
+				isStudent,
 				teacherName
 			} = body;
 
 			const bookLoan = await prisma.bookLoan.create({
 				data: {
-					bookId: book.id,
+					bookId,
 					class: body.class,
 					deliveryDate: new Date(deliveryDate),
 					exitDate: new Date(exitDate),
 					email,
 					personName,
 					phone,
-					status,
-					teacherName
+					status: 'no_warning',
+					teacherName,
+					isStudent
 				}
 			});
 
@@ -47,7 +57,7 @@ class BookLoanController {
 
 	async update(req: Request, res: Response) {
 		try {
-			const body = req.body as BookLoan;
+			const body = req.body as BookLoanParams & { id: string; status: string };
 			const {
 				deliveryDate,
 				email,
@@ -56,7 +66,8 @@ class BookLoanController {
 				personName,
 				phone,
 				status,
-				teacherName
+				teacherName,
+				bookId
 			} = body;
 
 			const bookLoan = await prisma.bookLoan.update({
@@ -72,7 +83,8 @@ class BookLoanController {
 					personName,
 					phone,
 					status,
-					teacherName
+					teacherName,
+					bookId
 				}
 			});
 
@@ -84,11 +96,11 @@ class BookLoanController {
 
 	async delete(req: Request, res: Response) {
 		try {
-			const params = req.params as { bookLoanId: string };
+			const params = req.params as { loanBookId: string };
 
 			await prisma.bookLoan.delete({
 				where: {
-					id: params.bookLoanId
+					id: params.loanBookId
 				}
 			});
 
@@ -100,15 +112,35 @@ class BookLoanController {
 
 	async getById(req: Request, res: Response) {
 		try {
-			const params = req.params as { bookLoanId: string };
+			const params = req.params as { loanBookId: string };
 
 			const bookLoan = await prisma.bookLoan.findUnique({
 				where: {
-					id: params.bookLoanId
+					id: params.loanBookId
+				},
+				include: {
+					book: {
+						select: {
+							id: true,
+							title: true,
+							cover: true,
+							authors: true,
+							tumble: true,
+							publishingCompany: true
+						}
+					}
 				}
 			});
 
-			return ok(res, bookLoan);
+			const loansParsed = {
+				...bookLoan,
+				book: {
+					...bookLoan.book,
+					authors: bookLoan.book.authors?.trim()?.split(',') ?? ['Desconhecido']
+				}
+			};
+
+			return ok(res, loansParsed);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
@@ -116,35 +148,90 @@ class BookLoanController {
 
 	async find(req: Request, res: Response) {
 		try {
-			const filters = req.query as { text: string; orderBy: 'asc' | 'desc' };
+			const filters = req.query as FindQueryOptions;
 
-			const { text, orderBy } = filters;
+			const { text, orderBy, date, page, limit } = filters;
+
+			const currentPage = Number(page) || 1;
+			const perPage = Number(limit) || 10;
+
+			const currentDate = new Date();
+			const yesterday = new Date(
+				`${currentDate.getFullYear()}-${
+					currentDate.getMonth() + 1
+				}-${currentDate.getDate()}`
+			);
+
+			const whereContent = {};
+
+			if (date === 'out_date' || date === 'in_date') {
+				const dateConditional =
+					date === 'out_date' ? { lte: yesterday } : { gt: yesterday };
+
+				Object.assign(whereContent, { deliveryDate: dateConditional });
+			}
+
+			if (text) {
+				const searchConditional = {
+					OR: [
+						{
+							personName: { contains: text }
+						},
+						{
+							book: { title: { contains: text } }
+						},
+						{
+							book: { authors: { contains: text } }
+						},
+						{
+							book: { tumble: { contains: text } }
+						},
+						{
+							book: { categories: { contains: text } }
+						},
+						{
+							status: { contains: text }
+						}
+					]
+				};
+
+				Object.assign(whereContent, { ...searchConditional });
+			}
+
+			const totalLoans = await prisma.bookLoan.count({ where: whereContent });
+
+			const pages = Math.floor(totalLoans / perPage);
+			const offset = currentPage * perPage - perPage;
 
 			const books = await prisma.bookLoan.findMany({
-				where: text
-					? {
-							OR: [
-								{
-									personName: { contains: text }
-								},
-								{
-									book: { title: { contains: text } }
-								},
-								{
-									book: { authors: { contains: text } }
-								},
-								{
-									status: { contains: text }
-								}
-							]
-					  }
-					: {},
+				where: whereContent,
 				orderBy: {
-					deliveryDate: orderBy || 'asc'
-				}
+					personName: orderBy || 'asc'
+				},
+				include: {
+					book: {
+						select: {
+							id: true,
+							title: true,
+							cover: true,
+							authors: true,
+							tumble: true,
+							publishingCompany: true
+						}
+					}
+				},
+				take: perPage,
+				skip: offset
 			});
 
-			return ok(res, books);
+			const response: BookLoanResponseParams = {
+				limit: perPage,
+				page: currentPage,
+				pages,
+				results: books
+			};
+
+			return ok(res, response);
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
@@ -154,23 +241,28 @@ class BookLoanController {
 		try {
 			const { _count: studentLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					teacherName: { not: null },
-					class: { not: null }
+					isStudent: true
 				},
 				_count: true
 			});
 
 			const { _count: employeeLoans } = await prisma.bookLoan.aggregate({
 				where: {
-					phone: { not: null },
-					email: { not: null }
+					isStudent: false
 				},
 				_count: true
 			});
 
-			const { _count: booksQuantity } = await prisma.book.aggregate({
-				_count: true
+			const books = await prisma.book.findMany({
+				select: {
+					quantity: true
+				}
 			});
+
+			const booksQuantity = books.reduce(
+				(accumulator, currentBook) => accumulator + currentBook.quantity,
+				0
+			);
 
 			const { _count: bookLoansQuantity } = await prisma.bookLoan.aggregate({
 				_count: true
@@ -196,35 +288,46 @@ class BookLoanController {
 
 			const studentLoans = await prisma.bookLoan.findMany({
 				where: {
-					teacherName: { not: null },
-					class: { not: null },
+					isStudent: { equals: true },
 					exitDate: { gte: beginningOfTheYear }
 				}
 			});
 
 			const employeeLoans = await prisma.bookLoan.findMany({
 				where: {
-					email: { not: null },
-					phone: { not: null },
+					isStudent: { equals: false },
 					exitDate: { gte: beginningOfTheYear }
 				}
 			});
 
 			const report = [
-				{ type: 'student', data: [] },
-				{ type: 'employee', data: [] }
+				{ id: 'student', data: [] },
+				{ id: 'employee', data: [] }
 			] as BookLoanReportByMonth;
+
+			for (const currentReport in report) {
+				for (let index = 0; index < 12; index++) {
+					const month = new Date(`2022-${index + 1}-21`).toLocaleDateString(
+						'pt-BR',
+						{
+							month: 'long'
+						}
+					) as months;
+
+					report[currentReport].data.push({ month, amount: 0 });
+				}
+			}
 
 			studentLoans.forEach((loan) => {
 				const month = new Date(loan.exitDate).toLocaleDateString('pt-BR', {
 					month: 'long'
 				});
 
-				const reportMonthIndex = report[0].data.findIndex(
-					(reportMonth) => reportMonth.month === month
+				const reportMonthIndex = report[0].data.findIndex((reportMonth) =>
+					reportMonth.month.includes(month)
 				);
 
-				if (reportMonthIndex !== -1) {
+				if (reportMonthIndex === -1) {
 					report[0].data.push({ month: month as months, amount: 1 });
 				} else {
 					report[0].data[reportMonthIndex].amount++;
@@ -236,11 +339,11 @@ class BookLoanController {
 					month: 'long'
 				});
 
-				const reportMonthIndex = report[1].data.findIndex(
-					(reportMonth) => reportMonth.month === month
+				const reportMonthIndex = report[1].data.findIndex((reportMonth) =>
+					reportMonth.month.includes(month)
 				);
 
-				if (reportMonthIndex !== -1) {
+				if (reportMonthIndex === -1) {
 					report[1].data.push({ month: month as months, amount: 1 });
 				} else {
 					report[1].data[reportMonthIndex].amount++;

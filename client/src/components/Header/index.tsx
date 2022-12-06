@@ -10,15 +10,16 @@ import {
   DrawerBody,
   useDisclosure,
   DrawerCloseButton,
-  DrawerHeader
+  DrawerHeader,
+  IconButton
 } from '@chakra-ui/react'
-import { Gear, List } from 'phosphor-react'
-
-import whiteLogo from '@assets/images/white-logo.svg'
+import { Gear, List, SignOut } from 'phosphor-react'
 
 import { Route, Routes, Wrapper } from './styled'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
 import { useRef } from 'react'
+import Logo from '@components/Logo'
+import useAuth from 'src/hooks/useAuth'
 
 const routes = [
   {
@@ -46,6 +47,7 @@ export default function Header() {
   const router = useLocation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
+  const { handleSignOut } = useAuth()
 
   return (
     <Box
@@ -55,7 +57,7 @@ export default function Header() {
       px="10"
     >
       <Flex alignItems="center" justifyContent="space-between">
-        <img src={whiteLogo} alt="digital library logo" />
+        <Logo variant="no-details" size="sm" />
 
         <Flex alignItems="center" justifyContent="space-between">
           <Wrapper>
@@ -77,6 +79,16 @@ export default function Header() {
             </button>
           </Wrapper>
           <ColorModeSwitcher />
+          <IconButton
+            size="md"
+            fontSize="lg"
+            variant="ghost"
+            color="current"
+            marginLeft="2"
+            onClick={handleSignOut}
+            icon={<SignOut />}
+            aria-label="Logout"
+          />
         </Flex>
       </Flex>
 

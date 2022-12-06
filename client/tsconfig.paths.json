@@ -2,12 +2,18 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"],
+      "@assets/*": ["src/core/assets/*"],
+      "@infra/*": ["src/core/domain/infra/*"],
+      "@services/*": ["src/core/domain/services/*"],
+      "@usecases/*": ["src/core/domain/usecases/*"],
+      "@validations/*": ["src/core/validations/*"],
+      "@locales/*": ["src/core/assets/locales/*"],
       "@pages/*": ["src/pages/*"],
-      "@mocks/*": ["src/mocks/*"],
-      "@type/*": ["src/types/*"]
+      "@helpers/*": ["src/core/utils/helpers/*"],
+      "@mocks/*": ["src/core/utils/mocks/*"],
+      "@type/*": ["src/core/types/*"],
+      "src/*": ["src/*"]
     }
   }
 }

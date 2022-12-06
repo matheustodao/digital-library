@@ -1,11 +1,11 @@
-import { Heading, useColorMode } from '@chakra-ui/react'
+import { Heading, HeadingProps, useColorMode } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
-interface IProps {
+interface IProps extends HeadingProps {
   children: ReactNode
 }
 
-export default function Title({ children }: IProps) {
+export default function Title({ children, ...props }: IProps) {
   const { colorMode } = useColorMode()
 
   return (
@@ -14,6 +14,7 @@ export default function Title({ children }: IProps) {
       textColor={colorMode === 'light' ? 'blackAlpha.700' : 'whiteAlpha.800'}
       mt="10"
       mb="3"
+      {...props}
     >
       {children}
     </Heading>

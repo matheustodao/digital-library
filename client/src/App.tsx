@@ -1,22 +1,31 @@
 import { ThemeProvider } from 'styled-components'
 import { HashRouter } from 'react-router-dom'
 import { ChakraProvider, theme } from '@chakra-ui/react'
-import Header from '@components/Header'
+import { ToastContainer } from 'react-toastify'
 
 import Router from './routes'
-import LoggedLayout from './components/Layouts/logged'
+
+import 'react-toastify/dist/ReactToastify.css'
+import AuthProvider from './contexts/auth/AuthContext'
 
 export default function App() {
   return (
     <HashRouter>
-      <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <ToastContainer
+          theme="light"
+          autoClose={2000}
+          closeOnClick
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+          newestOnTop
+        />
         <ChakraProvider theme={theme}>
-          <Header />
-          <LoggedLayout>
+          <ThemeProvider theme={theme}>
             <Router />
-          </LoggedLayout>
+          </ThemeProvider>
         </ChakraProvider>
-      </ThemeProvider>
+      </AuthProvider>
     </HashRouter>
   )
 }

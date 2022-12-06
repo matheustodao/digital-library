@@ -33,12 +33,15 @@ type BookLoan = {
 	teacherName: string | null;
 	email: string | null;
 	phone: string | null;
+	isStudent: boolean;
 };
 
-type BookLoanParams = Omit<BookLoan, 'id'>;
+type BookLoanParams = Omit<BookLoan, 'id' | 'book' | 'status'> & {
+	bookId: string
+};
 
 type BookLoanReportByMonth = {
-	type: 'student' | 'employee';
+	id: 'student' | 'employee';
 	data: { month: months; amount: number }[];
 }[];
 

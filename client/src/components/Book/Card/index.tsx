@@ -12,7 +12,7 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 
-import { BookParams } from '@type/digitalLibrary/book'
+import { BookParams } from '@type/book'
 
 interface BookCardProps {
   book: BookParams
@@ -33,13 +33,14 @@ export default function BookCard({ book }: BookCardProps) {
       _hover={{
         transform: 'scale(1.05)'
       }}
+      flex="1 1 210px"
     >
       <Image
         width="100%"
         maxH="250px"
         h="250px"
         objectFit="cover"
-        src={book.bookCover}
+        src={book.cover}
         fallbackSrc="https://via.placeholder.com/250"
         alt={book.title}
         borderTopRadius="md"

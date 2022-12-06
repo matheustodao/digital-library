@@ -12,5 +12,6 @@ router.get('/book/:bookId', bookController.getById);
 router.patch('/book', bookController.update);
 router.post('/book', bookController.create);
 router.get('/book', bookController.find);
+router.get('/book-all', bookController.findAll);
 
 export { router };
