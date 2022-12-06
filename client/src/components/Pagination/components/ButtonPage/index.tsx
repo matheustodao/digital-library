@@ -5,6 +5,7 @@ export type ButtonProps = ButtonPropsChakra
 
 interface ButtonPageProps {
   content: string | number
+  isActive?: boolean
   _buttonProps?: ButtonProps
 }
 
@@ -12,7 +13,7 @@ export const ButtonPage = forwardRef((props: ButtonPageProps, ref) => {
   return (
     <Button
       variant="unstyled"
-      bg="blackAlpha.200"
+      bg={props.isActive ? 'orange.600' : 'blackAlpha.200'}
       w="min-content"
       borderRadius="md"
       transition="all 0.35s ease"
