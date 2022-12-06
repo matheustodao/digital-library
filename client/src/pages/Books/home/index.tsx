@@ -1,4 +1,5 @@
-import { Box, Flex } from '@chakra-ui/react'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Box, Button, Flex, Stack, Text } from '@chakra-ui/react'
 import HeaderPage from '@components/pages/HeaderPage'
 import { Plus } from 'phosphor-react'
 import Title from '@components/pages/Title'
@@ -11,12 +12,14 @@ import NotBookFound from '@components/Book/errors/NotBookFound'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
 import NotFoundData from '@components/Errors/NotFoundData'
 import BookLoader from '@components/Loader'
+import Pagination from '@components/Pagination'
 
 export default function BooksPage() {
   const navigate = useNavigate()
   const [books, setBooks] = useState<BookParams[]>([] as BookParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
   const [searchByTerm, setSearchByTerm] = useState('')
+  const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
 
@@ -26,6 +29,9 @@ export default function BooksPage() {
         filters: {
           orderBy: sortBook,
           text: searchByTerm
+        },
+        pagination: {
+          page: searchByTerm ? null : page
         }
       })
 
@@ -35,7 +41,7 @@ export default function BooksPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [sortBook, searchByTerm])
+  }, [sortBook, searchByTerm, page])
 
   function handleToggleSortBook() {
     setSortBook((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
@@ -88,6 +94,8 @@ export default function BooksPage() {
       {hasSearchedBookByTerm && (
         <NotFoundData />
       )}
+
+      <Pagination totalPages={10} currentPage={1} />
     </>
   )
 }
