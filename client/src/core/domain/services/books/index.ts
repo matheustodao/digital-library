@@ -7,7 +7,7 @@ import { BookController } from '@usecases/Book'
 interface ListOptionParams {
   filters?: FilterOptionsType
   pagination?: {
-    page: number
+    page: number | null
     limit?: number
   }
 }
