@@ -33,7 +33,7 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc -p tsconfig-build.json",
+		"build": "tsc -p tsconfig-build.json && npx prisma migrate deploy",
 		"remove-package-folder": "rm -rf dist/packages",
 		"move-packages": "cp -r dist/packages/* ../dist && rm -rf dist/packages/*",
 		"move-build": "yarn run remove-package-folder && cp -r dist/* ../build && rm -rf dist/* && rm -rf dist",
