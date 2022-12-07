@@ -75,7 +75,7 @@ class ImportController {
 			const splitedName = file.originalname.split('.');
 			const fileExtension = splitedName[splitedName.length - 1];
 
-			const body = req.body as { keepData: boolean };
+			const body = req.body as { keepData: '1' | '0' };
 
 			if (fileExtension !== 'xlsx' && fileExtension !== 'csv') {
 				return badRequest(res, new Error('invalid file'));
@@ -88,7 +88,7 @@ class ImportController {
 
 			const books = convertImportedJsonToBook(json);
 
-			if (keepData === false) {
+			if (keepData === '0') {
 				await prisma.book.deleteMany();
 			}
 
@@ -110,7 +110,7 @@ class ImportController {
 			const splitedName = file.originalname.split('.');
 			const fileExtension = splitedName[splitedName.length - 1];
 
-			const body = req.body as { keepData: boolean };
+			const body = req.body as { keepData: '1' | '0' };
 
 			if (fileExtension !== 'xlsx' && fileExtension !== 'csv') {
 				return badRequest(res, new Error('invalid file'));
@@ -122,7 +122,7 @@ class ImportController {
 				fileExtension === 'xlsx' ? xlsxToJson(file) : await csvToJson(file);
 			const loans = convertImportedJsonToBookLoan(json);
 
-			if (keepData === false) {
+			if (keepData === '0') {
 				await prisma.bookLoan.deleteMany();
 			}
 
