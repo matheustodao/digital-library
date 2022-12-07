@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { badRequest, noContent, serverError } from '../helpers/http';
-import { BookLoan } from '../config/types/loanBook';
-=======
 import { badRequest, noContent, ok, serverError } from '../helpers/http';
 import { BookLoanParams } from '../config/types/loanBook';
->>>>>>> backend
 import { BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 import {
@@ -17,28 +12,17 @@ import {
 
 import { Request, Response } from 'express';
 
-<<<<<<< HEAD
-async function createLoan(loan: BookLoan) {
-	const {
-=======
 const invalidBooks = [];
 
 async function createLoan(loan: BookLoanParams) {
 	const {
 		bookId,
->>>>>>> backend
 		deliveryDate,
 		email,
 		exitDate,
 		personName,
 		phone,
-<<<<<<< HEAD
-		book,
-		isStudent,
-		teacherName,
-=======
 		teacherName
->>>>>>> backend
 	} = loan;
 
 	const book = await prisma.book.findUnique({ where: { id: bookId } });
@@ -55,20 +39,11 @@ async function createLoan(loan: BookLoanParams) {
 			email,
 			exitDate: new Date(exitDate),
 			personName,
-<<<<<<< HEAD
-			phone,
-			isStudent,
-			teacherName,
-			class: loan.class,
-			bookId: book.id,
-			status: loan.status || 'no_warning'
-=======
 			phone: String(phone),
 			status: 'no_warning',
 			teacherName,
 			class: loan.class,
 			bookId: bookId
->>>>>>> backend
 		}
 	});
 }
@@ -121,11 +96,7 @@ class ImportController {
 
 			const books = convertImportedJsonToBook(json);
 
-<<<<<<< HEAD
-			if (keepData === '0') {
-=======
 			if (Number(keepData) === 0) {
->>>>>>> backend
 				await prisma.book.deleteMany();
 			}
 
@@ -159,11 +130,7 @@ class ImportController {
 				fileExtension === 'xlsx' ? xlsxToJson(file) : await csvToJson(file);
 			const loans = convertImportedJsonToBookLoan(json);
 
-<<<<<<< HEAD
-			if (keepData === '0') {
-=======
 			if (Number(keepData) === 0) {
->>>>>>> backend
 				await prisma.bookLoan.deleteMany();
 			}
 

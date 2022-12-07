@@ -52,9 +52,6 @@ class ExportController {
 					return badRequest(res, new Error('no books'));
 				}
 
-<<<<<<< HEAD
-				return res.download(`${temp}/${filename}`);
-=======
 				const filename =
 					format === 'xlsx'
 						? jsToXlsx(books)
@@ -70,7 +67,6 @@ class ExportController {
 						  );
 
 				return res.download(`${temp}/${filename}.pdf`);
->>>>>>> backend
 			} else if (content === 'loans') {
 				const loans = await prisma.bookLoan.findMany({
 					include: { book: true }
@@ -98,11 +94,7 @@ class ExportController {
 								content
 						  );
 
-<<<<<<< HEAD
-				return res.download(`${temp}/${filename}`);
-=======
 				return res.download(`${temp}/${filename}.pdf`);
->>>>>>> backend
 			}
 		} catch (error) {
 			return serverError(res, error as Error);

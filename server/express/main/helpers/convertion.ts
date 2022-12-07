@@ -1,8 +1,4 @@
 import { BookFromExternalSource, BookParams } from '../config/types/book';
-<<<<<<< HEAD
-import { BookLoan } from '../config/types/loanBook';
-=======
->>>>>>> backend
 import { processAuthorName } from './string-manipulation';
 import { BookLoanParams } from '../config/types/loanBook';
 import { resources, temp } from '../config/paths';
@@ -64,8 +60,8 @@ function convertImportedBookToDatabaseBook(
 }
 
 // Book Loan
-function convertImportedJsonToBookLoan(loans: any): BookLoan[] {
-	return loans as BookLoan[];
+function convertImportedJsonToBookLoan(loans: any): BookLoanParams[] {
+	return loans as BookLoanParams[];
 }
 
 // General
@@ -128,7 +124,7 @@ function jsToXlsx(data: any[], filename?: string): string {
 // PDF
 function generateHeader(doc: typeof PDFDocument) {
 	doc
-		.image(`${resources}/logo.png`, 50, 45, { width: 50 })
+		.image(`./resources/logo.png`, 50, 45, { width: 50 })
 		.fillColor('#444444')
 		.fontSize(20)
 		.text('Digital Library', 110, 57)
