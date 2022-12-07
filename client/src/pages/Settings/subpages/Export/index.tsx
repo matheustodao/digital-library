@@ -16,12 +16,20 @@ export default function ExportSubPage() {
   })
 
   async function onExportData(data: any) {
-    const file = await exportDataServices.export(data)
+    const fileExtension = data.format === 'pdf' ? 'pdf' : 'xlsx'
+    let file: any = null
     const date = new Date()
     const currentDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' })
     const content = data.content === 'books' ? 'livros' : 'emprestimos'
-    const fileExtension = data.format === 'pdf' ? 'pdf' : 'xlsx'
     const filename = `${content}-${currentDate}-${date.toISOString()}.${fileExtension}`
+
+    if (fileExtension === 'pdf') {
+      file = await exportDataServices.exportPDF(data)
+      downloadFile(file, filename, 'application/x-pdf')
+      return
+    }
+
+    file = await exportDataServices.exportXLSX(data)
 
     downloadFile(file, filename)
   }
