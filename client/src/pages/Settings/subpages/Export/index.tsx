@@ -6,16 +6,24 @@ import { Select } from 'chakra-react-select'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { exportSchemaValidation } from '@validations/yup/digitalLibrary/export'
+import downloadFile from 'js-file-download'
 
 export default function ExportSubPage() {
+  // const { download } = useDownloader()
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(exportSchemaValidation),
     mode: 'onBlur'
   })
 
   async function onExportData(data: any) {
-    const response = await exportDataServices.export(data)
-    console.log(response)
+    const file = await exportDataServices.export(data)
+    const date = new Date()
+    const currentDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' })
+    const content = data.content === 'books' ? 'livros' : 'emprestimos'
+    const fileExtension = data.format === 'pdf' ? 'pdf' : 'xlsx'
+    const filename = `${content}-${currentDate}-${date.toISOString()}.${fileExtension}`
+
+    downloadFile(file, filename)
   }
 
   return (
