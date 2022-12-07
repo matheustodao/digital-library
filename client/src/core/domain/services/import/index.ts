@@ -11,13 +11,21 @@ class ImportDataServices extends HttpClientDigitalLibrary {
   }
 
   async books(data: Omit<ImportParams, 'type'>) {
-    const parsedData = this.usecase.common.handleData(data)
-    return this.httpClient.post({ path: '/books', data: parsedData })
+    const parsedData = this.usecase.common.handleData(data, 'books')
+    return this.httpClient.post({
+      path: '/books',
+      data: parsedData,
+      options: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
   }
 
   async loans(data: Omit<ImportParams, 'type'>) {
-    const parsedData = this.usecase.common.handleData(data)
-    return this.httpClient.post({ path: '/loans', data: parsedData })
+    const parsedData = this.usecase.common.handleData(data, 'loans')
+    return this.httpClient.post({
+      path: '/loans',
+      data: parsedData,
+      options: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
   }
 }
 
