@@ -227,7 +227,7 @@ class BookLoanController {
 			const response: BookLoanResponseParams = {
 				limit: perPage,
 				page: currentPage,
-				pages,
+				pages: pages === 0 ? 1 : pages,
 				results: books
 			};
 
