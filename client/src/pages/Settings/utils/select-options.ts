@@ -1,6 +1,6 @@
 export const importToOptions = [
   { label: 'Lista de Livros', value: 'books' },
-  { label: 'Lista de Empréstimo', value: 'bookLoans' }
+  { label: 'Lista de Empréstimo', value: 'loans' }
 ]
 
 export const formatOptions = [
