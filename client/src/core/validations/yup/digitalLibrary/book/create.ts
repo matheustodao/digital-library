@@ -1,3 +1,4 @@
+import '@validations/yup/locales'
 import * as yup from 'yup'
 
 export const createBookSchemaValidation = yup.object().shape({
