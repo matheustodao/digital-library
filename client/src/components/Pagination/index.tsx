@@ -1,4 +1,4 @@
-import { Flex, Stack, useMediaQuery } from '@chakra-ui/react'
+import { Flex, Stack, StackProps, useMediaQuery } from '@chakra-ui/react'
 import { forwardRef, useMemo, useState } from 'react'
 import { ButtonPage, ButtonProps } from './components/ButtonPage'
 
@@ -6,9 +6,10 @@ interface PaginationProps {
   totalPages: number
   onChange?: (page: number) => void
   _buttonPageProps?: ButtonProps
+  _containerProps?: StackProps
 }
 
-const Pagination = forwardRef(({ totalPages, onChange = () => {}, _buttonPageProps }: PaginationProps, ref) => {
+const Pagination = forwardRef(({ totalPages, onChange = () => {}, _buttonPageProps, _containerProps }: PaginationProps, ref) => {
   const arrPages: number[] = [...Array.from({ length: totalPages }).keys()]
   const [page, setPage] = useState(1)
   const [smallerThan630] = useMediaQuery('(max-width: 630px)')
@@ -58,7 +59,7 @@ const Pagination = forwardRef(({ totalPages, onChange = () => {}, _buttonPagePro
   }
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" {..._containerProps} ref={ref as never}>
       <ButtonPage
         content="<"
         _buttonProps={{
