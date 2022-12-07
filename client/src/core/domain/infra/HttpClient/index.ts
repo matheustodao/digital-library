@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios'
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type TOptions = AxiosRequestConfig
 type TPath = string
@@ -14,6 +15,7 @@ interface TMethodBodyParams extends TMethodParams {
 export default class HttpClient {
   readonly baseUrl: string = ''
   prefixPath: string = ''
+  info: AxiosResponse<any, any> | undefined
 
   constructor(readonly url: string) {}
 
@@ -83,11 +85,12 @@ export default class HttpClient {
     })
 
     let responseBody: any = null
+    this.info = response
 
     // @ts-ignore
     const contentType: string | undefined = response.headers.get('content-type')
 
-    if (contentType?.includes('application/json')) {
+    if (contentType?.includes('application/json') || contentType?.includes('application/vnd')) {
       responseBody = await response.data
     }
 
