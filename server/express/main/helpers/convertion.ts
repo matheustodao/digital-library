@@ -8,7 +8,7 @@ import { readdirSync, unlink } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import jsonToXlsx from 'json-as-xlsx';
+import jsonToXlsx, { ISettings } from 'json-as-xlsx';
 
 import csv from 'csvtojson';
 import xlsx from 'xlsx';
@@ -88,19 +88,18 @@ function jsToXlsx(data: any[]): string {
 		{
 			sheet: 'Export',
 			columns: columnNames.map((column) => {
+				if (column === 'deliveryDate') return { label: column, value: column, format: 'd-mmm-yy' };
 				return { label: column, value: column };
 			}),
 			content: data
 		}
 	];
 
-	const settings = {
-		fileName: `${temp}/${fileName}`
+	const settings: ISettings = {
+		fileName: `${temp}/${fileName}`,
 	};
 
-	const dataInSheet = jsonToXlsx(formatedData, settings);
-
-	console.log(dataInSheet)
+	jsonToXlsx(formatedData, settings);
 
 	return `${fileName}.xlsx`;
 }
