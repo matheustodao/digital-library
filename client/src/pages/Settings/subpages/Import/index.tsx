@@ -10,9 +10,10 @@ import { useNavigate } from 'react-router-dom'
 
 export default function ImportSubPage() {
   const navigation = useNavigate()
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control, watch } = useForm({
     resolver: yupResolver(importSchemaValidation)
   })
+  const files = watch('file')
 
   async function onImportFile(data: any) {
     if (data.type === 'books') {
@@ -72,7 +73,7 @@ export default function ImportSubPage() {
 
         <FormControl>
           <FormLabel>Arquivo</FormLabel>
-          <Stack border="1px dashed" borderColor="ActiveBorder" borderRadius="md">
+          <Stack border="1px dashed" borderColor="ActiveBorder" borderRadius="md" alignItems="center">
             <Flex alignItems="center" justifyContent="center" flexDir="column" py="10">
               <Text>Arraste e solta o arquivo</Text>
                 <Text as="span">ou</Text>
@@ -82,6 +83,11 @@ export default function ImportSubPage() {
                   <Input type="file" display="none" {...register('file')} accept=".xlsx, .csv" />
                 </Box>
             </Flex>
+            {files?.length && (
+              <Text as="p" color="blue.400" pb="8px">
+                Arquivo adicionado: {files[0].name}
+              </Text>
+            )}
           </Stack>
         </FormControl>
 
