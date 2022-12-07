@@ -1,5 +1,5 @@
 import { badRequest, noContent, serverError } from '../helpers/http';
-import { BookLoanParams } from '../config/types/loanBook';
+import { BookLoan } from '../config/types/loanBook';
 import { BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 import {
@@ -12,16 +12,16 @@ import {
 
 import { Request, Response } from 'express';
 
-async function createLoan(loan: BookLoanParams) {
+async function createLoan(loan: BookLoan) {
 	const {
-		book,
 		deliveryDate,
 		email,
 		exitDate,
 		personName,
 		phone,
-		status,
-		teacherName
+		book,
+		isStudent,
+		teacherName,
 	} = loan;
 
 	await prisma.bookLoan.create({
@@ -31,10 +31,11 @@ async function createLoan(loan: BookLoanParams) {
 			exitDate,
 			personName,
 			phone,
-			status,
+			isStudent,
 			teacherName,
 			class: loan.class,
-			bookId: book.id
+			bookId: book.id,
+			status: loan.status || 'no_warning'
 		}
 	});
 }

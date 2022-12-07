@@ -1,5 +1,5 @@
 import { BookFromExternalSource, BookParams } from '../config/types/book';
-import { BookLoanParams } from '../config/types/loanBook';
+import { BookLoan } from '../config/types/loanBook';
 import { processAuthorName } from './string-manipulation';
 import { File } from '../config/types/file';
 import { temp } from '../config/paths';
@@ -42,8 +42,8 @@ function convertImportedBookToDatabaseBook(
 }
 
 // Book Loan
-function convertImportedJsonToBookLoan(loans: any): BookLoanParams[] {
-	return loans as BookLoanParams[];
+function convertImportedJsonToBookLoan(loans: any): BookLoan[] {
+	return loans as BookLoan[];
 }
 
 // General
@@ -98,7 +98,9 @@ function jsToXlsx(data: any[]): string {
 		fileName: `${temp}/${fileName}`
 	};
 
-	jsonToXlsx(formatedData, settings);
+	const dataInSheet = jsonToXlsx(formatedData, settings);
+
+	console.log(dataInSheet)
 
 	return `${fileName}.xlsx`;
 }

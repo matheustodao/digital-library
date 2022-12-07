@@ -42,6 +42,7 @@ class ExportController {
 
 			if (content === 'books') {
 				const books = await prisma.book.findMany();
+				console.log(books)
 
 				const filename =
 					format === 'xlsx' ? jsToXlsx(books) : await jsToPdf(books);
