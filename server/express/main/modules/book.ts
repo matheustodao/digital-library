@@ -120,15 +120,7 @@ class BookController {
 	async find(req: Request, res: Response) {
 		try {
 			const filters = req.query as FindQueryOptions;
-
-			const totalOfBooks = await prisma.book.count()
-
 			const { text, orderBy, page, limit  } = filters;
-
-			const currentPage = Number(page) || 1
-			const perPage = Number(limit) || 10
-			const pages = Math.floor(totalOfBooks / perPage)
-			const offset = (currentPage * perPage) - perPage
 
 			const whereContent = {}
 
@@ -159,6 +151,12 @@ class BookController {
 				Object.assign(whereContent, { ...searchConditional })
 			}
 
+			const totalOfBooks = await prisma.book.count({ where: whereContent })
+
+			const currentPage = Number(page) || 1
+			const perPage = Number(limit) || 10
+			const pages = Math.floor(totalOfBooks / perPage)
+			const offset = (currentPage * perPage) - perPage
 
 			const books = await prisma.book.findMany({
 				where: whereContent,
