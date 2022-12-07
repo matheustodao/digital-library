@@ -18,8 +18,6 @@ export default function ExportSubPage() {
     const response = await exportDataServices.export(data)
 
     fileDownload(response, 'livro.xlsx')
-
-    console.log({ data: response })
   }
 
   return (
