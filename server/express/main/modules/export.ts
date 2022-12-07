@@ -42,19 +42,18 @@ class ExportController {
 
 			if (content === 'books') {
 				const books = await prisma.book.findMany();
-				console.log(books)
 
 				const filename =
 					format === 'xlsx' ? jsToXlsx(books) : await jsToPdf(books);
 
-				return res.sendFile(`${temp}/${filename}`);
+				return res.download(`${temp}/${filename}`);
 			} else if (content === 'loans') {
 				const loans = await prisma.bookLoan.findMany();
 
 				const filename =
 					format === 'xlsx' ? jsToXlsx(loans) : await jsToPdf(loans);
 
-				return res.sendFile(`${temp}/${filename}`);
+				return res.download(`${temp}/${filename}`);
 			}
 		} catch (error) {
 			return serverError(res, error as Error);
