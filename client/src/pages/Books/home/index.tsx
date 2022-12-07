@@ -19,7 +19,7 @@ export default function BooksPage() {
   const [books, setBooks] = useState<BookParams[]>([] as BookParams[])
   const [sortBook, setSortBook] = useState<'asc' | 'desc'>('asc')
   const [searchByTerm, setSearchByTerm] = useState('')
-  const [page, setPage] = useState(1)
+  const [infoPagination, setInfoPagination] = useState({ total: 1, page: 1 })
   const [isLoading, setIsLoading] = useState(true)
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
 
@@ -31,17 +31,18 @@ export default function BooksPage() {
           text: searchByTerm
         },
         pagination: {
-          page: searchByTerm ? null : page
+          page: searchByTerm ? null : infoPagination.page,
+          limit: 1
         }
       })
 
       setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.results.length)
-
+      setInfoPagination({ total: data.pages, page: data.page })
       setBooks(data.results)
     } finally {
       setIsLoading(false)
     }
-  }, [sortBook, searchByTerm, page])
+  }, [sortBook, searchByTerm, infoPagination.page])
 
   function handleToggleSortBook() {
     setSortBook((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
@@ -51,6 +52,10 @@ export default function BooksPage() {
     setTimeout(() => {
       setSearchByTerm(e.target.value)
     }, 500)
+  }
+
+  function onChangePage(currentPage: number) {
+    setInfoPagination((oldInfo) => ({ ...oldInfo, page: currentPage }))
   }
 
   useEffect(() => {
@@ -95,7 +100,9 @@ export default function BooksPage() {
         <NotFoundData />
       )}
 
-      <Pagination totalPages={10} currentPage={1} />
+      {Boolean(books.length) && (
+        <Pagination totalPages={infoPagination.total} onChange={onChangePage} _containerProps={{ pt: '42px' }} />
+      )}
     </>
   )
 }
