@@ -1,65 +1,97 @@
 import { Flex, Stack, useMediaQuery } from '@chakra-ui/react'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { ButtonPage, ButtonProps } from './components/ButtonPage'
 
 interface PaginationProps {
   totalPages: number
-  currentPage: number
+  onChange?: (page: number) => void
   _buttonPageProps?: ButtonProps
 }
 
-const Pagination = forwardRef(({ totalPages, currentPage, _buttonPageProps }: PaginationProps, ref) => {
+const Pagination = forwardRef(({ totalPages, onChange = () => {}, _buttonPageProps }: PaginationProps, ref) => {
   const arrPages: number[] = [...Array.from({ length: totalPages }).keys()]
+  const [page, setPage] = useState(1)
   const [smallerThan630] = useMediaQuery('(max-width: 630px)')
   const [smallerThan472] = useMediaQuery('(max-width: 472px)')
-  const startIndex = useMemo(() => {
-    if (smallerThan472) return currentPage
-    return 0
-  }, [smallerThan472])
 
-  const endIndex = useMemo(() => {
-    if (smallerThan472) return currentPage + 1
-    if (smallerThan630) return 3
-    return 5
-  }, [smallerThan472, smallerThan630])
+  const responsiveStartIndex = useMemo(() => {
+    const initialPage = page - 1
+    const initialIndexPage = initialPage === -1 ? 0 : initialPage
+    if (smallerThan472) return initialIndexPage
+
+    const percentPage = Number((page / (totalPages * 100)).toFixed(3)) * 100
+
+    if (!smallerThan630 && totalPages <= 10) return 0
+
+    return percentPage >= 0.3 ? initialIndexPage : 0
+  }, [smallerThan472, smallerThan630, page])
+
+  const responsiveEndIndex = useMemo(() => {
+    const pageIndex = page + 1
+
+    if (smallerThan472) return pageIndex
+    if (smallerThan630) return page >= 3 ? pageIndex : 3
+    if (totalPages <= 10) return totalPages
+
+    return page >= 10 ? pageIndex : 10
+  }, [smallerThan472, smallerThan630, page])
+
+  function handleNextPage() {
+    setPage((oldPage) => {
+      const newPageValue = oldPage === totalPages ? totalPages : oldPage + 1
+      onChange(newPageValue)
+      return newPageValue
+    })
+  }
+
+  function handlePrevPage() {
+    setPage((oldPage) => {
+      const newPageValue = oldPage === 1 ? 1 : oldPage - 1
+      onChange(newPageValue)
+      return newPageValue
+    })
+  }
+
+  function handleClickInPageTargeted(number: number) {
+    setPage(number)
+    onChange(number)
+  }
 
   return (
     <Stack direction="row">
-      <ButtonPage content="<" />
+      <ButtonPage
+        content="<"
+        _buttonProps={{
+          onClick: () => handlePrevPage(),
+          disabled: page === 0
+        }}
+      />
 
       <Flex gap="12px">
-        {arrPages.slice(startIndex, endIndex).map((value, index) => (
-          <ButtonPage
-            key={`page-${index}`}
-            content={value + 1}
-            isActive={value === currentPage}
-            {..._buttonPageProps}
-          />
-        ))}
-
-        {smallerThan472 && (
-          <>
+        {arrPages
+          .slice(
+            responsiveStartIndex,
+            responsiveEndIndex)
+          .map((value) => (
             <ButtonPage
-              content="..."
+              key={`page-${value + 1}`}
+              content={value + 1}
+              isActive={(value + 1) === page}
               _buttonProps={{
-                disabled: true,
-                _hover: { bg: 'none' },
-                cursor: 'default !important'
+                onClick: () => handleClickInPageTargeted(value + 1)
               }}
+              {..._buttonPageProps}
             />
-
-            {arrPages.slice(totalPages - 1).map((value) => (
-              <ButtonPage key={`page-${value}`} content={value + 1} {..._buttonPageProps} />
-            ))}
-          </>
-        )}
-
-        {!smallerThan472 && arrPages.slice(totalPages - 2).map((value) => (
-          <ButtonPage key={`page-${value}`} content={value + 1} {..._buttonPageProps} />
-        ))}
+          ))}
       </Flex>
 
-      <ButtonPage content=">" />
+      <ButtonPage
+        content=">"
+        _buttonProps={{
+          onClick: () => handleNextPage(),
+          disabled: page === totalPages
+        }}
+      />
     </Stack>
   )
 })
