@@ -1,5 +1,4 @@
 import { serverError, ok, noContent } from '../helpers/http';
-import { Book, BookCategories, BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 
 import { Response, Request } from 'express';

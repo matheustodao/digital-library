@@ -14,12 +14,17 @@ import {
 
 import { Request, Response } from 'express';
 import { temp } from '../config/paths';
+import {
+	getMostBorrowedBook,
+	getMostPopularAuthor,
+	getMostPopularCategory
+} from '../helpers/get-popular-data';
 
 class ExportController {
 	async exportData(req: Request, res: Response) {
-		try {
-			cleanTempFolder();
+		cleanTempFolder();
 
+		try {
 			const body = req.body as {
 				format: 'pdf' | 'xlsx';
 				content: 'books' | 'loans';
@@ -43,17 +48,61 @@ class ExportController {
 			if (content === 'books') {
 				const books = await prisma.book.findMany();
 
-				const filename =
-					format === 'xlsx' ? jsToXlsx(books) : await jsToPdf(books);
+				if (format === 'xlsx' && books.length === 0) {
+					return badRequest(res, new Error('no books'));
+				}
 
+<<<<<<< HEAD
 				return res.download(`${temp}/${filename}`);
+=======
+				const filename =
+					format === 'xlsx'
+						? jsToXlsx(books)
+						: await jsToPdf(
+								books.sort((a, b) => b.quantity - a.quantity).slice(0, 10),
+								{
+									mostPopularCategory:
+										getMostPopularCategory(books)[0].category,
+									mostPopularAuthor: getMostPopularAuthor(books)[0].author,
+									totalBooksQuantity: books.length
+								},
+								content
+						  );
+
+				return res.download(`${temp}/${filename}.pdf`);
+>>>>>>> backend
 			} else if (content === 'loans') {
-				const loans = await prisma.bookLoan.findMany();
+				const loans = await prisma.bookLoan.findMany({
+					include: { book: true }
+				});
+
+				if (format === 'xlsx' && loans.length === 0) {
+					return badRequest(res, new Error('no loans'));
+				}
 
 				const filename =
-					format === 'xlsx' ? jsToXlsx(loans) : await jsToPdf(loans);
+					format === 'xlsx'
+						? jsToXlsx(loans)
+						: await jsToPdf(
+								loans.slice(0, 10),
+								{
+									totalLoansQuantity: loans.length,
+									mostBorrowedBook: getMostBorrowedBook(loans)[0].book,
+									upToDateLoans: loans.filter(({ status }) => {
+										return status === 'no_warning';
+									}).length,
+									lateLoans: loans.filter(({ status }) => {
+										return status !== 'no_warning';
+									}).length
+								},
+								content
+						  );
 
+<<<<<<< HEAD
 				return res.download(`${temp}/${filename}`);
+=======
+				return res.download(`${temp}/${filename}.pdf`);
+>>>>>>> backend
 			}
 		} catch (error) {
 			return serverError(res, error as Error);

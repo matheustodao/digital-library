@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { badRequest, noContent, serverError } from '../helpers/http';
 import { BookLoan } from '../config/types/loanBook';
+=======
+import { badRequest, noContent, ok, serverError } from '../helpers/http';
+import { BookLoanParams } from '../config/types/loanBook';
+>>>>>>> backend
 import { BookParams } from '../config/types/book';
 import { prisma } from '../config/prisma';
 import {
@@ -12,30 +17,58 @@ import {
 
 import { Request, Response } from 'express';
 
+<<<<<<< HEAD
 async function createLoan(loan: BookLoan) {
 	const {
+=======
+const invalidBooks = [];
+
+async function createLoan(loan: BookLoanParams) {
+	const {
+		bookId,
+>>>>>>> backend
 		deliveryDate,
 		email,
 		exitDate,
 		personName,
 		phone,
+<<<<<<< HEAD
 		book,
 		isStudent,
 		teacherName,
+=======
+		teacherName
+>>>>>>> backend
 	} = loan;
+
+	const book = await prisma.book.findUnique({ where: { id: bookId } });
+
+	if (!book) {
+		invalidBooks.push(bookId);
+
+		return;
+	}
 
 	await prisma.bookLoan.create({
 		data: {
-			deliveryDate,
+			deliveryDate: new Date(deliveryDate),
 			email,
-			exitDate,
+			exitDate: new Date(exitDate),
 			personName,
+<<<<<<< HEAD
 			phone,
 			isStudent,
 			teacherName,
 			class: loan.class,
 			bookId: book.id,
 			status: loan.status || 'no_warning'
+=======
+			phone: String(phone),
+			status: 'no_warning',
+			teacherName,
+			class: loan.class,
+			bookId: bookId
+>>>>>>> backend
 		}
 	});
 }
@@ -88,7 +121,11 @@ class ImportController {
 
 			const books = convertImportedJsonToBook(json);
 
+<<<<<<< HEAD
 			if (keepData === '0') {
+=======
+			if (Number(keepData) === 0) {
+>>>>>>> backend
 				await prisma.book.deleteMany();
 			}
 
@@ -98,7 +135,7 @@ class ImportController {
 
 			cleanTempFolder();
 
-			return noContent(res);
+			return ok(res, { message: `${invalidBooks.length} livros inválidos` });
 		} catch (error) {
 			return serverError(res, error as Error);
 		}
@@ -122,7 +159,11 @@ class ImportController {
 				fileExtension === 'xlsx' ? xlsxToJson(file) : await csvToJson(file);
 			const loans = convertImportedJsonToBookLoan(json);
 
+<<<<<<< HEAD
 			if (keepData === '0') {
+=======
+			if (Number(keepData) === 0) {
+>>>>>>> backend
 				await prisma.bookLoan.deleteMany();
 			}
 
