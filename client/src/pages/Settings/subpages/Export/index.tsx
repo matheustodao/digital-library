@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Stack } from '@chakra-ui/react'
 import Title from '@components/pages/Title'
 import { formatOptions, importToOptions } from '@pages/Settings/utils/select-options'
-import { exportDataServices } from '@services/Export'
+import { exportDataServices } from '@services/export'
 import { Select } from 'chakra-react-select'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'

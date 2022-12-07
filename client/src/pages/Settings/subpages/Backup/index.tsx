@@ -3,11 +3,13 @@ import { Input } from '@components/FormUtils/Input'
 import Title from '@components/pages/Title'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { configServices } from '@services/config'
+import { backupDataServices } from '@services/backup'
 import { AuthConfigParams } from '@type/auth'
 import { updateConfigSchemaValidation } from '@validations/yup/digitalLibrary/auth/update'
 import { CloudArrowUp } from 'phosphor-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import useAuth from 'src/hooks/useAuth'
+import downloadFile from 'js-file-download'
 
 export default function BackupSubPage() {
   const { configs, handleSetupConfig } = useAuth()
@@ -27,6 +29,14 @@ export default function BackupSubPage() {
     handleSetupConfig(responseData)
   }
 
+  async function handleMakeBackup() {
+    const file = await backupDataServices.backup()
+    const date = new Date()
+    const currentDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: '2-digit' })
+    const filename = `backup-${currentDate}-${date.toISOString()}.zip`
+    downloadFile(file, filename)
+  }
+
   return (
     <Stack maxW="425px" mx="auto">
       <Title mb="42px" >Backup</Title>
@@ -41,6 +51,8 @@ export default function BackupSubPage() {
             color="white"
             _hover={{ bgColor: 'orange.600' }}
             _active={{ bgColor: 'orange.500' }}
+            type="button"
+            onClick={handleMakeBackup}
             >
               Realizar Backup
             </Button>
