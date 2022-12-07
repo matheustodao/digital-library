@@ -12,6 +12,7 @@ import NotFoundData from '@components/Errors/NotFoundData'
 import SortButton from '@components/Filters/ButtonsFilter/SortButton'
 import NotBookLoanedFound from '@components/BookLoan/errors/NotBookLoanedFound'
 import BookLoader from '@components/Loader'
+import Pagination from '@components/Pagination'
 
 export default function LoansBooksPage() {
   const navigation = useNavigate()
@@ -22,6 +23,7 @@ export default function LoansBooksPage() {
   const [searchByTerm, setSearchByTerm] = useState('')
   const [hasSearchedBookByTerm, setHasSearchedBookByTerm] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [infoPagination, setInfoPagination] = useState({ total: 1, page: 1 })
 
   const loadBooksLoaned = useCallback(async () => {
     try {
@@ -30,17 +32,25 @@ export default function LoansBooksPage() {
           orderBy: sortBook,
           text: searchByTerm,
           date: orderDeliveryInDate ?? orderDeliveryOutDate
+        },
+        pagination: {
+          page: searchByTerm ? null : infoPagination.page
         }
       })
-      setBooksLoaned(data.results)
       setHasSearchedBookByTerm(Boolean(searchByTerm) && !data.results.length)
+      setBooksLoaned(data.results)
+      setInfoPagination({ total: data.pages, page: data.page })
     } finally {
       setIsLoading(false)
     }
-  }, [sortBook, searchByTerm, orderDeliveryInDate, orderDeliveryOutDate])
+  }, [sortBook, searchByTerm, orderDeliveryInDate, orderDeliveryOutDate, infoPagination.page])
 
   function handleToggleSortBook() {
     setSortBook((oldState) => (oldState === 'asc' ? 'desc' : 'asc'))
+  }
+
+  function onChangePage(currentPage: number) {
+    setInfoPagination((oldInfo) => ({ ...oldInfo, page: currentPage }))
   }
 
   function handleToggleOrderDeliveryInDate() {
@@ -141,6 +151,10 @@ export default function LoansBooksPage() {
 
       {hasSearchedBookByTerm && (
         <NotFoundData />
+      )}
+
+      {Boolean(booksLoaned.length) && (
+        <Pagination totalPages={infoPagination.total} onChange={onChangePage} _containerProps={{ pt: '42px' }} />
       )}
     </>
   )

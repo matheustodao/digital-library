@@ -8,6 +8,10 @@ interface ListOptionParams {
   filters?: FilterOptionsType & {
     date?: 'in_date' | 'out_date' | null
   }
+  pagination?: {
+    page: number | null
+    limit?: number
+  }
 }
 
 class BookLoanServices extends HttpClientDigitalLibrary {
