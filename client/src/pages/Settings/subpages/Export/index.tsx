@@ -4,7 +4,6 @@ import { formatOptions, importToOptions } from '@pages/Settings/utils/select-opt
 import { exportDataServices } from '@services/Export'
 import { Select } from 'chakra-react-select'
 import { Controller, useForm } from 'react-hook-form'
-import fileDownload from 'js-file-download'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { exportSchemaValidation } from '@validations/yup/digitalLibrary/export'
 
@@ -16,8 +15,7 @@ export default function ExportSubPage() {
 
   async function onExportData(data: any) {
     const response = await exportDataServices.export(data)
-
-    fileDownload(response, 'livro.xlsx')
+    console.log(response)
   }
 
   return (
