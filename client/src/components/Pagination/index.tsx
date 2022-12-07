@@ -64,7 +64,7 @@ const Pagination = forwardRef(({ totalPages, onChange = () => {}, _buttonPagePro
         content="<"
         _buttonProps={{
           onClick: () => handlePrevPage(),
-          disabled: page === 0
+          disabled: page === 1
         }}
       />
 
