@@ -66,7 +66,7 @@ class ExportController {
 								content
 						  );
 
-				return res.download(`${temp}/${filename}.pdf`);
+				return res.download(`${temp}/${filename}`);
 			} else if (content === 'loans') {
 				const loans = await prisma.bookLoan.findMany({
 					include: { book: true }
@@ -94,7 +94,7 @@ class ExportController {
 								content
 						  );
 
-				return res.download(`${temp}/${filename}.pdf`);
+				return res.download(`${temp}/${filename}`);
 			}
 		} catch (error) {
 			return serverError(res, error as Error);

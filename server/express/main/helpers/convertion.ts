@@ -258,7 +258,7 @@ async function jsToPdf(
 
 	return new Promise((resolve, reject) => {
 		doc.pipe(createWriteStream(filePath)).on('finish', () => {
-			resolve(fileName);
+			resolve(`${fileName}.pdf`);
 		});
 	});
 }
