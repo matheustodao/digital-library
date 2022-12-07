@@ -31,8 +31,7 @@ export default function BooksPage() {
           text: searchByTerm
         },
         pagination: {
-          page: searchByTerm ? null : infoPagination.page,
-          limit: 1
+          page: searchByTerm ? null : infoPagination.page
         }
       })
 
