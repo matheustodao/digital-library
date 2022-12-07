@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Stack } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from '@chakra-ui/react'
 
 import { Input } from '@components/FormUtils/Input'
 import RequiredAsterisk from '@components/FormUtils/RequiredAsterisk'
@@ -8,24 +8,39 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { configServices } from '@services/config'
 import { AuthConfigParams } from '@type/auth'
 import { registerSchemaValidation } from '@validations/yup/digitalLibrary/auth/register'
+import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import useAuth from 'src/hooks/useAuth'
 
 export default function Register() {
   const { handleSignIn } = useAuth()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const navigate = useNavigate()
-  const { register, formState: { isValid, errors }, handleSubmit } = useForm<AuthConfigParams>({
+  const { register, formState: { isValid, errors }, handleSubmit, watch } = useForm<AuthConfigParams>({
     resolver: yupResolver(registerSchemaValidation),
     mode: 'all'
   })
 
   async function handleOnSubmit(data: AuthConfigParams) {
-    await configServices.register(data)
-    await handleSignIn({
-      email: data.email,
-      password: data.password
-    })
+    try {
+      await configServices.register(data)
+
+      await handleSignIn({
+        email: data.email,
+        password: data.password
+      })
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>
+      if (error?.response?.data?.error?.toLowerCase() === 'Ja existe um usuário cadastrado nessa máquina'.toLowerCase()) {
+        onOpen()
+      }
+    }
+  }
+
+  async function handleConfirmForceRegister() {
+    const data = watch()
+    await handleOnSubmit({ ...data, force: true })
   }
 
   function handleNavigateToLoginPage() {
@@ -99,6 +114,30 @@ export default function Register() {
           </Button>
         </Flex>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Ops! Já tem uma conta cadastrada</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Infelizmente não é possível recuperar a senha, no entanto, se preferir você pode apagar
+              {' '}
+              a conta cadastrada no sistema.
+              {' '}
+              E caso tenha arquivos da planilha de livros ou empréstimos você poderá importar os dados cadastrados.
+            </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='orange' mr={3} onClick={onClose}>
+              Fechar
+            </Button>
+            <Button variant='ghost' onClick={handleConfirmForceRegister}>Apagar Tudo e Cadastrar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </AuthLayout>
   )
 }
