@@ -10,8 +10,14 @@ import { compare, hash } from 'bcrypt';
 class ConfigController {
 	async create(req: Request, res: Response) {
 		try {
-			const body = req.body as User;
-			const { email, backupEmail, name, password } = body;
+			const body = req.body as User & { force: boolean };
+			const { email, backupEmail, name, password, force } = body;
+
+			if (force) {
+				await prisma.book.deleteMany(),
+				await prisma.config.deleteMany(),
+				await prisma.bookLoan.deleteMany()
+			}
 
 			const config = await prisma.config.findFirst();
 
