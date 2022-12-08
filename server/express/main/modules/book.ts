@@ -155,7 +155,7 @@ class BookController {
 
 			const currentPage = Number(page) || 1
 			const perPage = Number(limit) || 10
-			const pages = Math.floor(totalOfBooks / perPage)
+			const pages = Math.ceil(totalOfBooks / perPage)
 			const offset = (currentPage * perPage) - perPage
 
 			const books = await prisma.book.findMany({

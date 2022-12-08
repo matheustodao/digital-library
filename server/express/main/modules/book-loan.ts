@@ -199,7 +199,7 @@ class BookLoanController {
 
 			const totalLoans = await prisma.bookLoan.count({ where: whereContent });
 
-			const pages = Math.floor(totalLoans / perPage);
+			const pages = Math.ceil(totalLoans / perPage);
 			const offset = currentPage * perPage - perPage;
 
 			const books = await prisma.bookLoan.findMany({

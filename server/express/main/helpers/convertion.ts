@@ -41,7 +41,13 @@ function cleanTempFolder() {
 // Book
 function convertImportedJsonToBook(books: any): BookParams[] {
 	if (books[0]['id']) {
-		return books;
+		return books.map((book: {
+			categories: string; authors: string;
+}) => ({
+			...book,
+			authors: [processAuthorName(book.authors)],
+			categories: [processAuthorName(book.categories)]
+		}));
 	} else {
 		return convertImportedBookToDatabaseBook(books as BookFromExternalSource[]);
 	}
@@ -162,20 +168,20 @@ function setHeaderInformation(
 	} else if (content === 'loans') {
 		doc
 			.fontSize(10)
-			.text('Total de Empréstimos:', 50, customerInformationTop)
+			.text('Qtd de Empréstimos:', 50, customerInformationTop)
 			.font('Helvetica-Bold')
 			.text(String(headerData.totalLoansQuantity), 180, customerInformationTop)
 			.font('Helvetica')
 			.text('Livro mais Emprestado:', 50, customerInformationTop + 15)
 			.text(headerData.mostBorrowedBook, 180, customerInformationTop + 15)
 			.text(
-				'Quantidade de Empréstimos em Dia:',
+				'Em Dia:',
 				50,
 				customerInformationTop + 30
 			)
 			.text(String(headerData.upToDateLoans), 180, customerInformationTop + 30)
 			.text(
-				'Quantidade de Empréstimos em Atraso:',
+				'Em Atraso:',
 				50,
 				customerInformationTop + 45
 			)
@@ -230,9 +236,9 @@ function generateFooter(doc: typeof PDFDocument) {
 
 function generateTableRow(doc: typeof PDFDocument, y: number, items: any[]) {
 	doc.fontSize(10);
-	doc.text(items[0], 50, y);
-	doc.text(items[1], 150, y);
-	doc.text(items[2], 250, y);
+	doc.text(String(items[0]).slice(0, 15), 50, y);
+	doc.text(String(items[1]).slice(0, 15), 150, y);
+	doc.text(String(items[2]).slice(0, 15), 250, y);
 }
 
 function generateHr(doc: typeof PDFDocument, y: number) {
